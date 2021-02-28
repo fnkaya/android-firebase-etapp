@@ -2,5 +2,7 @@
     <string name="app_name">EtApp</string>
     <string name="logout">Logout</string>
     <string name="phone_number">Phone Number</string>
-    <string name="sign_in_with_phone_number">Sign in</string>
+    <string name="send_verification_code">Send verification code</string>
+    <string name="enter_verification_code">Enter verification code</string>
+    <string name="verify_code">Verify code</string>
 </resources>

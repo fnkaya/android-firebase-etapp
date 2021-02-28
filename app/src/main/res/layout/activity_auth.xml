@@ -8,16 +8,6 @@
     android:orientation="vertical"
     tools:context=".giris.AuthActivity">
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/progress_indicator_auth"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation_view_logo"
         android:layout_width="wrap_content"
@@ -28,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/bike" />
+        app:lottie_rawRes="@raw/dance" />
 
     <LinearLayout
         android:id="@+id/linear_layout_auth"
@@ -41,38 +31,35 @@
         app:layout_constraintTop_toBottomOf="@id/animation_view_logo">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/text_field_phone_number"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/text_input_layout_verification_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/margin_vertical_auth"
             android:layout_marginHorizontal="@dimen/margin_horizontal_auth"
             android:hint="@string/phone_number"
-            app:boxBackgroundColor="#fff"
-            app:boxBackgroundMode="filled"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:endIconMode="clear_text"
 
             app:startIconDrawable="@drawable/phone">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/text_input_phone_number_auth"
+                android:id="@+id/text_input_verification_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="phone"
-                android:maxLength="11" />
+                android:maxLength="13" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/button_phone_number_auth"
+            android:id="@+id/button_verify"
             style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/margin_vertical_auth"
             android:layout_marginHorizontal="@dimen/margin_horizontal_auth"
-            android:backgroundTint="#fff"
+            android:background="@color/purple_200"
             android:minHeight="60dp"
-            android:text="@string/sign_in_with_phone_number"
-            android:textColor="@color/black"
+            android:text="@string/send_verification_code"
             android:textStyle="bold"/>
 
         <com.google.android.gms.common.SignInButton

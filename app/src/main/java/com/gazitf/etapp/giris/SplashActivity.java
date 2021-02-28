@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 
 import com.gazitf.etapp.MainActivity;
 import com.gazitf.etapp.R;
@@ -36,13 +37,13 @@ public class SplashActivity extends AppCompatActivity implements FirebaseAuth.Au
 
     @Override
     public void onAuthStateChanged(@NonNull FirebaseAuth auth) {
-        if (auth.getCurrentUser() == null) {
+        new Handler().postDelayed(() -> {if (auth.getCurrentUser() == null) {
             startActivity(new Intent(SplashActivity.this, AuthActivity.class));
-            this.finish();
         }
         else {
             startActivity(new Intent(SplashActivity.this, MainActivity.class));
-            this.finish();
         }
+            this.finish();}, 2000);
+
     }
 }
