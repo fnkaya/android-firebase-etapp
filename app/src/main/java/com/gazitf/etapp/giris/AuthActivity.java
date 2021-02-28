@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.gazitf.etapp.MainActivity;
@@ -23,6 +24,7 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseException;
@@ -43,6 +45,7 @@ public class AuthActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private GoogleSignInClient gsic;
 
+    private ConstraintLayout constraintLayoutAuth;
     private LottieAnimationView lottieAnimationView;
     private TextInputLayout textInputLayoutPhoneNumber;
     private TextInputEditText textInputPhoneNumber;
@@ -56,6 +59,7 @@ public class AuthActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
+        constraintLayoutAuth = findViewById(R.id.constraint_layout_auth);
         lottieAnimationView = findViewById(R.id.animation_view_logo);
         textInputLayoutPhoneNumber = findViewById(R.id.text_input_layout_verification_code);
         textInputPhoneNumber = findViewById(R.id.text_input_verification_code);
@@ -78,28 +82,29 @@ public class AuthActivity extends AppCompatActivity {
     private void initListeners() {
         // Google sign in button click
         buttonGoogleSignIn.setOnClickListener(view -> {
-            lottieAnimationView.setAnimation(R.raw.google_sign_in);
-            lottieAnimationView.playAnimation();
+            setAnimation(R.raw.google_sign_in);
             startActivityForResult(gsic.getSignInIntent(), GOOGLE_SIGN_IN);
         });
 
         // Send verification button click
         buttonSendVerificationCode.setOnClickListener(view -> {
-            lottieAnimationView.setAnimation(R.raw.verification);
-            lottieAnimationView.playAnimation();
             String phoneNumber = textInputPhoneNumber.getText().toString();
 
-            if (!phoneNumber.isEmpty()) {
+            if (phoneNumber.length() == 13) {
+                setAnimation(R.raw.verification);
                 textInputLayoutPhoneNumber.setError(null);
+
                 PhoneAuthOptions phoneAuthOptions = PhoneAuthOptions.newBuilder(auth)
                         .setPhoneNumber(phoneNumber)
                         .setTimeout(60L, TimeUnit.SECONDS)
                         .setActivity(AuthActivity.this)
                         .setCallbacks(mCallbacks)
                         .build();
+
                 PhoneAuthProvider.verifyPhoneNumber(phoneAuthOptions);
+
             } else {
-                textInputLayoutPhoneNumber.setError("Please enter your phone number!");
+                textInputLayoutPhoneNumber.setError("Please enter invalid phone number!");
             }
         });
     }
@@ -118,8 +123,7 @@ public class AuthActivity extends AppCompatActivity {
                     authWithGoogleAccount(account);
 
             } catch (ApiException e) {
-                Log.e(TAG, "onActivityResult: ", e);
-                Toast.makeText(AuthActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                showSnackbar(e.getLocalizedMessage());
             }
         }
     }
@@ -129,11 +133,11 @@ public class AuthActivity extends AppCompatActivity {
 
         auth.signInWithCredential(credential)
                 .addOnSuccessListener(authResult -> {
-                    startActivity(new Intent(AuthActivity.this, MainActivity.class));
-                    this.finish();
+                    new Handler().postDelayed(this::startMainActivity, 2000);
                 })
                 .addOnFailureListener(error -> {
-                    Toast.makeText(this, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                    setAnimation(R.raw.dance);
+                    showSnackbar(error.getLocalizedMessage());
                 });
 
     }
@@ -147,7 +151,8 @@ public class AuthActivity extends AppCompatActivity {
 
                 @Override
                 public void onVerificationFailed(@NonNull FirebaseException e) {
-                    Toast.makeText(AuthActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                    setAnimation(R.raw.dance);
+                    showSnackbar(e.getLocalizedMessage());
                 }
 
                 @Override
@@ -158,17 +163,32 @@ public class AuthActivity extends AppCompatActivity {
                     Intent otpIntent = new Intent(AuthActivity.this, OtpActivity.class);
                     otpIntent.putExtra("auth", verificationCode);
                     startActivity(otpIntent);
+                    setAnimation(R.raw.dance);
                 }
             };
 
     private void authWithPhoneNumber(PhoneAuthCredential credential) {
         auth.signInWithCredential(credential)
                 .addOnSuccessListener(authResult -> {
-                    startActivity(new Intent(AuthActivity.this, MainActivity.class));
-                    this.finish();
+                    startMainActivity();
                 })
                 .addOnFailureListener(error -> {
-                    Toast.makeText(this, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                    setAnimation(R.raw.dance);
+                    showSnackbar(error.getLocalizedMessage());
                 });
+    }
+
+    private void startMainActivity() {
+        startActivity(new Intent(AuthActivity.this, MainActivity.class));
+        this.finish();
+    }
+
+    private void setAnimation(int resource) {
+        lottieAnimationView.setAnimation(resource);
+        lottieAnimationView.playAnimation();
+    }
+
+    private void showSnackbar(String errorText) {
+        Snackbar.make(constraintLayoutAuth, errorText, Snackbar.LENGTH_LONG).show();
     }
 }
