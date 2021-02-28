@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".giris.OtpActivity">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view_verification_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toTopOf="@id/text_input_layout_verification_code"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/verification" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_layout_verification_code"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal_auth"
+        android:layout_marginVertical="@dimen/margin_vertical_auth"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
+        android:hint="@string/enter_verification_code"
+        app:boxBackgroundColor="#fff"
+        app:boxBackgroundMode="filled"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/animation_view_verification_logo"
+        app:layout_constraintBottom_toTopOf="@id/button_verify"
+        app:layout_constraintVertical_bias="1">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/text_input_verification_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:maxLength="6" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/button_verify"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal_auth"
+        android:layout_marginVertical="@dimen/margin_vertical_auth"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="248dp"
+        android:layout_marginEnd="64dp"
+        android:backgroundTint="#fff"
+        android:minHeight="60dp"
+        android:text="@string/verify_code"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/text_input_layout_verification_code"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias=".3"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

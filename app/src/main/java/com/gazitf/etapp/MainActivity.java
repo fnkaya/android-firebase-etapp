@@ -1,5 +1,6 @@
 package com.gazitf.etapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -7,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.gazitf.etapp.giris.AuthActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         btnSignOut.setOnClickListener(view -> {
             auth.signOut();
+            startActivity(new Intent(MainActivity.this, AuthActivity.class));
             this.finish();
         });
     }
