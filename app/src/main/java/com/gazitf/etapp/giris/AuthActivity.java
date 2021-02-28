@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.gazitf.etapp.MainActivity;
 import com.gazitf.etapp.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -19,6 +20,7 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -31,7 +33,9 @@ public class AuthActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private GoogleSignInClient gsic;
 
+    private LottieAnimationView lottieAnimationView;
     private LinearProgressIndicator progressIndicator;
+    private TextInputEditText textInputPhoneNumber;
     private SignInButton buttonGoogleSignIn;
 
     @Override
@@ -41,11 +45,15 @@ public class AuthActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
+        lottieAnimationView = findViewById(R.id.animation_view_logo);
         progressIndicator = findViewById(R.id.progress_indicator_auth);
+        textInputPhoneNumber = findViewById(R.id.text_input_phone_number_auth);
         buttonGoogleSignIn = findViewById(R.id.button_google_sign_in);
 
         configureGoogleSignInOptions();
         initListeners();
+
+
     }
 
     // Google sign in ayarları

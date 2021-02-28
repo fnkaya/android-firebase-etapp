@@ -10,7 +10,6 @@
         android:id="@+id/image_view_profile"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/account_circle"
         app:civ_border_width="2dp"
         app:civ_border_color="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/text_user"
