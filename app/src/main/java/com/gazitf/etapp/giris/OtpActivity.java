@@ -22,7 +22,7 @@ public class OtpActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private String otp;
 
-    private View view;
+    private View rootView;
     private TextInputLayout textInputLayoutVerificationCode;
     private TextInputEditText textInputVerificationCode;
     private Button buttonVerify;
@@ -30,10 +30,10 @@ public class OtpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_otp);
 
         ActivityOtpBinding binding = ActivityOtpBinding.inflate(getLayoutInflater());
-        view = binding.getRoot();
+        rootView = binding.getRoot();
+        setContentView(rootView);
         textInputLayoutVerificationCode = binding.textInputLayoutVerificationCode;
         textInputVerificationCode = binding.textInputVerificationCode;
         buttonVerify = binding.buttonVerify;
@@ -71,7 +71,7 @@ public class OtpActivity extends AppCompatActivity {
                     this.finishAffinity();
                 })
                 .addOnFailureListener(error -> {
-                    Snackbar.make(view, error.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(rootView, error.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
                 });
     }
 }
