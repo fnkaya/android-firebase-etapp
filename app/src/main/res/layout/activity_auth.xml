@@ -10,7 +10,7 @@
     tools:context=".giris.AuthActivity">
 
     <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/animation_view_logo"
+        android:id="@+id/animation_view_auth_logo"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
         app:layout_constraintBottom_toTopOf="@id/linear_layout_auth"
@@ -29,10 +29,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/animation_view_logo">
+        app:layout_constraintTop_toBottomOf="@id/animation_view_auth_logo">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/text_input_layout_verification_code"
+            android:id="@+id/text_input_layout_phone_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/margin_vertical_auth"
@@ -44,7 +44,7 @@
             app:startIconDrawable="@drawable/phone">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/text_input_verification_code"
+                android:id="@+id/text_input_phone_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="phone"
@@ -53,7 +53,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/button_verify"
+            android:id="@+id/button_send_verification_code"
             style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

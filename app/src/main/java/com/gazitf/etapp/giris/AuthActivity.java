@@ -3,19 +3,17 @@ package com.gazitf.etapp.giris;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.gazitf.etapp.MainActivity;
 import com.gazitf.etapp.R;
+import com.gazitf.etapp.databinding.ActivityAuthBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -23,7 +21,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -45,7 +42,7 @@ public class AuthActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private GoogleSignInClient gsic;
 
-    private ConstraintLayout constraintLayoutAuth;
+    private View rootView;
     private LottieAnimationView lottieAnimationView;
     private TextInputLayout textInputLayoutPhoneNumber;
     private TextInputEditText textInputPhoneNumber;
@@ -59,17 +56,19 @@ public class AuthActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
-        constraintLayoutAuth = findViewById(R.id.constraint_layout_auth);
-        lottieAnimationView = findViewById(R.id.animation_view_logo);
-        textInputLayoutPhoneNumber = findViewById(R.id.text_input_layout_verification_code);
-        textInputPhoneNumber = findViewById(R.id.text_input_verification_code);
-        buttonSendVerificationCode = findViewById(R.id.button_verify);
-        buttonGoogleSignIn = findViewById(R.id.button_google_sign_in);
+        ActivityAuthBinding binding = ActivityAuthBinding.inflate(getLayoutInflater());
+        rootView = binding.getRoot();
+        lottieAnimationView = binding.animationViewAuthLogo;
+        textInputLayoutPhoneNumber = binding.textInputLayoutPhoneNumber;
+        textInputPhoneNumber = binding.textInputPhoneNumber;
+        buttonSendVerificationCode = binding.buttonSendVerificationCode;
+        buttonGoogleSignIn = binding.buttonGoogleSignIn;
 
         configureGoogleSignInOptions();
         initListeners();
     }
 
+    // Configuration for google sign in
     private void configureGoogleSignInOptions() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -79,14 +78,15 @@ public class AuthActivity extends AppCompatActivity {
         gsic = GoogleSignIn.getClient(this, gso);
     }
 
+    // Initialize listeners
     private void initListeners() {
-        // Google sign in button click
+        // Google sign in button clicked
         buttonGoogleSignIn.setOnClickListener(view -> {
             setAnimation(R.raw.google_sign_in);
             startActivityForResult(gsic.getSignInIntent(), GOOGLE_SIGN_IN);
         });
 
-        // Send verification button click
+        // Send verification button clicked
         buttonSendVerificationCode.setOnClickListener(view -> {
             String phoneNumber = textInputPhoneNumber.getText().toString();
 
@@ -104,7 +104,7 @@ public class AuthActivity extends AppCompatActivity {
                 PhoneAuthProvider.verifyPhoneNumber(phoneAuthOptions);
 
             } else {
-                textInputLayoutPhoneNumber.setError("Please enter invalid phone number!");
+                textInputLayoutPhoneNumber.setError("Please enter a valid phone number!");
             }
         });
     }
@@ -123,11 +123,12 @@ public class AuthActivity extends AppCompatActivity {
                     authWithGoogleAccount(account);
 
             } catch (ApiException e) {
-                showSnackbar(e.getLocalizedMessage());
+                showErrorMessage(e.getLocalizedMessage());
             }
         }
     }
 
+    // Authentication with google account
     private void authWithGoogleAccount(GoogleSignInAccount account) {
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
 
@@ -137,33 +138,33 @@ public class AuthActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(error -> {
                     setAnimation(R.raw.dance);
-                    showSnackbar(error.getLocalizedMessage());
+                    showErrorMessage(error.getLocalizedMessage());
                 });
 
     }
 
+    // Authentication with phone number
     private final PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks =
             new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                // Phone number authentication automatically verified
                 @Override
                 public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
                     authWithPhoneNumber(phoneAuthCredential);
                 }
 
+                // Phone number authentication failed
                 @Override
                 public void onVerificationFailed(@NonNull FirebaseException e) {
                     setAnimation(R.raw.dance);
-                    showSnackbar(e.getLocalizedMessage());
+                    showErrorMessage(e.getLocalizedMessage());
                 }
 
+                // User must enter verification code manually
                 @Override
                 public void onCodeSent(@NonNull String verificationCode, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                     super.onCodeSent(verificationCode, forceResendingToken);
 
-                    // sometime the code is not detected automatically o user has to manually enter the code
-                    Intent otpIntent = new Intent(AuthActivity.this, OtpActivity.class);
-                    otpIntent.putExtra("auth", verificationCode);
-                    startActivity(otpIntent);
-                    setAnimation(R.raw.dance);
+                    startOtpActivity(verificationCode);
                 }
             };
 
@@ -174,8 +175,15 @@ public class AuthActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(error -> {
                     setAnimation(R.raw.dance);
-                    showSnackbar(error.getLocalizedMessage());
+                    showErrorMessage(error.getLocalizedMessage());
                 });
+    }
+
+    private void startOtpActivity(@NonNull String verificationCode) {
+        Intent otpIntent = new Intent(AuthActivity.this, OtpActivity.class);
+        otpIntent.putExtra("auth", verificationCode);
+        startActivity(otpIntent);
+        setAnimation(R.raw.dance);
     }
 
     private void startMainActivity() {
@@ -188,7 +196,7 @@ public class AuthActivity extends AppCompatActivity {
         lottieAnimationView.playAnimation();
     }
 
-    private void showSnackbar(String errorText) {
-        Snackbar.make(constraintLayoutAuth, errorText, Snackbar.LENGTH_LONG).show();
+    private void showErrorMessage(String errorText) {
+        Snackbar.make(rootView, errorText, Snackbar.LENGTH_LONG).show();
     }
 }

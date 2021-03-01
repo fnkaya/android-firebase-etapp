@@ -44,6 +44,5 @@ public class SplashActivity extends AppCompatActivity implements FirebaseAuth.Au
             startActivity(new Intent(SplashActivity.this, MainActivity.class));
         }
             this.finish();}, 2000);
-
     }
 }
