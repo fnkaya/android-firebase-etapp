@@ -52,12 +52,11 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_auth);
-
         auth = FirebaseAuth.getInstance();
 
         ActivityAuthBinding binding = ActivityAuthBinding.inflate(getLayoutInflater());
         rootView = binding.getRoot();
+        setContentView(rootView);
         lottieAnimationView = binding.animationViewAuthLogo;
         textInputLayoutPhoneNumber = binding.textInputLayoutPhoneNumber;
         textInputPhoneNumber = binding.textInputPhoneNumber;
