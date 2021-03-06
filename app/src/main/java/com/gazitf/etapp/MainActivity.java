@@ -1,48 +1,38 @@
 package com.gazitf.etapp;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
-import com.gazitf.etapp.auth.SignInActivity;
+import com.gazitf.etapp.databinding.ActivityMainBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+
+    BottomNavigationView bottomNavigationView;
 
     private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        bottomNavigationView = binding.bottomNavigationView;
+
+        NavController navController = Navigation.findNavController(this, R.id.bottom_navigation_host_fragment);
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
         auth = FirebaseAuth.getInstance();
-
-        ImageView imageViewProfile = findViewById(R.id.image_view_profile);
-        TextView textUser = findViewById(R.id.text_user);
-        Button btnSignOut = findViewById(R.id.button_sign_out);
-
-        Picasso.get()
-                .load(auth.getCurrentUser().getPhotoUrl())
-                .into(imageViewProfile);
-
-        textUser.setText(auth.getCurrentUser().getDisplayName() + "\n\n" +
-                auth.getCurrentUser().getEmail() + "\n\n" +
-                auth.getCurrentUser().getPhoneNumber() + "\n\n" +
-                auth.getCurrentUser().getUid());
-
-        btnSignOut.setOnClickListener(view -> {
-            auth.signOut();
-            startActivity(new Intent(MainActivity.this, SignInActivity.class));
-            this.finish();
-        });
     }
 
 

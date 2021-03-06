@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".auth.SignUpActivity">
+    tools:context=".auth.fragment.RegisterFragment">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation_view_register_logo"
@@ -103,14 +104,24 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_sign_up"
+            android:id="@+id/button_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_horizontal_auth"
             android:layout_marginVertical="@dimen/margin_vertical_auth"
             android:paddingVertical="@dimen/activity_margin"
-            android:text="signup"
+            android:text="register"
             android:textStyle="bold" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_view_redirect_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="I already have an account."
+            android:padding="@dimen/activity_margin"
+            android:textStyle="bold"
+            android:textColor="@color/purple_200"
+            android:gravity="center"/>
 
     </LinearLayout>
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".auth.PhoneVerificationActivity">
+    tools:context=".auth.activity.PhoneVerificationActivity">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation_view_verification_logo"

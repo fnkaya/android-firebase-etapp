@@ -1,9 +1,6 @@
-package com.gazitf.etapp.auth;
+package com.gazitf.etapp.auth.activity;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.gazitf.etapp.MainActivity;
 import com.gazitf.etapp.R;
 import com.gazitf.etapp.databinding.ActivityPhoneVerificationBinding;
 import com.gazitf.etapp.utils.AuthInputValidator;

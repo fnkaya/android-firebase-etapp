@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Home" android:id="@+id/homeFragment" android:icon="@drawable/home"/>
+    <item android:title="Watch List" android:id="@+id/watchListFragment" android:icon="@drawable/watch"/>
+    <item android:title="Message" android:id="@+id/messageFragment" android:icon="@drawable/message"/>
+    <item android:title="Post" android:id="@+id/postFragment" android:icon="@drawable/person"/>
+</menu>
