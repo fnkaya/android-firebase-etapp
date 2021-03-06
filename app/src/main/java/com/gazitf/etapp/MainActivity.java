@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.gazitf.etapp.giris.AuthActivity;
+import com.gazitf.etapp.auth.SignInActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
@@ -33,11 +33,14 @@ public class MainActivity extends AppCompatActivity {
                 .load(auth.getCurrentUser().getPhotoUrl())
                 .into(imageViewProfile);
 
-        textUser.setText(auth.getCurrentUser().getDisplayName() + " " + auth.getCurrentUser().getEmail() + " " + auth.getCurrentUser().getUid());
+        textUser.setText(auth.getCurrentUser().getDisplayName() + "\n\n" +
+                auth.getCurrentUser().getEmail() + "\n\n" +
+                auth.getCurrentUser().getPhoneNumber() + "\n\n" +
+                auth.getCurrentUser().getUid());
 
         btnSignOut.setOnClickListener(view -> {
             auth.signOut();
-            startActivity(new Intent(MainActivity.this, AuthActivity.class));
+            startActivity(new Intent(MainActivity.this, SignInActivity.class));
             this.finish();
         });
     }

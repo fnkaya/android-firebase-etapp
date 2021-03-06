@@ -2,73 +2,71 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraint_layout_auth"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    tools:context=".giris.AuthActivity">
+    tools:context=".auth.PhoneVerificationActivity">
 
     <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/animation_view_auth_logo"
+        android:id="@+id/animation_view_verification_logo"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
-        app:layout_constraintBottom_toTopOf="@id/linear_layout_auth"
+        app:layout_constraintBottom_toTopOf="@id/linear_layout_verification"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/dance" />
+        app:lottie_rawRes="@raw/verification" />
 
     <LinearLayout
-        android:id="@+id/linear_layout_auth"
+        android:id="@+id/linear_layout_verification"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/animation_view_auth_logo">
+        app:layout_constraintTop_toBottomOf="@id/animation_view_verification_logo">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/text_input_layout_phone_number"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/margin_vertical_auth"
             android:layout_marginHorizontal="@dimen/margin_horizontal_auth"
-            android:hint="@string/phone_number"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:endIconMode="clear_text"
-
-            app:startIconDrawable="@drawable/phone">
+            android:layout_marginVertical="@dimen/margin_vertical_auth"
+            android:hint="Verification Code">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/text_input_phone_number"
+                android:id="@+id/text_input_verification_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="phone"
-                android:maxLength="13"
-                android:text="+90"/>
+                android:inputType="number"
+                android:maxLength="6"
+                android:textAlignment="center"
+                android:letterSpacing=".5"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/button_send_verification_code"
-            style="@style/Widget.MaterialComponents.Button"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_verify"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/margin_vertical_auth"
             android:layout_marginHorizontal="@dimen/margin_horizontal_auth"
-            android:minHeight="60dp"
-            android:text="@string/send_verification_code"
-            android:textStyle="bold"/>
+            android:layout_marginVertical="@dimen/margin_vertical_auth"
+            android:paddingVertical="@dimen/activity_margin"
+            android:text="@string/verify_code"
+            android:textStyle="bold" />
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/button_google_sign_in"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_resend"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_horizontal_auth"
             android:layout_marginVertical="@dimen/margin_vertical_auth"
-            android:layout_marginHorizontal="@dimen/margin_horizontal_auth" />
+            android:paddingVertical="@dimen/activity_margin"
+            android:text="resend"
+            android:textStyle="bold"
+            android:visibility="invisible"/>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

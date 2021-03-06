@@ -11,15 +11,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EtApp">
-        <activity android:name=".giris.OtpActivity"></activity>
-        <activity android:name=".giris.SplashActivity">
+        <activity android:name=".auth.SignUpActivity"></activity>
+        <activity android:name=".auth.PhoneVerificationActivity" />
+        <activity android:name=".auth.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".giris.AuthActivity" />
+        <activity android:name=".auth.SignInActivity" />
         <activity android:name=".MainActivity" />
     </application>
 
