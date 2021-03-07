@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
-import com.gazitf.etapp.MainActivity;
+import com.gazitf.etapp.main.view.activity.MainActivity;
 import com.gazitf.etapp.auth.activity.PhoneVerificationActivity;
 import com.gazitf.etapp.databinding.FragmentRegisterBinding;
 import com.gazitf.etapp.utils.AuthInputValidator;

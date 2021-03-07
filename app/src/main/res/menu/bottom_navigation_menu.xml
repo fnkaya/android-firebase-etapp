@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="Home" android:id="@+id/homeFragment" android:icon="@drawable/home"/>
-    <item android:title="Watch List" android:id="@+id/watchListFragment" android:icon="@drawable/watch"/>
-    <item android:title="Message" android:id="@+id/messageFragment" android:icon="@drawable/message"/>
-    <item android:title="Post" android:id="@+id/postFragment" android:icon="@drawable/person"/>
+    <item android:title="Home"
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/home"
+        app:cnb_iconColor="#E57373"    />
+
+    <item android:title="Watch List"
+        android:id="@+id/watchListFragment"
+        android:icon="@drawable/watch"
+        app:cnb_iconColor="#4DD0E1" />
+
+    <item android:title="Message"
+        android:id="@+id/messageFragment"
+        android:icon="@drawable/message"
+        app:cnb_iconColor="#81C784" />
+
+    <item android:title="Post"
+        android:id="@+id/postFragment"
+        android:icon="@drawable/person"
+        app:cnb_iconColor="#FFB74D" />
 </menu>

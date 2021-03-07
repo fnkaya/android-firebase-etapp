@@ -18,7 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.gazitf.etapp.MainActivity;
+import com.gazitf.etapp.main.view.activity.MainActivity;
 import com.gazitf.etapp.R;
 import com.gazitf.etapp.databinding.FragmentLoginBinding;
 import com.gazitf.etapp.utils.AuthInputValidator;
