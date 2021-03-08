@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,7 +40,8 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
     private NavigationView sideNavigationView;
     private ChipNavigationBar chipNavigationBar;
     private ConstraintLayout layoutContent;
-    private Button buttonSideNavigation, buttonLogout;
+    private ImageButton buttonSideNavigation;
+    private Button buttonLogout;
     private CircleImageView imageViewUserProfile;
     private TextView textViewUserEmail;
 
@@ -161,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
             // Seçilen menu item'a göre fragment gösterme
             getSupportFragmentManager()
                     .beginTransaction()
+                    .setCustomAnimations(R.anim.anim_enter_fade, R.anim.anim_exit_fade)
                     .replace(R.id.bottom_navigation_host_fragment, fragment)
                     .commit();
         });

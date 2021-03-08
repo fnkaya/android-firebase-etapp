@@ -22,11 +22,11 @@
         android:text="@string/skip"
         android:textAllCaps="false"
         android:textSize="20sp"
-        android:textColor="@color/colorPrimaryAccent"
+        android:textColor="@color/colorMaterialGreen"
         android:layout_margin="16dp"
         android:padding="8dp"
         android:drawableEnd="@drawable/icon_skip"
-        android:drawableTint="@color/colorPrimaryAccent"
+        android:drawableTint="@color/colorMaterialGreen"
         android:background="@drawable/background_transparent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -50,7 +50,7 @@
             android:padding="8dp"
             android:text="@string/lets_get_started"
             android:textStyle="bold"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/colorBlack"
             android:background="@drawable/background_transparent_20"
             android:visibility="invisible"/>
 
@@ -62,17 +62,16 @@
             android:orientation="horizontal"
             android:layout_marginBottom="16dp"/>
 
-        <Button
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/button_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="16dp"
-            android:drawableEnd="@drawable/icon_next"
-            android:drawableTint="@color/colorPrimary"
+            android:src="@drawable/icon_next"
             android:paddingVertical="16dp"
-            android:background="@drawable/background_transparent"/>
+            app:backgroundTint="@color/colorMaterialLightGreen"/>
 
 
     </RelativeLayout>

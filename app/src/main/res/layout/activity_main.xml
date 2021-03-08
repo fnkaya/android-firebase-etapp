@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".main.view.activity.MainActivity"
     android:id="@+id/layout_navigation_drawer"
-    tools:openDrawer="start">
+    >
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/side_navigation_view"
@@ -69,16 +69,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/button_navigation_drawer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:drawableEnd="@drawable/icon_menu"
-            android:background="@drawable/background_transparent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/bottom_navigation_host_fragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
@@ -88,6 +78,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
+
+        <ImageButton
+            android:id="@+id/button_navigation_drawer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/icon_menu"
+            android:background="@drawable/background_transparent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="Side Menu Button" />
 
         <com.ismaeldivita.chipnavigation.ChipNavigationBar
             android:id="@+id/bottom_navigation_view"
