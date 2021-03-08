@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "512686757749",
+    "project_id": "etapp-5cc90",
+    "storage_bucket": "etapp-5cc90.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:512686757749:android:31bc8016f853488f50253c",
+        "android_client_info": {
+          "package_name": "com.gazitf.etapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "512686757749-qcrhjd58ak3fcrgbaltqkrgfpe8m0t2q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gazitf.etapp",
+            "certificate_hash": "24c2c206b2f1825c5fffff91c043044c4b3597e8"
+          }
+        },
+        {
+          "client_id": "512686757749-h20s7ebs87cn0p1vo5a4otddmsbc5q2c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCg5m5EdjHq7kVBRgCiU9BSGboXj8UGPLw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "512686757749-h20s7ebs87cn0p1vo5a4otddmsbc5q2c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background=""
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:id="@+id/img_galery"
+        android:layout_width="325dp"
+        android:layout_height="119dp"
+        android:layout_below="@+id/txt_baslik"
+        android:layout_centerHorizontal="true">
+
+
+        <ImageView
+            android:id="@+id/img_etkinlik"
+            android:layout_width="208dp"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/gallery_ikon" />
+
+        <ImageView
+            android:id="@+id/img_ekle"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+
+            android:layout_marginStart="1dp"
+            android:layout_marginBottom="1dp"
+            android:layout_toEndOf="@+id/img_etkinlik"
+            app:srcCompat="@drawable/add_icon" />
+
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/txt_baslik"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#EDE5E5"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:scrollbarSize="4dp"
+        android:text="ETKİNLİK OLUŞTUR"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/txt_etkinlikAdi"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:paddingLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:hint="Etkinlik Başlığını Giriniz "
+        android:layout_below="@+id/img_galery"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:inputType="textPersonName"/>
+    <EditText
+        android:id="@+id/txt_etkinlikAciklama"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:hint="Etkinlik Açıklamasını Giriniz "
+        android:layout_below="@+id/txt_etkinlikAdi"
+        android:paddingLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:inputType="textMultiLine"/>
+
+    <EditText
+        android:id="@+id/edt_baslangic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_kont"
+        android:layout_marginTop="15dp"
+        android:hint="Başlangıç Zamanı"
+        android:paddingLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:ems="10"
+        android:inputType="date" />
+    <EditText
+        android:id="@+id/edt_bitis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/edt_baslangic"
+        android:layout_below="@+id/txt_kont"
+        android:layout_marginTop="15dp"
+        android:hint="Bitiş Zamanı"
+        android:paddingLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:ems="10"
+        android:inputType="date"
+        android:layout_toRightOf="@+id/edt_baslangic" />
+    <EditText
+        android:id="@+id/txt_kont"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:paddingLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:hint="Kontenjan Giriniz "
+        android:layout_below="@+id/txt_etkinlikAciklama"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:inputType="number"/>
+
+    <EditText
+        android:id="@+id/txt_adres"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edt_bitis"
+        android:hint="Adres "
+        android:paddingLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:ems="10"
+        android:inputType="textPostalAddress" />
+
+
+
+
+    <ImageView
+        android:id="@+id/img_konum"
+        android:layout_width="285dp"
+        android:layout_height="125dp"
+        android:layout_below="@+id/txt_adres"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/map" />
+
+    <Button
+        android:id="@+id/btn_olustur"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:text="OLUŞTUR" />
+
+</RelativeLayout>
