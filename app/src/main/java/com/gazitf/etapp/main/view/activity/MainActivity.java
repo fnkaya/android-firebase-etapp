@@ -1,37 +1,43 @@
 package com.gazitf.etapp.main.view.activity;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 
+import com.gazitf.etapp.R;
 import com.gazitf.etapp.auth.activity.AuthActivity;
-import com.gazitf.etapp.auth.activity.SplashActivity;
+import com.gazitf.etapp.databinding.ActivityMainBinding;
 import com.gazitf.etapp.main.view.fragment.HomeFragment;
 import com.gazitf.etapp.main.view.fragment.MessageFragment;
 import com.gazitf.etapp.main.view.fragment.PostFragment;
-import com.gazitf.etapp.R;
 import com.gazitf.etapp.main.view.fragment.WatchListFragment;
-import com.gazitf.etapp.databinding.ActivityMainBinding;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
-public class MainActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener {
+public class MainActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener, NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    private static final float END_SCALE = 0.7f;
 
     private ActivityMainBinding binding;
 
-    private BottomNavigationView bottomNavigationView;
+    private DrawerLayout drawerLayout;
+    private NavigationView sideNavigationView;
+    /*private BottomNavigationView bottomNavigationView;*/
     private ChipNavigationBar chipNavigationBar;
+    private ConstraintLayout layoutContent;
+    private Button buttonSideNavigation, buttonLogout;
 
     private FirebaseAuth auth;
 
@@ -42,11 +48,16 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View rootView = binding.getRoot();
         setContentView(rootView);
+        drawerLayout = binding.layoutNavigationDrawer;
+        sideNavigationView = binding.sideNavigationView;
         chipNavigationBar = binding.bottomNavigationView;
+        layoutContent = binding.layoutContent;
+        buttonSideNavigation = binding.buttonNavigationDrawer;
+        buttonLogout = binding.buttonLogout;
 
         auth = FirebaseAuth.getInstance();
 
-        chipNavigationBar.showBadge(R.id.messageFragment, 10);
+        sideNavigationMenu();
         bottomNavigationMenu();
     }
 
@@ -57,8 +68,58 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         bottomNavigationView.setVisibility(View.VISIBLE);
     }*/
 
+    private void sideNavigationMenu() {
+        sideNavigationView.bringToFront();
+        sideNavigationView.setNavigationItemSelectedListener(this);
+        sideNavigationView.setCheckedItem(R.id.homeFragment);
+        animateNavigationDrawer();
+
+        buttonSideNavigation.setOnClickListener(view -> {
+            if (drawerLayout.isDrawerVisible(GravityCompat.START))
+                drawerLayout.closeDrawer(GravityCompat.START);
+            else
+                drawerLayout.openDrawer(GravityCompat.START);
+        });
+
+        buttonLogout.setOnClickListener(view -> auth.signOut());
+    }
+
+    private void animateNavigationDrawer() {
+        drawerLayout.setScrimColor(getColor(R.color.colorPrimary));
+        drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+
+                // Scale the View based on current slide offset
+                final float diffScaledOffset = slideOffset * (1 - END_SCALE);
+                final float offsetScale = 1 - diffScaledOffset;
+                layoutContent.setScaleX(offsetScale);
+                layoutContent.setScaleY(offsetScale);
+
+                // Translate the View, accounting for the scaled width
+                final float xOffset = drawerView.getWidth() * slideOffset;
+                final float xOffsetDiff = layoutContent.getWidth() * diffScaledOffset / 2;
+                final float xTranslation = xOffset - xOffsetDiff;
+                layoutContent.setTranslationX(xTranslation);
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerVisible(GravityCompat.START))
+            drawerLayout.closeDrawer(GravityCompat.START);
+        else
+            super.onBackPressed();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return true;
+    }
+
     private void bottomNavigationMenu() {
-       chipNavigationBar.setItemSelected(R.id.homeFragment, true);
+        chipNavigationBar.setItemSelected(R.id.homeFragment, true);
 
         chipNavigationBar.setOnItemSelectedListener(id -> {
             Fragment fragment = null;

@@ -7,6 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".auth.fragment.RegisterFragment">
 
+    <Button
+        android:id="@+id/button_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableEnd="@drawable/icon_back"
+        android:drawableTint="@color/colorBlack"
+        android:background="@drawable/background_transparent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation_view_register_logo"
         android:layout_width="wrap_content"
@@ -34,11 +45,11 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_horizontal_auth"
-            android:layout_marginVertical="@dimen/margin_vertical_auth"
-            android:hint="Name"
+            android:layout_marginHorizontal="64dp"
+            android:layout_marginVertical="8dp"
+            android:hint="@string/name"
             app:endIconMode="clear_text"
-            app:startIconDrawable="@drawable/person">
+            app:startIconDrawable="@drawable/icon_person">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/text_input_name"
@@ -52,10 +63,10 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_horizontal_auth"
-            android:layout_marginVertical="@dimen/margin_vertical_auth"
-            android:hint="E-mail"
-            app:startIconDrawable="@drawable/email"
+            android:layout_marginHorizontal="64dp"
+            android:layout_marginVertical="8dp"
+            android:hint="@string/e_mail"
+            app:startIconDrawable="@drawable/icon_email"
             app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -70,11 +81,11 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_horizontal_auth"
-            android:layout_marginVertical="@dimen/margin_vertical_auth"
+            android:layout_marginHorizontal="64dp"
+            android:layout_marginVertical="8dp"
             android:hint="@string/phone_number"
             app:endIconMode="clear_text"
-            app:startIconDrawable="@drawable/phone">
+            app:startIconDrawable="@drawable/icon_phone">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/text_input_phone_number"
@@ -82,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="phone"
                 android:maxLength="13"
-                android:text="+90" />
+                android:text="@string/tr_90" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -90,10 +101,10 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_horizontal_auth"
-            android:layout_marginVertical="@dimen/margin_vertical_auth"
-            android:hint="Password"
-            app:startIconDrawable="@drawable/lock"
+            android:layout_marginHorizontal="64dp"
+            android:layout_marginVertical="8dp"
+            android:hint="@string/password"
+            app:startIconDrawable="@drawable/icon_lock"
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -107,21 +118,21 @@
             android:id="@+id/button_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_horizontal_auth"
-            android:layout_marginVertical="@dimen/margin_vertical_auth"
-            android:paddingVertical="@dimen/activity_margin"
-            android:textColor="@color/white"
-            android:text="register"
+            android:layout_marginHorizontal="64dp"
+            android:layout_marginVertical="8dp"
+            android:paddingVertical="16dp"
+            android:textColor="@color/colorBlack"
+            android:text="@string/register"
             android:textStyle="bold" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_view_redirect_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="I already have an account."
-            android:padding="@dimen/activity_margin"
+            android:text="@string/already_have_account"
+            android:padding="8dp"
             android:textStyle="bold"
-            android:textColor="@color/teal_700"
+            android:textColor="@color/colorPrimaryAccent"
             android:gravity="center"/>
 
     </LinearLayout>

@@ -22,12 +22,14 @@ import com.gazitf.etapp.main.view.activity.MainActivity;
 import com.gazitf.etapp.R;
 import com.gazitf.etapp.databinding.FragmentLoginBinding;
 import com.gazitf.etapp.utils.AuthInputValidator;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding binding;
     private LottieAnimationView lottieAnimationView;
+    private TextInputLayout inputLayoutEmail, inputLayoutPassword;
     private EditText editTextEmail, editTextPassword;
     private Button buttonLogin;
     private TextView textViewRedirectToRegister;
@@ -48,6 +50,8 @@ public class LoginFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         lottieAnimationView = binding.animationViewAuthLogo;
+        inputLayoutEmail = binding.textInputLayoutLoginEmail;
+        inputLayoutPassword = binding.textInputLayoutLoginPassword;
         editTextEmail = binding.textInputLoginEmail;
         editTextPassword = binding.textInputLoginPassword;
         buttonLogin = binding.buttonLogin;
@@ -67,14 +71,17 @@ public class LoginFragment extends Fragment {
     private void validate() {
         String email = editTextEmail.getText().toString();
         String password = editTextPassword.getText().toString();
+
+        inputLayoutEmail.setError(null);
+        inputLayoutPassword.setError(null);
         boolean isValid = true;
 
         if (!AuthInputValidator.validateEmail(email)) {
-            editTextEmail.setError("invalid email");
+            inputLayoutEmail.setError(getString(R.string.invalid_email));
             isValid = false;
         }
         if (!AuthInputValidator.validatePassword(password)) {
-            editTextPassword.setError("invalid password");
+            inputLayoutPassword.setError(getString(R.string.invalid_password));
             isValid = false;
         }
 

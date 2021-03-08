@@ -32,9 +32,9 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_horizontal_auth"
-            android:layout_marginVertical="@dimen/margin_vertical_auth"
-            android:hint="Verification Code">
+            android:layout_marginHorizontal="64dp"
+            android:layout_marginVertical="8dp"
+            android:hint="@string/verification_code">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/text_input_verification_code"
@@ -50,9 +50,9 @@
             android:id="@+id/button_verify"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_horizontal_auth"
-            android:layout_marginVertical="@dimen/margin_vertical_auth"
-            android:paddingVertical="@dimen/activity_margin"
+            android:layout_marginHorizontal="64dp"
+            android:layout_marginVertical="8dp"
+            android:paddingVertical="8dp"
             android:text="@string/verify_code"
             android:textStyle="bold" />
 
@@ -60,10 +60,8 @@
             android:id="@+id/button_resend"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_horizontal_auth"
-            android:layout_marginVertical="@dimen/margin_vertical_auth"
-            android:paddingVertical="@dimen/activity_margin"
-            android:text="resend"
+            android:layout_marginVertical="16dp"
+            android:text="@string/resend"
             android:textStyle="bold"
             android:visibility="invisible"/>
 

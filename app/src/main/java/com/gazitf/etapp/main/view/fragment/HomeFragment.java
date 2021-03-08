@@ -35,9 +35,6 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         auth = FirebaseAuth.getInstance();
-
-        binding.buttonLogout.setOnClickListener(button -> auth.signOut());
-
     }
 
     @Override

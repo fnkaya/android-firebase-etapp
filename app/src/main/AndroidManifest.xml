@@ -11,9 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EtApp">
+        <activity android:name=".onboard.view.OnboardActivity"></activity>
         <activity android:name=".auth.activity.AuthActivity" />
         <activity android:name=".auth.activity.PhoneVerificationActivity" />
-        <activity android:name=".auth.activity.SplashActivity">
+        <activity android:name=".splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

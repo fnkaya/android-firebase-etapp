@@ -17,10 +17,12 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
+import com.gazitf.etapp.R;
 import com.gazitf.etapp.main.view.activity.MainActivity;
 import com.gazitf.etapp.auth.activity.PhoneVerificationActivity;
 import com.gazitf.etapp.databinding.FragmentRegisterBinding;
 import com.gazitf.etapp.utils.AuthInputValidator;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,8 +34,9 @@ public class RegisterFragment extends Fragment {
     private static final int PHONE_VERIFICATION_REQUEST_CODE = 202;
 
     private FragmentRegisterBinding binding;
+    private TextInputLayout inputLayoutName, inputLayoutEmail, inputLayoutPhoneNumber, inputLayoutPassword;
     private EditText editTextName, editTextEmail, editTextPhoneNumber, editTextPassword;
-    private Button buttonRegister;
+    private Button buttonRegister, buttonBack;
     private TextView textViewRedirectToLogin;
 
     private FirebaseAuth auth;
@@ -55,11 +58,16 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        inputLayoutName = binding.textInputLayoutName;
+        inputLayoutEmail = binding.textInputLayoutRegisterEmail;
+        inputLayoutPhoneNumber = binding.textInputLayoutPhoneNumber;
+        inputLayoutPassword = binding.textInputLayoutRegisterPassword;
         editTextName = binding.textInputName;
         editTextEmail = binding.textInputRegisterEmail;
         editTextPhoneNumber = binding.textInputPhoneNumber;
         editTextPassword = binding.textInputRegisterPassword;
         buttonRegister = binding.buttonRegister;
+        buttonBack = binding.buttonBack;
         textViewRedirectToLogin = binding.textViewRedirectLogin;
 
         if (savedInstanceState != null) {
@@ -83,6 +91,8 @@ public class RegisterFragment extends Fragment {
         buttonRegister.setOnClickListener(view -> validate());
 
         textViewRedirectToLogin.setOnClickListener(this::navigateToLogin);
+
+        buttonBack.setOnClickListener(this::navigateToLogin);
     }
 
     private void validate() {
@@ -90,22 +100,27 @@ public class RegisterFragment extends Fragment {
         email = editTextEmail.getText().toString();
         phoneNumber = editTextPhoneNumber.getText().toString();
         password = editTextPassword.getText().toString();
+
+        inputLayoutName.setError(null);
+        inputLayoutEmail.setError(null);
+        inputLayoutPhoneNumber.setError(null);
+        inputLayoutPassword.setError(null);
         boolean isValid = true;
 
         if (!AuthInputValidator.validateName(name)) {
-            editTextName.setError("invalid name");
+            inputLayoutName.setError(getString(R.string.invalid_name));
             isValid = false;
         }
         if (!AuthInputValidator.validateEmail(email)) {
-            editTextEmail.setError("invalid email");
+            inputLayoutEmail.setError(getString(R.string.invalid_email));
             isValid = false;
         }
         if (!AuthInputValidator.validatePhoneNumber(phoneNumber)) {
-            editTextPhoneNumber.setError("invalid phone number");
+            inputLayoutPhoneNumber.setError(getString(R.string.invalid_phone_number));
             isValid = false;
         }
         if (!AuthInputValidator.validatePassword(password)) {
-            editTextPassword.setError("invalid password");
+            inputLayoutPassword.setError(getString(R.string.invalid_password));
             isValid = false;
         }
 
@@ -167,16 +182,6 @@ public class RegisterFragment extends Fragment {
     private void navigateToLogin(View view) {
         NavDirections direction = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment();
         Navigation.findNavController(view).navigate(direction);
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putString("name", name);
-        outState.putString("email", email);
-        outState.putString("phone", phoneNumber);
-        outState.putString("password", password);
-
-        super.onSaveInstanceState(outState);
     }
 
     @Override
