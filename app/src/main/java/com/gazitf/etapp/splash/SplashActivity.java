@@ -11,7 +11,7 @@ import android.os.Handler;
 import com.gazitf.etapp.auth.activity.AuthActivity;
 import com.gazitf.etapp.main.view.activity.MainActivity;
 import com.gazitf.etapp.R;
-import com.gazitf.etapp.onboard.view.OnboardActivity;
+import com.gazitf.etapp.onboard.view.OnBoardActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SplashActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener {
@@ -51,7 +51,7 @@ public class SplashActivity extends AppCompatActivity implements FirebaseAuth.Au
                     editor.putBoolean("is_first_time", false);
                     editor.apply();
 
-                    startActivity(new Intent(SplashActivity.this, OnboardActivity.class));
+                    startActivity(new Intent(SplashActivity.this, OnBoardActivity.class));
                 } else
                     startActivity(new Intent(SplashActivity.this, AuthActivity.class));
 

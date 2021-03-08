@@ -25,4 +25,5 @@
     <string name="watch_list">Watch List</string>
     <string name="message">Message</string>
     <string name="post">Post</string>
+    <string name="code_expired">Verification code expired!</string>
 </resources>

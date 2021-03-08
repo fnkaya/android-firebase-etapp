@@ -2,6 +2,7 @@ package com.gazitf.etapp.main.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -17,20 +18,23 @@ import androidx.fragment.app.Fragment;
 import com.gazitf.etapp.R;
 import com.gazitf.etapp.auth.activity.AuthActivity;
 import com.gazitf.etapp.databinding.ActivityMainBinding;
+import com.gazitf.etapp.databinding.SideNavigationHeaderBinding;
 import com.gazitf.etapp.main.view.fragment.HomeFragment;
 import com.gazitf.etapp.main.view.fragment.MessageFragment;
 import com.gazitf.etapp.main.view.fragment.PostFragment;
 import com.gazitf.etapp.main.view.fragment.WatchListFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener, NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final float END_SCALE = 0.7f;
-
-    private ActivityMainBinding binding;
 
     private DrawerLayout drawerLayout;
     private NavigationView sideNavigationView;
@@ -38,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
     private ChipNavigationBar chipNavigationBar;
     private ConstraintLayout layoutContent;
     private Button buttonSideNavigation, buttonLogout;
+    private CircleImageView imageViewUserProfile;
+    private TextView textViewUserEmail;
 
     private FirebaseAuth auth;
 
@@ -45,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         View rootView = binding.getRoot();
         setContentView(rootView);
         drawerLayout = binding.layoutNavigationDrawer;
@@ -54,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         layoutContent = binding.layoutContent;
         buttonSideNavigation = binding.buttonNavigationDrawer;
         buttonLogout = binding.buttonLogout;
+        imageViewUserProfile = binding.imageProfile;
+        textViewUserEmail = binding.textViewUserEmail;
 
         auth = FirebaseAuth.getInstance();
 
@@ -85,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
     }
 
     private void animateNavigationDrawer() {
-        drawerLayout.setScrimColor(getColor(R.color.colorPrimary));
+        /*drawerLayout.setScrimColor(getColor(R.color.colorMaterialLightGreen));*/
         drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
@@ -146,6 +154,10 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         });
     }
 
+     /*
+     Kullanıcı giriş ve çıkış yaptığında yapılacak işlemler
+      */
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -160,9 +172,21 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
 
     @Override
     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-        if (auth.getCurrentUser() == null) {
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if (currentUser == null) {
             startActivity(new Intent(MainActivity.this, AuthActivity.class));
             this.finish();
+        }
+        else
+            loadUserInformation(currentUser);
+    }
+
+    private void loadUserInformation(FirebaseUser user) {
+        textViewUserEmail.setText(user.getEmail());
+        if (user.getPhotoUrl() != null) {
+            Picasso.get()
+                    .load(user.getPhotoUrl())
+                    .into(imageViewUserProfile);
         }
     }
 }

@@ -1,9 +1,11 @@
 package com.gazitf.etapp.auth.activity;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,15 +26,17 @@ import java.util.concurrent.TimeUnit;
 public class PhoneVerificationActivity extends AppCompatActivity {
 
     private static final String TAG = PhoneVerificationActivity.class.getSimpleName();
-    private View rootView;
-    private LottieAnimationView lottieAnimationView;
+
+    private LottieAnimationView animationView;
     private EditText editTextOtpCode;
+    private TextView textViewCountDown;
     private Button buttonVerify;
     private Button buttonResend;
 
     private FirebaseAuth auth;
+    private CountDownTimer countDownTimer;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks phoneAuthCallbacks;
-    private PhoneAuthProvider.ForceResendingToken forceResendingToken;
+    private PhoneAuthProvider.ForceResendingToken resendingToken;
     private String verificationCode;
     private String phoneNumber;
 
@@ -41,10 +45,10 @@ public class PhoneVerificationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         final ActivityPhoneVerificationBinding binding = ActivityPhoneVerificationBinding.inflate(getLayoutInflater());
-        rootView = binding.getRoot();
-        setContentView(rootView);
-        lottieAnimationView = binding.animationViewVerificationLogo;
+        setContentView(binding.getRoot());
+        animationView = binding.animationViewVerificationLogo;
         editTextOtpCode = binding.textInputVerificationCode;
+        textViewCountDown = binding.textViewCountDownTimer;
         buttonVerify = binding.buttonVerify;
         buttonResend = binding.buttonResend;
 
@@ -56,55 +60,58 @@ public class PhoneVerificationActivity extends AppCompatActivity {
         initListeners();
     }
 
-    private void initListeners() {
-        // Verify button clicked
-        buttonVerify.setOnClickListener(view -> {
-            String otp = editTextOtpCode.getText().toString();
-
-            if (validate(otp)) {
-                PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(verificationCode, otp);
-                verifyPhoneAuthentication(phoneAuthCredential);
-            }
-        });
-
-        // Resend button clicked
-        buttonResend.setOnClickListener(view -> {
-            getResendVerificationCode(phoneNumber);
-        });
-    }
-
+    // Doğrulama kodu işlemlerini tanımla
     private void initPhoneAuthCallbacks() {
+        countDownTimer = new CountDownTimer(60000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                textViewCountDown.setText("Seconds remaining: " + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                textViewCountDown.setText(getString(R.string.code_expired));
+            }
+        };
+
         phoneAuthCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-            // Phone number authenticate automatically verified
+            // Doğrulama kodu otomatik onaylandı
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
                 verifyPhoneAuthentication(phoneAuthCredential);
             }
 
-            // Phone number authentication failed
+            // Doğrulama kodu alınırken hata oluştu
             @Override
             public void onVerificationFailed(@NonNull FirebaseException e) {
                 setAnimation(R.raw.failed);
                 showErrorMessage(e.getLocalizedMessage());
             }
 
-            // User must enter verification code manually
+            // Doğrulama kodu otomatik onaylanmadı
             @Override
-            public void onCodeSent(@NonNull String verificationCode, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                super.onCodeSent(verificationCode, forceResendingToken);
+            public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                super.onCodeSent(verificationId, forceResendingToken);
 
-                PhoneVerificationActivity.this.verificationCode = verificationCode;
-                PhoneVerificationActivity.this.forceResendingToken = forceResendingToken;
+                verificationCode = verificationId;
+                resendingToken = forceResendingToken;
                 setAnimation(R.raw.received);
+
+                textViewCountDown.setVisibility(View.VISIBLE);
+                countDownTimer.start();
             }
 
+            // Doğrulama kodu 60 saniye içinde onaylanmadı
             @Override
             public void onCodeAutoRetrievalTimeOut(@NonNull String s) {
                 super.onCodeAutoRetrievalTimeOut(s);
+
+                buttonVerify.setVisibility(View.GONE);
+                buttonResend.setVisibility(View.VISIBLE);
             }
         };
     }
 
+    // Doğrulama kodunu alma isteği gönder
     private void getVerificationCode(String phoneNumber) {
         PhoneAuthOptions phoneAuthOptions = PhoneAuthOptions.newBuilder(auth)
                 .setPhoneNumber(phoneNumber)
@@ -116,19 +123,53 @@ public class PhoneVerificationActivity extends AppCompatActivity {
         PhoneAuthProvider.verifyPhoneNumber(phoneAuthOptions);
     }
 
+    private void initListeners() {
+        // Kodu doğrula butonu tıklandı
+        buttonVerify.setOnClickListener(view -> {
+            String otp = editTextOtpCode.getText().toString();
+
+            if (validate(otp)) {
+                PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(verificationCode, otp);
+                verifyPhoneAuthentication(phoneAuthCredential);
+            }
+        });
+
+        // Kodu tekrar gönder butonu tıklandı
+        buttonResend.setOnClickListener(view -> {
+            getResendVerificationCode(phoneNumber);
+        });
+    }
+
+    // Girilen kodun uygunluğunu kontrol et
+    private boolean validate(String otp) {
+        if (!AuthInputValidator.validateOtpCode(otp)) {
+            editTextOtpCode.setError("invalid code");
+            return false;
+        }
+        else {
+            editTextOtpCode.setError(null);
+            return true;
+        }
+    }
+
+    // Doğrulama kodunu tekrar alma isteği gönder
     private void getResendVerificationCode(String phoneNumber) {
         PhoneAuthOptions phoneAuthOptions = PhoneAuthOptions.newBuilder(auth)
                 .setPhoneNumber(phoneNumber)
                 .setTimeout(60L, TimeUnit.SECONDS)
                 .setActivity(this)
                 .setCallbacks(phoneAuthCallbacks)
-                .setForceResendingToken(forceResendingToken)
+                .setForceResendingToken(resendingToken)
                 .build();
 
         PhoneAuthProvider.verifyPhoneNumber(phoneAuthOptions);
+        textViewCountDown.setVisibility(View.GONE);
+        buttonVerify.setVisibility(View.VISIBLE);
+        buttonResend.setVisibility(View.INVISIBLE);
+        setAnimation(R.raw.receiving);
     }
 
-    // Phone authentication manually
+    // Kullanıcı girişini yap
     private void verifyPhoneAuthentication(PhoneAuthCredential phoneAuthCredential) {
         auth.signInWithCredential(phoneAuthCredential)
                 .addOnSuccessListener(authResult -> {
@@ -139,28 +180,18 @@ public class PhoneVerificationActivity extends AppCompatActivity {
                 });
     }
 
+    // Kayıt olma ekranına sms ile doğrulamanın başarılı sonuçlandığı bilgisini gönder
     private void returnSuccessResult() {
         setResult(RESULT_OK);
         finish();
     }
 
     private void setAnimation(int resource) {
-        lottieAnimationView.setAnimation(resource);
-        lottieAnimationView.playAnimation();
+        animationView.setAnimation(resource);
+        animationView.playAnimation();
     }
 
     private void showErrorMessage(String errorText) {
         Toast.makeText(PhoneVerificationActivity.this, errorText, Toast.LENGTH_LONG).show();
-    }
-
-    private boolean validate(String otp) {
-        if (!AuthInputValidator.validateOtpCode(otp)) {
-            editTextOtpCode.setError("invalid code");
-            return false;
-        }
-        else {
-            editTextOtpCode.setError(null);
-            return true;
-        }
     }
 }

@@ -6,20 +6,20 @@
     <item android:title="@string/home"
         android:id="@+id/homeFragment"
         android:icon="@drawable/icon_home"
-        app:cnb_iconColor="#E57373"    />
+        app:cnb_iconColor="@color/colorMaterialGreen"    />
 
     <item android:title="@string/watch_list"
         android:id="@+id/watchListFragment"
-        android:icon="@drawable/icon_watch"
-        app:cnb_iconColor="#4DD0E1" />
+        android:icon="@drawable/icon_favorite"
+        app:cnb_iconColor="@color/colorMaterialPink" />
 
     <item android:title="@string/message"
         android:id="@+id/messageFragment"
         android:icon="@drawable/icon_message"
-        app:cnb_iconColor="#81C784" />
+        app:cnb_iconColor="@color/colorMaterialBlue" />
 
     <item android:title="@string/post"
         android:id="@+id/postFragment"
-        android:icon="@drawable/icon_person"
-        app:cnb_iconColor="#FFB74D" />
+        android:icon="@drawable/icon_post"
+        app:cnb_iconColor="@color/colorMaterialOrange" />
 </menu>

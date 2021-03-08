@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/rellayl"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/grad"
-        android:paddingBottom="8dp"
-        android:layout_height="wrap_content">
+        android:paddingBottom="8dp">
 
         <RelativeLayout
             android:id="@+id/imgUser"
             android:layout_width="wrap_content"
 
-            android:layout_centerHorizontal="true"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
 
             <ImageView
                 android:layout_width="120dp"
@@ -27,7 +26,7 @@
                 android:background="@drawable/circle"
                 android:padding="8dp"
                 android:scaleType="centerInside"
-                android:src="@drawable/asasas" />
+                android:src="@drawable/image_profile" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -35,9 +34,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="130dp"
                 android:text="WALTER WHITE"
-                android:textSize="15dp"
-                />
-
+                android:textSize="15dp" />
 
 
         </RelativeLayout>
@@ -48,13 +45,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="150dp"
             android:backgroundTint="@color/colorPrimaryDark"
             android:text="Profil Fotoğrafını Değiştir"
-            android:layout_centerHorizontal="true"
             android:textSize="10dp" />
-
-
 
 
     </RelativeLayout>
@@ -64,14 +59,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/rellayl">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Email:"
-            android:textColor="@color/colorPrimary"
-            />
-
-
+            android:textColor="@color/colorPrimary" />
 
 
     </LinearLayout>
@@ -93,95 +86,91 @@
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_marginStart="48dp"
+            android:backgroundTint="@color/colorPrimary"
             android:text="değiştir"
-            android:textSize="10dp"
-            android:backgroundTint="@color/colorPrimary"/>
+            android:textSize="10dp" />
 
 
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/lin3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/lin2">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="İsim:"
-            android:textColor="@color/colorPrimary"
-            />
-
-
+            android:textColor="@color/colorPrimary" />
 
 
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/lin4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/lin3">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
             android:text="Walter White"
             android:textColor="@color/colorFollowers"
-            />
+            android:textSize="20sp" />
+
         <Button
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_marginStart="147dp"
+            android:backgroundTint="@color/colorPrimary"
             android:text="değiştir"
-            android:textSize="10dp"
-            android:backgroundTint="@color/colorPrimary"/>
-
-
+            android:textSize="10dp" />
 
 
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/lin5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/lin4">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Telefon:"
-            android:textColor="@color/colorPrimary"
-            />
-
-
-
+            android:textColor="@color/colorPrimary" />
 
 
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/lin6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/lin5">
+
         <TextView
-            android:textSize="20sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0555 555 55 55"
             android:textColor="@color/colorFollowers"
-            />
+            android:textSize="20sp" />
+
         <Button
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_marginStart="120dp"
+            android:backgroundTint="@color/colorPrimary"
             android:text="değiştir"
-            android:textSize="10dp"
-            android:backgroundTint="@color/colorPrimary"/>
-
-
-
-
+            android:textSize="10dp" />
 
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -189,7 +178,7 @@
 
     </LinearLayout>
 
-    </RelativeLayout>
+</RelativeLayout>
 
 
 

@@ -7,13 +7,13 @@
             android:icon="@drawable/icon_home"/>
         <item android:id="@+id/watchListFragment"
             android:title="@string/watch_list"
-            android:icon="@drawable/icon_watch"/>
+            android:icon="@drawable/icon_favorite"/>
         <item android:id="@+id/messageFragment"
             android:title="@string/message"
             android:icon="@drawable/icon_message"/>
         <item android:id="@+id/postFragment"
             android:title="@string/post"
-            android:icon="@drawable/icon_person"/>
+            android:icon="@drawable/icon_post"/>
     </group>
 
     <item android:title="@string/profile">

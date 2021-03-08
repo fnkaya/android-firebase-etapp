@@ -19,7 +19,7 @@ import com.gazitf.etapp.auth.activity.AuthActivity;
 import com.gazitf.etapp.databinding.ActivityOnboardBinding;
 import com.gazitf.etapp.onboard.adapter.SliderAdapter;
 
-public class OnboardActivity extends AppCompatActivity {
+public class OnBoardActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
     private LinearLayout layoutDots;
@@ -93,7 +93,7 @@ public class OnboardActivity extends AppCompatActivity {
             currentPosition = position;
 
             if (position == dots.length - 1) {
-                bottomAnimation = AnimationUtils.loadAnimation(OnboardActivity.this, R.anim.anim_bottom);
+                bottomAnimation = AnimationUtils.loadAnimation(OnBoardActivity.this, R.anim.anim_bottom);
                 buttonGetStarted.setAnimation(bottomAnimation);
                 buttonGetStarted.setVisibility(View.VISIBLE);
                 buttonSkip.setVisibility(View.INVISIBLE);
@@ -112,7 +112,7 @@ public class OnboardActivity extends AppCompatActivity {
     };
 
     private void startAuthActivity() {
-        startActivity(new Intent(OnboardActivity.this, AuthActivity.class));
+        startActivity(new Intent(OnBoardActivity.this, AuthActivity.class));
         this.finish();
     }
 }

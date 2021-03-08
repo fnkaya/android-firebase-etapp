@@ -1,24 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    // Primary colors
     <color name="colorPrimary">#dcedc8</color>
     <color name="colorPrimaryDark">#aabb97</color>
     <color name="colorPrimaryLight">#fffffb</color>
     <color name="colorPrimaryAccent">#039be5</color>
+    //Secondary colors
     <color name="colorSecondary">#e1bee7</color>
     <color name="colorSecondaryDark">#af8eb5</color>
     <color name="colorSecondaryLight">#fff1ff</color>
     <color name="colorSecondaryAccent">#ba68c8</color>
+    // Basic colors
     <color name="colorBlack">#000</color>
     <color name="colorWhite">#fff</color>
+    <color name="colorGrey">#E5E5E5</color>
+    // Profile screen colors
     <color name="colorAddress">#2F7092</color>
     <color name="colorFollowers">#0D5D98</color>
     <color name="colorHeadings">#3797CF</color>
     <color name="colorSolidCircle">#AAFFFFFF</color>
-    <color name="colorcircleBorder">#50FFFFFF</color>
+    <color name="colorCircleBorder">#50FFFFFF</color>
     <color name="colorGradEnd">#67EFC8</color>
     <color name="colorGradStart">#63C9FF</color>
     <color name="colorFollowersBg">#65DCE5</color>
     <color name="colorFollowingBg">#49BEFF</color>
-    <color name="grey">#E5E5E5</color>
+    // Material light colors
+    <color name="colorMaterialLightGreen">#E8F5E9</color>
+    <color name="colorMaterialLightBlue">#E0F7FA</color>
+    <color name="colorMaterialLightPink">#FFEBEE</color>
+    <color name="colorMaterialLightOrange">#FFF3E0</color>
+    // Material colors
+    <color name="colorMaterialGreen">#81C784</color>
+    <color name="colorMaterialPink">#E57373</color>
+    <color name="colorMaterialBlue">#4DD0E1</color>
+    <color name="colorMaterialOrange">#FFB74D</color>
 
 </resources>

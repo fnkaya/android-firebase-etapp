@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/verification" />
+        app:lottie_rawRes="@raw/receiving" />
 
     <LinearLayout
         android:id="@+id/linear_layout_verification"
@@ -27,6 +27,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/animation_view_verification_logo">
+
+        <TextView
+            android:id="@+id/text_view_count_down_timer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:padding="16dp"
+            android:textStyle="bold"
+            android:visibility="gone"/>
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -52,18 +61,22 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="64dp"
             android:layout_marginVertical="8dp"
-            android:paddingVertical="8dp"
+            android:paddingVertical="16dp"
             android:text="@string/verify_code"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_resend"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="16dp"
+            android:layout_marginHorizontal="64dp"
+            android:layout_marginVertical="8dp"
+            android:paddingVertical="16dp"
             android:text="@string/resend"
             android:textStyle="bold"
-            android:visibility="invisible"/>
+            android:visibility="invisible"
+            android:textColor="@color/colorBlack"/>
 
     </LinearLayout>
 
