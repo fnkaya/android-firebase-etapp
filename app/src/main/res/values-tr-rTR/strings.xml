@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EtApp</string>
+    <string name="login" translatable="false">Giriş</string>
+    <string name="logout" translatable="false">Çıkış</string>
+    <string name="register" translatable="false">Kayıt Ol</string>
+    <string name="name" translatable="false">İsim</string>
+    <string name="phone_number" translatable="false">Doğrula</string>
+    <string name="password" translatable="false">Şifre</string>
+    <string name="verification_code" translatable="false">Doğrulama Kodu</string>
+    <string name="verify_code" translatable="false">Doğrula</string>
+    <string name="already_have_account" translatable="false">Zaten bir hesabım var. Giriş.</string>
+    <string name="dont_have_account" translatable="false">Henüz bir hesabım yok. Kayıt ol.</string>
+    <string name="skip" translatable="false">Geç</string>
+    <string name="lets_get_started" translatable="false">Haydi Başlayalım</string>
+    <string name="resend" translatable="false">Tekrar Gönder</string>
+    <string name="invalid_email">invalid email</string>
+    <string name="invalid_password">invalid password</string>
+    <string name="invalid_name">invalid name</string>
+    <string name="invalid_phone_number">invalid phone number</string>
+    <string name="profile">Profile</string>
+    <string name="home">Home</string>
+    <string name="watch_list">Watch List</string>
+    <string name="message">Message</string>
+    <string name="post">Post</string>
+</resources>
