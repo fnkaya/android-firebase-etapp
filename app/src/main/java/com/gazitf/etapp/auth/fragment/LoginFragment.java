@@ -89,6 +89,7 @@ public class LoginFragment extends Fragment {
             signIn(email, password);
     }
 
+    // Kullanıcı girişi yap
     private void signIn(String email, String password) {
         setAnimation(R.raw.sign_in);
 

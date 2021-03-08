@@ -128,12 +128,14 @@ public class RegisterFragment extends Fragment {
             startVerificationActivity();
     }
 
+    // Doğrulama kodu alınacak sayfayı aç
     private void startVerificationActivity() {
         Intent verificationIntent = new Intent(getActivity(), PhoneVerificationActivity.class);
         verificationIntent.putExtra("phone_number", phoneNumber);
         startActivityForResult(verificationIntent, PHONE_VERIFICATION_REQUEST_CODE);
     }
 
+    // Doğrulama kodu sayfasından gelen sonucu al
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -146,6 +148,7 @@ public class RegisterFragment extends Fragment {
         }
     }
 
+    // Email adresini onaylanan telefon numarasına bağla
     private void linkEmailToAccount() {
         AuthCredential credential = EmailAuthProvider.getCredential(email, password);
 
@@ -157,6 +160,7 @@ public class RegisterFragment extends Fragment {
                         showErrorMessage(error.toString()));
     }
 
+    // Kullanıcı ismini güncelle
     private void setNameToAccount() {
         FirebaseUser user = auth.getCurrentUser();
 

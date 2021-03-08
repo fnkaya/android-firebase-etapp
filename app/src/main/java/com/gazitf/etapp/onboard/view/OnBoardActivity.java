@@ -24,9 +24,7 @@ public class OnBoardActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private LinearLayout layoutDots;
     private Button buttonSkip, buttonGetStarted, buttonNext;
-    private SliderAdapter sliderAdapter;
     private TextView[] dots;
-
     private Animation bottomAnimation;
     private int currentPosition;
 
@@ -44,8 +42,7 @@ public class OnBoardActivity extends AppCompatActivity {
         buttonGetStarted = binding.buttonGetStarted;
         buttonNext = binding.buttonNext;
 
-        sliderAdapter = new SliderAdapter(this);
-        viewPager.setAdapter(sliderAdapter);
+        viewPager.setAdapter(new SliderAdapter(this));
         viewPager.addOnPageChangeListener(pageChangeListener);
 
         initListeners();
@@ -92,6 +89,7 @@ public class OnBoardActivity extends AppCompatActivity {
             addDots(position);
             currentPosition = position;
 
+            // Son sayfada yapılacaklar
             if (position == dots.length - 1) {
                 bottomAnimation = AnimationUtils.loadAnimation(OnBoardActivity.this, R.anim.anim_bottom);
                 buttonGetStarted.setAnimation(bottomAnimation);

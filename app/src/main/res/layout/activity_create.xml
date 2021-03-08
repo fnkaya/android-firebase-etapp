@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background=""
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
@@ -49,7 +48,7 @@
         android:paddingLeft="10dp"
         android:scrollbarSize="4dp"
         android:text="ETKİNLİK OLUŞTUR"
-        android:textColor="@color/black"
+        android:textColor="@color/colorBlack"
         android:textSize="18sp" />
 
     <EditText

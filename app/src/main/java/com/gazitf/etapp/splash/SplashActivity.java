@@ -42,10 +42,13 @@ public class SplashActivity extends AppCompatActivity implements FirebaseAuth.Au
     @Override
     public void onAuthStateChanged(@NonNull FirebaseAuth auth) {
         new Handler().postDelayed(() -> {
+            // Giriş yapmış bir kullanıcı yoksa
             if (auth.getCurrentUser() == null) {
+                // Kullanıcının uygulamayı ilk defa açtığı bilgisini al
                 onBoardingPreferences = getSharedPreferences("on_boarding_screen", MODE_PRIVATE);
                 boolean isFirstTime = onBoardingPreferences.getBoolean("is_first_time", true);
 
+                // ilk defa açtıysa bilgiyi false olarak güncelle
                 if (isFirstTime) {
                     SharedPreferences.Editor editor = onBoardingPreferences.edit();
                     editor.putBoolean("is_first_time", false);

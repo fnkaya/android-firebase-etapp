@@ -124,7 +124,6 @@ public class PhoneVerificationActivity extends AppCompatActivity {
     }
 
     private void initListeners() {
-        // Kodu doğrula butonu tıklandı
         buttonVerify.setOnClickListener(view -> {
             String otp = editTextOtpCode.getText().toString();
 
@@ -134,7 +133,6 @@ public class PhoneVerificationActivity extends AppCompatActivity {
             }
         });
 
-        // Kodu tekrar gönder butonu tıklandı
         buttonResend.setOnClickListener(view -> {
             getResendVerificationCode(phoneNumber);
         });

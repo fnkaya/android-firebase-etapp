@@ -4,22 +4,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:title="@string/home"
-        android:id="@+id/homeFragment"
+        android:id="@+id/menu_item_home"
         android:icon="@drawable/icon_home"
         app:cnb_iconColor="@color/colorMaterialGreen"    />
 
     <item android:title="@string/watch_list"
-        android:id="@+id/watchListFragment"
+        android:id="@+id/menu_item_watchList"
         android:icon="@drawable/icon_favorite"
         app:cnb_iconColor="@color/colorMaterialPink" />
 
     <item android:title="@string/message"
-        android:id="@+id/messageFragment"
+        android:id="@+id/menu_item_message"
         android:icon="@drawable/icon_message"
         app:cnb_iconColor="@color/colorMaterialBlue" />
 
     <item android:title="@string/post"
-        android:id="@+id/postFragment"
+        android:id="@+id/menu_item_post"
         android:icon="@drawable/icon_post"
         app:cnb_iconColor="@color/colorMaterialOrange" />
 </menu>

@@ -2,7 +2,6 @@ package com.gazitf.etapp.main.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -18,11 +17,11 @@ import androidx.fragment.app.Fragment;
 import com.gazitf.etapp.R;
 import com.gazitf.etapp.auth.activity.AuthActivity;
 import com.gazitf.etapp.databinding.ActivityMainBinding;
-import com.gazitf.etapp.databinding.SideNavigationHeaderBinding;
 import com.gazitf.etapp.main.view.fragment.HomeFragment;
 import com.gazitf.etapp.main.view.fragment.MessageFragment;
 import com.gazitf.etapp.main.view.fragment.PostFragment;
 import com.gazitf.etapp.main.view.fragment.WatchListFragment;
+import com.gazitf.etapp.profile.ProfileActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -38,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
 
     private DrawerLayout drawerLayout;
     private NavigationView sideNavigationView;
-    /*private BottomNavigationView bottomNavigationView;*/
     private ChipNavigationBar chipNavigationBar;
     private ConstraintLayout layoutContent;
     private Button buttonSideNavigation, buttonLogout;
@@ -69,17 +67,10 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         bottomNavigationMenu();
     }
 
-    /*private void bottomNavigationMenuV21() {
-        bottomNavigationView = binding.bottomNavigationViewV21;
-        NavController navController = Navigation.findNavController(this, R.id.bottom_navigation_host_fragment);
-        NavigationUI.setupWithNavController(bottomNavigationView, navController);
-        bottomNavigationView.setVisibility(View.VISIBLE);
-    }*/
-
+    // Yandan açılan menünün ayarlanması
     private void sideNavigationMenu() {
         sideNavigationView.bringToFront();
         sideNavigationView.setNavigationItemSelectedListener(this);
-        sideNavigationView.setCheckedItem(R.id.homeFragment);
         animateNavigationDrawer();
 
         buttonSideNavigation.setOnClickListener(view -> {
@@ -92,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         buttonLogout.setOnClickListener(view -> auth.signOut());
     }
 
+    // Menü açılırken gerçekleşecek animasyon
     private void animateNavigationDrawer() {
         /*drawerLayout.setScrimColor(getColor(R.color.colorMaterialLightGreen));*/
         drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
@@ -113,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         });
     }
 
+    // Geri tuşuna basıldığında menu nun kapatılması
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerVisible(GravityCompat.START))
@@ -121,32 +114,51 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
             super.onBackPressed();
     }
 
+    // Açılır menü seçenekleri
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_profile:
+                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+                break;
+            case R.id.menu_item_create:
+                startActivity(new Intent(MainActivity.this, CreateActivity.class));
+                break;
+        }
+
         return true;
     }
 
+    // Alt menü seçenekleri
     private void bottomNavigationMenu() {
-        chipNavigationBar.setItemSelected(R.id.homeFragment, true);
+        // Activity başladığında seçilecek menu item
+        chipNavigationBar.setItemSelected(R.id.menu_item_home, true);
+        // Activity açıldığında gösterilecek fragment
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.bottom_navigation_host_fragment, new HomeFragment())
+                .commit();
 
+        // Menu item seçildiğinde yapılacaklar
         chipNavigationBar.setOnItemSelectedListener(id -> {
             Fragment fragment = null;
 
             switch (id) {
-                case R.id.homeFragment:
+                case R.id.menu_item_home:
                     fragment = new HomeFragment();
                     break;
-                case R.id.watchListFragment:
+                case R.id.menu_item_watchList:
                     fragment = new WatchListFragment();
                     break;
-                case R.id.messageFragment:
+                case R.id.menu_item_message:
                     fragment = new MessageFragment();
                     break;
-                case R.id.postFragment:
+                case R.id.menu_item_post:
                     fragment = new PostFragment();
                     break;
             }
 
+            // Seçilen menu item'a göre fragment gösterme
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.bottom_navigation_host_fragment, fragment)
@@ -157,7 +169,6 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
      /*
      Kullanıcı giriş ve çıkış yaptığında yapılacak işlemler
       */
-
     @Override
     protected void onStart() {
         super.onStart();
