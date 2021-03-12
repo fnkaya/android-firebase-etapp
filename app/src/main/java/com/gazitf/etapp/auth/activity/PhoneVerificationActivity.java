@@ -27,8 +27,10 @@ public class PhoneVerificationActivity extends AppCompatActivity {
 
     private static final String TAG = PhoneVerificationActivity.class.getSimpleName();
 
+    private static final long CODE_EXPIRATION_TIME = 60L;
+
     private LottieAnimationView animationView;
-    private EditText editTextOtpCode;
+    private EditText editTextVerificationCode;
     private TextView textViewCountDown;
     private Button buttonVerify;
     private Button buttonResend;
@@ -37,7 +39,7 @@ public class PhoneVerificationActivity extends AppCompatActivity {
     private CountDownTimer countDownTimer;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks phoneAuthCallbacks;
     private PhoneAuthProvider.ForceResendingToken resendingToken;
-    private String verificationCode;
+    private String verificationId;
     private String phoneNumber;
 
     @Override
@@ -47,7 +49,7 @@ public class PhoneVerificationActivity extends AppCompatActivity {
         final ActivityPhoneVerificationBinding binding = ActivityPhoneVerificationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         animationView = binding.animationViewVerificationLogo;
-        editTextOtpCode = binding.textInputVerificationCode;
+        editTextVerificationCode = binding.textInputVerificationCode;
         textViewCountDown = binding.textViewCountDownTimer;
         buttonVerify = binding.buttonVerify;
         buttonResend = binding.buttonResend;
@@ -62,8 +64,7 @@ public class PhoneVerificationActivity extends AppCompatActivity {
 
     // Doğrulama kodu işlemlerini tanımla
     private void initPhoneAuthCallbacks() {
-        countDownTimer = new CountDownTimer(60000, 1000) {
-
+        countDownTimer = new CountDownTimer(CODE_EXPIRATION_TIME * 1000, 1000) {
             public void onTick(long millisUntilFinished) {
                 textViewCountDown.setText("Seconds remaining: " + millisUntilFinished / 1000);
             }
@@ -87,12 +88,12 @@ public class PhoneVerificationActivity extends AppCompatActivity {
                 showErrorMessage(e.getLocalizedMessage());
             }
 
-            // Doğrulama kodu otomatik onaylanmadı
+            // Doğrulama kodu otomatik onaylanamadı
             @Override
-            public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                super.onCodeSent(verificationId, forceResendingToken);
+            public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                super.onCodeSent(s, forceResendingToken);
 
-                verificationCode = verificationId;
+                verificationId = s;
                 resendingToken = forceResendingToken;
                 setAnimation(R.raw.received);
 
@@ -100,7 +101,7 @@ public class PhoneVerificationActivity extends AppCompatActivity {
                 countDownTimer.start();
             }
 
-            // Doğrulama kodu 60 saniye içinde onaylanmadı
+            // Doğrulama kodu belirtilen süre içerisinde otomatik onaylanamadı
             @Override
             public void onCodeAutoRetrievalTimeOut(@NonNull String s) {
                 super.onCodeAutoRetrievalTimeOut(s);
@@ -115,7 +116,7 @@ public class PhoneVerificationActivity extends AppCompatActivity {
     private void getVerificationCode(String phoneNumber) {
         PhoneAuthOptions phoneAuthOptions = PhoneAuthOptions.newBuilder(auth)
                 .setPhoneNumber(phoneNumber)
-                .setTimeout(60L, TimeUnit.SECONDS)
+                .setTimeout(CODE_EXPIRATION_TIME, TimeUnit.SECONDS)
                 .setActivity(PhoneVerificationActivity.this)
                 .setCallbacks(phoneAuthCallbacks)
                 .build();
@@ -125,10 +126,10 @@ public class PhoneVerificationActivity extends AppCompatActivity {
 
     private void initListeners() {
         buttonVerify.setOnClickListener(view -> {
-            String otp = editTextOtpCode.getText().toString();
+            String verificationCode = editTextVerificationCode.getText().toString();
 
-            if (validate(otp)) {
-                PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(verificationCode, otp);
+            if (validate(verificationCode)) {
+                PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(verificationId, verificationCode);
                 verifyPhoneAuthentication(phoneAuthCredential);
             }
         });
@@ -139,13 +140,13 @@ public class PhoneVerificationActivity extends AppCompatActivity {
     }
 
     // Girilen kodun uygunluğunu kontrol et
-    private boolean validate(String otp) {
-        if (!AuthInputValidator.validateOtpCode(otp)) {
-            editTextOtpCode.setError("invalid code");
+    private boolean validate(String verificationCode) {
+        if (!AuthInputValidator.validateVerificationCode(verificationCode)) {
+            editTextVerificationCode.setError("invalid code");
             return false;
         }
         else {
-            editTextOtpCode.setError(null);
+            editTextVerificationCode.setError(null);
             return true;
         }
     }
@@ -154,7 +155,7 @@ public class PhoneVerificationActivity extends AppCompatActivity {
     private void getResendVerificationCode(String phoneNumber) {
         PhoneAuthOptions phoneAuthOptions = PhoneAuthOptions.newBuilder(auth)
                 .setPhoneNumber(phoneNumber)
-                .setTimeout(60L, TimeUnit.SECONDS)
+                .setTimeout(CODE_EXPIRATION_TIME, TimeUnit.SECONDS)
                 .setActivity(this)
                 .setCallbacks(phoneAuthCallbacks)
                 .setForceResendingToken(resendingToken)

@@ -1,11 +1,19 @@
 package com.gazitf.etapp.main.view.activity;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,11 +31,14 @@ import com.gazitf.etapp.main.view.fragment.MessageFragment;
 import com.gazitf.etapp.main.view.fragment.PostFragment;
 import com.gazitf.etapp.main.view.fragment.WatchListFragment;
 import com.gazitf.etapp.profile.ProfileActivity;
+import com.gazitf.etapp.utils.LocaleHelper;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.squareup.picasso.Picasso;
+
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -68,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         sideNavigationMenu();
         bottomNavigationMenu();
     }
+
+
 
     // Yandan açılan menünün ayarlanması
     private void sideNavigationMenu() {
