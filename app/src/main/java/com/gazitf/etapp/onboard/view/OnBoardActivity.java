@@ -8,6 +8,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,12 +19,14 @@ import com.gazitf.etapp.R;
 import com.gazitf.etapp.auth.activity.AuthActivity;
 import com.gazitf.etapp.databinding.ActivityOnboardBinding;
 import com.gazitf.etapp.onboard.adapter.SliderAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class OnBoardActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
     private LinearLayout layoutDots;
-    private Button buttonSkip, buttonGetStarted, buttonNext;
+    private Button buttonSkip, buttonGetStarted;
+    private ImageButton buttonNext;
     private TextView[] dots;
     private Animation bottomAnimation;
     private int currentPosition;
@@ -74,7 +77,7 @@ public class OnBoardActivity extends AppCompatActivity {
         }
 
         if (dots.length > 0) {
-            dots[position].setTextColor(getResources().getColor(R.color.colorPrimary));
+            dots[position].setTextColor(getResources().getColor(R.color.colorMaterialOrange));
         }
     }
 

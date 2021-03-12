@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">EtApp</string>
-    <string name="login">login</string>
+    <string name="login">Login</string>
     <string name="logout">Logout</string>
     <string name="register">Register</string>
     <string name="name">Name</string>
@@ -26,4 +26,10 @@
     <string name="post">Post</string>
     <string name="code_expired">Verification code expired!</string>
     <string name="create_activity">Create Activity</string>
+    <string name="forgot_password">Forgot Password</string>
+
+    <string-array name="languages">
+        <item>English</item>
+        <item>Turkish</item>
+    </string-array>
 </resources>

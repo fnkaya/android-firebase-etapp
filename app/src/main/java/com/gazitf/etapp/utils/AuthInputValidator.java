@@ -35,12 +35,14 @@ public abstract class AuthInputValidator {
             (?=\\S+$) no whitespace allowed in the entire string
             .{8,} at least 8 characters
          */
-        String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}";
+        /*String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}";
 
-        return password.matches(pattern);
+        return password.matches(pattern);*/
+
+        return true;
     }
 
-    public static boolean validateOtpCode(String otpCode) {
-        return otpCode.length() == 6;
+    public static boolean validateVerificationCode(String verificationCode) {
+        return verificationCode.length() == 6;
     }
 }

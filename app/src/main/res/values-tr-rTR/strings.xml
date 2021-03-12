@@ -14,15 +14,16 @@
     <string name="skip" translatable="false">Geç</string>
     <string name="lets_get_started" translatable="false">Haydi Başlayalım</string>
     <string name="resend" translatable="false">Tekrar Gönder</string>
-    <string name="invalid_email">invalid email</string>
-    <string name="invalid_password">invalid password</string>
-    <string name="invalid_name">invalid name</string>
-    <string name="invalid_phone_number">invalid phone number</string>
-    <string name="profile">Profile</string>
-    <string name="home">Home</string>
-    <string name="watch_list">Watch List</string>
-    <string name="message">Message</string>
-    <string name="post">Post</string>
+    <string name="invalid_email">Uygun olmayan e-mail adresi</string>
+    <string name="invalid_password">Uygun olmayan şifre</string>
+    <string name="invalid_name">Uygun olmayan isim</string>
+    <string name="invalid_phone_number">Uygun olmayan telefon numarası</string>
+    <string name="profile">Profil</string>
+    <string name="home">Anasayfa</string>
+    <string name="watch_list">Favoriler</string>
+    <string name="message">Mesajlar</string>
+    <string name="post">Gönderiler</string>
     <string name="code_expired">Doğrulama kodunun süresi doldu!</string>
-    <string name="create_activity">Create Activity</string>
+    <string name="create_activity">Etkinlik Oluştur</string>
+    <string name="forgot_password">Şifremi Unuttum</string>
 </resources>
