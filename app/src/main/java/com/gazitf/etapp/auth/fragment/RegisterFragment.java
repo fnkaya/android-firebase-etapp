@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +37,8 @@ public class RegisterFragment extends Fragment {
     private FragmentRegisterBinding binding;
     private TextInputLayout inputLayoutName, inputLayoutEmail, inputLayoutPhoneNumber, inputLayoutPassword;
     private EditText editTextName, editTextEmail, editTextPhoneNumber, editTextPassword;
-    private Button buttonRegister, buttonBack;
+    private Button buttonRegister;
+    private ImageButton buttonBackToLogin;
     private TextView textViewRedirectToLogin;
 
     private FirebaseAuth auth;
@@ -67,7 +69,7 @@ public class RegisterFragment extends Fragment {
         editTextPhoneNumber = binding.textInputPhoneNumber;
         editTextPassword = binding.textInputRegisterPassword;
         buttonRegister = binding.buttonRegister;
-        buttonBack = binding.buttonBack;
+        buttonBackToLogin = binding.buttonBackToLoginFromRegister;
         textViewRedirectToLogin = binding.textViewRedirectLogin;
 
         if (savedInstanceState != null) {
@@ -92,7 +94,7 @@ public class RegisterFragment extends Fragment {
 
         textViewRedirectToLogin.setOnClickListener(this::navigateToLogin);
 
-        buttonBack.setOnClickListener(this::navigateToLogin);
+        buttonBackToLogin.setOnClickListener(this::navigateToLogin);
     }
 
     private void validate() {
@@ -144,7 +146,7 @@ public class RegisterFragment extends Fragment {
             if (resultCode == Activity.RESULT_OK)
                 linkEmailToAccount();
             else
-                showErrorMessage("Telefon numarası doğrulanması sırasında bir sorun oluştu!");
+                showToastMessage("Telefon numarası doğrulanması sırasında bir sorun oluştu!");
         }
     }
 
@@ -154,22 +156,30 @@ public class RegisterFragment extends Fragment {
 
         auth.getCurrentUser().linkWithCredential(credential)
                 .addOnSuccessListener(authResult -> {
-                    setNameToAccount();
+                    FirebaseUser user = authResult.getUser();
+                    sendVerificationEmail(user);
+                    setNameToAccount(user);
                 })
                 .addOnFailureListener(error ->
-                        showErrorMessage(error.toString()));
+                        showToastMessage(error.toString()));
+    }
+
+    // Email doğrulama bağlantısı gönder
+    private void sendVerificationEmail(FirebaseUser user) {
+        user.sendEmailVerification()
+                .addOnCompleteListener(authResult -> {
+                    showToastMessage("Lütfen e-mail adresine gönderilen bağlantıya tıklayarak e-mail adresinizi doğrulayınız.");
+                });
     }
 
     // Kullanıcı ismini güncelle
-    private void setNameToAccount() {
-        FirebaseUser user = auth.getCurrentUser();
-
+    private void setNameToAccount(FirebaseUser user) {
         UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
                 .setDisplayName(name)
                 .build();
 
         user.updateProfile(profileUpdate)
-                .addOnFailureListener(error -> showErrorMessage(error.getLocalizedMessage()));
+                .addOnFailureListener(error -> showToastMessage(error.getLocalizedMessage()));
 
         startMainActivity();
     }
@@ -179,7 +189,7 @@ public class RegisterFragment extends Fragment {
         getActivity().finishAffinity();
     }
 
-    private void showErrorMessage(String errorText) {
+    private void showToastMessage(String errorText) {
         Toast.makeText(getActivity(), errorText, Toast.LENGTH_LONG).show();
     }
 

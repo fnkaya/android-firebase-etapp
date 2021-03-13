@@ -7,13 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".auth.fragment.RegisterFragment">
 
-    <Button
-        android:id="@+id/button_back"
+    <ImageButton
+        android:id="@+id/button_back_to_login_from_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:drawableEnd="@drawable/icon_back"
-        android:drawableTint="@color/colorBlack"
+        android:layout_marginStart="16dp"
+        android:padding="16dp"
+        android:src="@drawable/icon_back"
         android:background="@drawable/background_transparent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
@@ -45,7 +46,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="64dp"
+            android:layout_marginHorizontal="32dp"
             android:layout_marginVertical="8dp"
             android:hint="@string/name"
             app:endIconMode="clear_text"
@@ -63,7 +64,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="64dp"
+            android:layout_marginHorizontal="32dp"
             android:layout_marginVertical="8dp"
             android:hint="@string/e_mail"
             app:startIconDrawable="@drawable/icon_email"
@@ -81,7 +82,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="64dp"
+            android:layout_marginHorizontal="32dp"
             android:layout_marginVertical="8dp"
             android:hint="@string/phone_number"
             app:endIconMode="clear_text"
@@ -101,7 +102,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="64dp"
+            android:layout_marginHorizontal="32dp"
             android:layout_marginVertical="8dp"
             android:hint="@string/password"
             app:startIconDrawable="@drawable/icon_lock"
@@ -112,16 +113,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword" />
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="64dp"
+            android:layout_marginHorizontal="32dp"
             android:layout_marginVertical="8dp"
             android:paddingVertical="16dp"
-            android:textColor="@color/colorBlack"
             android:text="@string/register"
             android:textStyle="bold" />
 

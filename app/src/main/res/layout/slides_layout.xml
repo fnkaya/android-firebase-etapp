@@ -18,4 +18,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/image_skateboard"
         android:contentDescription="Onboard images" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

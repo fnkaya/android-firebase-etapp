@@ -28,4 +28,5 @@
     <string name="code_expired">Verification code expired!</string>
     <string name="create_activity">Create Activity</string>
     <string name="forgot_password">Forgot Password</string>
+    <string name="send_link">Send Link</string>
 </resources>

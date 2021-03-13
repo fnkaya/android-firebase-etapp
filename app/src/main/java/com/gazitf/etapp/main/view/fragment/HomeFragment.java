@@ -13,7 +13,11 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Toast;
 
+import com.gazitf.etapp.R;
 import com.gazitf.etapp.databinding.FragmentHomeBinding;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -43,7 +47,14 @@ public class HomeFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        Window window = getActivity().getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(getActivity().getColor(R.color.colorMaterialLightGreen));
+    }
 
     @Override
     public void onDestroyView() {

@@ -1,5 +1,6 @@
 package com.gazitf.etapp.auth.activity;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -66,7 +67,9 @@ public class PhoneVerificationActivity extends AppCompatActivity {
     private void initPhoneAuthCallbacks() {
         countDownTimer = new CountDownTimer(CODE_EXPIRATION_TIME * 1000, 1000) {
             public void onTick(long millisUntilFinished) {
-                textViewCountDown.setText("Seconds remaining: " + millisUntilFinished / 1000);
+                long reaminingSeconds = millisUntilFinished / 1000;
+                textViewCountDown.setTextColor(reaminingSeconds <= 15 ? getColor(R.color.colorRed) : getColor(R.color.colorBlack));
+                textViewCountDown.setText("Seconds remaining: " + reaminingSeconds);
             }
 
             public void onFinish() {

@@ -1,4 +1,4 @@
-package com.gazitf.etapp.splash;
+package com.gazitf.etapp.auth.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.gazitf.etapp.auth.activity.AuthActivity;
 import com.gazitf.etapp.main.view.activity.MainActivity;
 import com.gazitf.etapp.R;
 import com.gazitf.etapp.onboard.view.OnBoardActivity;
@@ -44,11 +43,11 @@ public class SplashActivity extends AppCompatActivity implements FirebaseAuth.Au
         new Handler().postDelayed(() -> {
             // Giriş yapmış bir kullanıcı yoksa
             if (auth.getCurrentUser() == null) {
-                // Kullanıcının uygulamayı ilk defa açtığı bilgisini al
+                // Kullanıcının uygulamayı ilk defa kullandığı bilgisini al
                 onBoardingPreferences = getSharedPreferences("on_boarding_screen", MODE_PRIVATE);
                 boolean isFirstTime = onBoardingPreferences.getBoolean("is_first_time", true);
 
-                // ilk defa açtıysa bilgiyi false olarak güncelle
+                // ilk defa kullanıyorsa bilgiyi false olarak güncelle
                 if (isFirstTime) {
                     SharedPreferences.Editor editor = onBoardingPreferences.edit();
                     editor.putBoolean("is_first_time", false);
@@ -59,7 +58,11 @@ public class SplashActivity extends AppCompatActivity implements FirebaseAuth.Au
                     startActivity(new Intent(SplashActivity.this, AuthActivity.class));
 
             } else {
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                // Kullanıcının email adresi doğrulanmış mı kontrolü
+                if (auth.getCurrentUser().isEmailVerified())
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                else
+                    startActivity(new Intent(SplashActivity.this, AuthActivity.class));
             }
             this.finish();
         }, 2000);

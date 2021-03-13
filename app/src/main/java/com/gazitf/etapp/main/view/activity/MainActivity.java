@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         animateNavigationDrawer();
 
         buttonSideNavigation.setOnClickListener(view -> {
+
             if (drawerLayout.isDrawerVisible(GravityCompat.START))
                 drawerLayout.closeDrawer(GravityCompat.START);
             else
@@ -100,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
 
     // Menü açılırken gerçekleşecek animasyon
     private void animateNavigationDrawer() {
-        /*drawerLayout.setScrimColor(getColor(R.color.colorMaterialLightGreen));*/
+        drawerLayout.setScrimColor(getColor(R.color.colorMaterialLightGreen));
         drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {

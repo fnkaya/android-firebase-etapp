@@ -22,8 +22,10 @@ import com.gazitf.etapp.main.view.activity.MainActivity;
 import com.gazitf.etapp.R;
 import com.gazitf.etapp.databinding.FragmentLoginBinding;
 import com.gazitf.etapp.utils.AuthInputValidator;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginFragment extends Fragment {
 
@@ -32,7 +34,7 @@ public class LoginFragment extends Fragment {
     private TextInputLayout inputLayoutEmail, inputLayoutPassword;
     private EditText editTextEmail, editTextPassword;
     private Button buttonLogin;
-    private TextView textViewRedirectToRegister;
+    private TextView textViewRedirectToRegister, textViewForgotPassword;
 
     private FirebaseAuth auth;
 
@@ -56,6 +58,7 @@ public class LoginFragment extends Fragment {
         editTextPassword = binding.textInputLoginPassword;
         buttonLogin = binding.buttonLogin;
         textViewRedirectToRegister = binding.textViewRedirectRegister;
+        textViewForgotPassword = binding.textViewForgotPassword;
 
         auth = FirebaseAuth.getInstance();
 
@@ -66,6 +69,8 @@ public class LoginFragment extends Fragment {
         buttonLogin.setOnClickListener(view -> validate());
 
         textViewRedirectToRegister.setOnClickListener(this::navigateToRegister);
+
+        textViewForgotPassword.setOnClickListener(this::navigateToForgotPassword);
     }
 
     private void validate() {
@@ -94,12 +99,32 @@ public class LoginFragment extends Fragment {
         setAnimation(R.raw.sign_in);
 
         auth.signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener(authResult ->
-                        startMainActivity())
+                .addOnSuccessListener(authResult -> {
+                    if (authResult.getUser().isEmailVerified())
+                        startMainActivity();
+                    else
+                        showSendEmailVerificationDialog();
+                })
                 .addOnFailureListener(error -> {
                     Toast.makeText(getActivity(), error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                     setAnimation(R.raw.failed);
                 });
+    }
+
+
+    private void showSendEmailVerificationDialog() {
+        new MaterialAlertDialogBuilder(getContext())
+                .setTitle("E-mail adresi doğrulama")
+                .setMessage("E-mail adresiniz henüz doğrulanmamış.\nDoğrulama iletisini tekrar almak ister misiniz?")
+                .setPositiveButton("Tekrar Gönder", (dialog, which) -> sendEmailVerification(auth.getCurrentUser()))
+                .setNegativeButton("İptal", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+
+    private void sendEmailVerification(FirebaseUser user) {
+        user.sendEmailVerification()
+                .addOnCompleteListener(response ->
+                        Toast.makeText(getActivity(), "E-mail doğrulama bağlantısı gönderildi.", Toast.LENGTH_LONG).show());
     }
 
     private void startMainActivity() {
@@ -114,6 +139,12 @@ public class LoginFragment extends Fragment {
 
     private void navigateToRegister(View view) {
         NavDirections direction = LoginFragmentDirections.actionLoginFragmentToRegisterFragment();
+        Navigation.findNavController(view).navigate(direction);
+    }
+
+
+    private void navigateToForgotPassword(View view) {
+        NavDirections direction = LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment();
         Navigation.findNavController(view).navigate(direction);
     }
 
