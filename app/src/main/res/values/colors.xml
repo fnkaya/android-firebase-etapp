@@ -10,6 +10,8 @@
     <color name="colorSecondaryDark">#af8eb5</color>
     <color name="colorSecondaryLight">#fff1ff</color>
     <color name="colorSecondaryAccent">#ba68c8</color>
+    // Basic light colors
+    <color name="colorLightGrey">#f3f3f3</color>
     // Basic colors
     <color name="colorBlack">#000</color>
     <color name="colorWhite">#fff</color>
@@ -35,5 +37,4 @@
     <color name="colorMaterialPink">#E57373</color>
     <color name="colorMaterialBlue">#4DD0E1</color>
     <color name="colorMaterialOrange">#FFB74D</color>
-
 </resources>

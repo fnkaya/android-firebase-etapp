@@ -34,6 +34,15 @@ public class WatchListFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Window window = getActivity().getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(getActivity().getColor(R.color.colorMaterialLightPink));
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;

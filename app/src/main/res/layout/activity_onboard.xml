@@ -75,7 +75,6 @@
             android:background="@drawable/background_transparent"
             android:contentDescription="next image" />
 
-
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

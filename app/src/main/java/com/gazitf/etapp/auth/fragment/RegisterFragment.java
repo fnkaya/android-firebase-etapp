@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +37,8 @@ public class RegisterFragment extends Fragment {
     private FragmentRegisterBinding binding;
     private TextInputLayout inputLayoutName, inputLayoutEmail, inputLayoutPhoneNumber, inputLayoutPassword;
     private EditText editTextName, editTextEmail, editTextPhoneNumber, editTextPassword;
-    private Button buttonRegister, buttonBack;
+    private Button buttonRegister;
+    private ImageButton buttonBackToLogin;
     private TextView textViewRedirectToLogin;
 
     private FirebaseAuth auth;
@@ -67,7 +69,7 @@ public class RegisterFragment extends Fragment {
         editTextPhoneNumber = binding.textInputPhoneNumber;
         editTextPassword = binding.textInputRegisterPassword;
         buttonRegister = binding.buttonRegister;
-        buttonBack = binding.buttonBack;
+        buttonBackToLogin = binding.buttonBackToLoginFromRegister;
         textViewRedirectToLogin = binding.textViewRedirectLogin;
 
         if (savedInstanceState != null) {
@@ -92,7 +94,7 @@ public class RegisterFragment extends Fragment {
 
         textViewRedirectToLogin.setOnClickListener(this::navigateToLogin);
 
-        buttonBack.setOnClickListener(this::navigateToLogin);
+        buttonBackToLogin.setOnClickListener(this::navigateToLogin);
     }
 
     private void validate() {

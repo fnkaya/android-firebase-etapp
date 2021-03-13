@@ -34,7 +34,7 @@ public class LoginFragment extends Fragment {
     private TextInputLayout inputLayoutEmail, inputLayoutPassword;
     private EditText editTextEmail, editTextPassword;
     private Button buttonLogin;
-    private TextView textViewRedirectToRegister;
+    private TextView textViewRedirectToRegister, textViewForgotPassword;
 
     private FirebaseAuth auth;
 
@@ -58,6 +58,7 @@ public class LoginFragment extends Fragment {
         editTextPassword = binding.textInputLoginPassword;
         buttonLogin = binding.buttonLogin;
         textViewRedirectToRegister = binding.textViewRedirectRegister;
+        textViewForgotPassword = binding.textViewForgotPassword;
 
         auth = FirebaseAuth.getInstance();
 
@@ -68,6 +69,8 @@ public class LoginFragment extends Fragment {
         buttonLogin.setOnClickListener(view -> validate());
 
         textViewRedirectToRegister.setOnClickListener(this::navigateToRegister);
+
+        textViewForgotPassword.setOnClickListener(this::navigateToForgotPassword);
     }
 
     private void validate() {
@@ -136,6 +139,12 @@ public class LoginFragment extends Fragment {
 
     private void navigateToRegister(View view) {
         NavDirections direction = LoginFragmentDirections.actionLoginFragmentToRegisterFragment();
+        Navigation.findNavController(view).navigate(direction);
+    }
+
+
+    private void navigateToForgotPassword(View view) {
+        NavDirections direction = LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment();
         Navigation.findNavController(view).navigate(direction);
     }
 
