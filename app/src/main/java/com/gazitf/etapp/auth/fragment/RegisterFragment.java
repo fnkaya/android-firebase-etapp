@@ -144,7 +144,7 @@ public class RegisterFragment extends Fragment {
             if (resultCode == Activity.RESULT_OK)
                 linkEmailToAccount();
             else
-                showErrorMessage("Telefon numarası doğrulanması sırasında bir sorun oluştu!");
+                showToastMessage("Telefon numarası doğrulanması sırasında bir sorun oluştu!");
         }
     }
 
@@ -154,22 +154,30 @@ public class RegisterFragment extends Fragment {
 
         auth.getCurrentUser().linkWithCredential(credential)
                 .addOnSuccessListener(authResult -> {
-                    setNameToAccount();
+                    FirebaseUser user = authResult.getUser();
+                    sendVerificationEmail(user);
+                    setNameToAccount(user);
                 })
                 .addOnFailureListener(error ->
-                        showErrorMessage(error.toString()));
+                        showToastMessage(error.toString()));
+    }
+
+    // Email doğrulama bağlantısı gönder
+    private void sendVerificationEmail(FirebaseUser user) {
+        user.sendEmailVerification()
+                .addOnCompleteListener(authResult -> {
+                    showToastMessage("Lütfen e-mail adresine gönderilen bağlantıya tıklayarak e-mail adresinizi doğrulayınız.");
+                });
     }
 
     // Kullanıcı ismini güncelle
-    private void setNameToAccount() {
-        FirebaseUser user = auth.getCurrentUser();
-
+    private void setNameToAccount(FirebaseUser user) {
         UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
                 .setDisplayName(name)
                 .build();
 
         user.updateProfile(profileUpdate)
-                .addOnFailureListener(error -> showErrorMessage(error.getLocalizedMessage()));
+                .addOnFailureListener(error -> showToastMessage(error.getLocalizedMessage()));
 
         startMainActivity();
     }
@@ -179,7 +187,7 @@ public class RegisterFragment extends Fragment {
         getActivity().finishAffinity();
     }
 
-    private void showErrorMessage(String errorText) {
+    private void showToastMessage(String errorText) {
         Toast.makeText(getActivity(), errorText, Toast.LENGTH_LONG).show();
     }
 

@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.EtApp" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/colorMaterialLightGreen</item>
-        <item name="colorPrimaryVariant">@color/colorMaterialGreen</item>
+        <item name="colorPrimary">@color/colorMaterialGreen</item>
+        <item name="colorPrimaryVariant">@color/colorMaterialLightGreen</item>
         <item name="colorOnPrimary">@color/colorWhite</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/colorMaterialLightPink</item>

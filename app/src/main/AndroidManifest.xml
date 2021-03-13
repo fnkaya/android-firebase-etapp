@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EtApp">
 
-        <activity android:name=".splash.SplashActivity" android:screenOrientation="portrait">
+        <activity android:name=".auth.activity.SplashActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

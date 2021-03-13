@@ -1,4 +1,4 @@
-package com.gazitf.etapp.main.view.fragment;
+package com.gazitf.etapp.auth.fragment;
 
 import android.os.Bundle;
 
@@ -9,21 +9,19 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.gazitf.etapp.R;
-import com.gazitf.etapp.databinding.FragmentWatchListBinding;
+import com.gazitf.etapp.databinding.FragmentForgotPasswordBinding;
 
-public class WatchListFragment extends Fragment {
+public class ForgotPasswordFragment extends Fragment {
 
-    private FragmentWatchListBinding binding;
+    private FragmentForgotPasswordBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        binding = FragmentWatchListBinding.inflate(inflater, container, false);
+        binding = FragmentForgotPasswordBinding.inflate(inflater, container, false);
 
         return binding.getRoot();
     }
