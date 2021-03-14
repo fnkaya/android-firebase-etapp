@@ -64,16 +64,17 @@
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_view_forgot_password"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
             android:layout_marginHorizontal="32dp"
             android:padding="8dp"
             android:text="@string/forgot_password"
-            android:textColor="@color/colorMaterialPink"
+            android:textColor="@color/colorGreyText"
             android:textStyle="bold"
-            android:textAlignment="viewEnd" />
+            android:foreground="?attr/selectableItemBackground"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_login"
@@ -87,14 +88,15 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_view_redirect_register"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_gravity="center"
             android:layout_marginHorizontal="32dp"
             android:padding="8dp"
             android:text="@string/dont_have_account"
-            android:textColor="@color/colorPrimaryAccent"
-            android:textStyle="bold" />
+            android:textColor="@color/colorMaterialPink"
+            android:textStyle="bold"
+            android:foreground="?attr/selectableItemBackground"/>
 
     </LinearLayout>
 

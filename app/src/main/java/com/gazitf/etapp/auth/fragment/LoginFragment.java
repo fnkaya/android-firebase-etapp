@@ -18,14 +18,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.gazitf.etapp.BaseActivity;
+import com.gazitf.etapp.auth.activity.AuthActivity;
 import com.gazitf.etapp.main.view.activity.MainActivity;
 import com.gazitf.etapp.R;
 import com.gazitf.etapp.databinding.FragmentLoginBinding;
 import com.gazitf.etapp.utils.AuthInputValidator;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Objects;
 
 public class LoginFragment extends Fragment {
 
@@ -92,6 +97,8 @@ public class LoginFragment extends Fragment {
 
         if (isValid)
             signIn(email, password);
+        else
+            ((AuthActivity) requireActivity()).showSnackBar("Required Field", true);
     }
 
     // Kullanıcı girişi yap

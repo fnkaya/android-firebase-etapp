@@ -14,15 +14,18 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.gazitf.etapp.R;
-import com.gazitf.etapp.main.view.activity.MainActivity;
+import com.gazitf.etapp.auth.activity.AuthActivity;
 import com.gazitf.etapp.auth.activity.PhoneVerificationActivity;
 import com.gazitf.etapp.databinding.FragmentRegisterBinding;
 import com.gazitf.etapp.utils.AuthInputValidator;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -35,10 +38,10 @@ public class RegisterFragment extends Fragment {
     private static final int PHONE_VERIFICATION_REQUEST_CODE = 202;
 
     private FragmentRegisterBinding binding;
+    private Toolbar toolbar;
     private TextInputLayout inputLayoutName, inputLayoutEmail, inputLayoutPhoneNumber, inputLayoutPassword;
     private EditText editTextName, editTextEmail, editTextPhoneNumber, editTextPassword;
     private Button buttonRegister;
-    private ImageButton buttonBackToLogin;
     private TextView textViewRedirectToLogin;
 
     private FirebaseAuth auth;
@@ -60,6 +63,7 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        toolbar = binding.toolbarRegister;
         inputLayoutName = binding.textInputLayoutName;
         inputLayoutEmail = binding.textInputLayoutRegisterEmail;
         inputLayoutPhoneNumber = binding.textInputLayoutPhoneNumber;
@@ -69,24 +73,23 @@ public class RegisterFragment extends Fragment {
         editTextPhoneNumber = binding.textInputPhoneNumber;
         editTextPassword = binding.textInputRegisterPassword;
         buttonRegister = binding.buttonRegister;
-        buttonBackToLogin = binding.buttonBackToLoginFromRegister;
         textViewRedirectToLogin = binding.textViewRedirectLogin;
 
-        if (savedInstanceState != null) {
-            name = savedInstanceState.getString("name");
-            email = savedInstanceState.getString("email");
-            phoneNumber = savedInstanceState.getString("phone");
-            password = savedInstanceState.getString("password");
-
-            editTextName.setText(name);
-            editTextEmail.setText(email);
-            editTextPhoneNumber.setText(phoneNumber);
-            editTextPassword.setText(password);
-        }
+        setupToolbar();
 
         auth = FirebaseAuth.getInstance();
 
         initListeners();
+    }
+
+    private void setupToolbar() {
+        AuthActivity authActivity = (AuthActivity) requireActivity();
+        authActivity.setSupportActionBar(toolbar);
+        ActionBar actionBar = authActivity.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.icon_back);
+        }
     }
 
     private void initListeners() {
@@ -94,7 +97,7 @@ public class RegisterFragment extends Fragment {
 
         textViewRedirectToLogin.setOnClickListener(this::navigateToLogin);
 
-        buttonBackToLogin.setOnClickListener(this::navigateToLogin);
+        toolbar.setNavigationOnClickListener(this::navigateToLogin);
     }
 
     private void validate() {
@@ -181,13 +184,9 @@ public class RegisterFragment extends Fragment {
         user.updateProfile(profileUpdate)
                 .addOnFailureListener(error -> showToastMessage(error.getLocalizedMessage()));
 
-        startMainActivity();
+        navigateToLogin(getView());
     }
 
-    private void startMainActivity() {
-        startActivity(new Intent(getActivity(), MainActivity.class));
-        getActivity().finishAffinity();
-    }
 
     private void showToastMessage(String errorText) {
         Toast.makeText(getActivity(), errorText, Toast.LENGTH_LONG).show();

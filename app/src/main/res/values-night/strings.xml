@@ -13,7 +13,7 @@
     <string name="verify_code">Verify code</string>
     <string name="resend">Resend</string>
     <string name="already_have_account">I already have an account.</string>
-    <string name="dont_have_account">I don\'t have any account yet?</string>
+    <string name="dont_have_account">I don\'t have any account yet.</string>
     <string name="skip">Skip</string>
     <string name="lets_get_started">Lets get started</string>
     <string name="invalid_email">invalid email</string>

@@ -1,12 +1,11 @@
 package com.gazitf.etapp.auth.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
+import com.gazitf.etapp.BaseActivity;
 import com.gazitf.etapp.R;
 
-public class AuthActivity extends AppCompatActivity {
+public class AuthActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
