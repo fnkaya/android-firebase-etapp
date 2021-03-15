@@ -99,12 +99,12 @@ public class LoginFragment extends Fragment {
 
     // Kullanıcı girişi yap
     private void signIn(String email, String password) {
-        setAnimation(R.raw.sign_in);
+        setAnimation(R.raw.loading);
 
         auth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener(authResult -> {
                     if (authResult.getUser().isEmailVerified())
-                        startMainActivity();
+                        navigateToMainActivity();
                     else
                         showSendEmailVerificationDialog();
                 })
@@ -116,7 +116,8 @@ public class LoginFragment extends Fragment {
 
 
     private void showSendEmailVerificationDialog() {
-        new MaterialAlertDialogBuilder(getContext())
+        setAnimation(R.raw.failed);
+        new MaterialAlertDialogBuilder(requireContext())
                 .setTitle("E-mail adresi doğrulama")
                 .setMessage("E-mail adresiniz henüz doğrulanmamış.\nDoğrulama iletisini tekrar almak ister misiniz?")
                 .setPositiveButton("Tekrar Gönder", (dialog, which) -> sendEmailVerification(auth.getCurrentUser()))
@@ -130,14 +131,9 @@ public class LoginFragment extends Fragment {
                         Toast.makeText(getActivity(), "E-mail doğrulama bağlantısı gönderildi.", Toast.LENGTH_LONG).show());
     }
 
-    private void startMainActivity() {
-        startActivity(new Intent(getActivity(), MainActivity.class));
-        getActivity().finishAffinity();
-    }
-
-    private void setAnimation(int resource) {
-        lottieAnimationView.setAnimation(resource);
-        lottieAnimationView.playAnimation();
+    private void navigateToMainActivity() {
+        NavDirections direction = LoginFragmentDirections.actionLoginFragmentToMainActivity();
+        Navigation.findNavController(requireView()).navigate(direction);
     }
 
     private void navigateToRegister(View view) {
@@ -149,6 +145,11 @@ public class LoginFragment extends Fragment {
     private void navigateToForgotPassword(View view) {
         NavDirections direction = LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment();
         Navigation.findNavController(view).navigate(direction);
+    }
+
+    private void setAnimation(int resource) {
+        lottieAnimationView.setAnimation(resource);
+        lottieAnimationView.playAnimation();
     }
 
     @Override

@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
@@ -175,14 +176,13 @@ public class RegisterFragment extends Fragment {
         navigateToLogin(getView());
     }
 
+    private void navigateToLogin(View view) {
+        NavController navController = Navigation.findNavController(requireActivity().findViewById(R.id.navigation_host_fragment_auth));
+        navController.popBackStack();
+    }
 
     private void showToastMessage(String errorText) {
         Toast.makeText(getActivity(), errorText, Toast.LENGTH_LONG).show();
-    }
-
-    private void navigateToLogin(View view) {
-        NavDirections direction = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment();
-        Navigation.findNavController(view).navigate(direction);
     }
 
     @Override

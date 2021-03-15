@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/dance" />
+        app:lottie_rawRes="@raw/login" />
 
     <LinearLayout
         android:id="@+id/linear_layout_auth"

@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
@@ -83,8 +84,8 @@ public class ForgotPasswordFragment extends Fragment {
     }
 
     private void navigateToLogin(View view) {
-        NavDirections direction = ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToLoginFragment();
-        Navigation.findNavController(view).navigate(direction);
+        NavController navController = Navigation.findNavController(requireActivity().findViewById(R.id.navigation_host_fragment_auth));
+        navController.popBackStack();
     }
 
     @Override

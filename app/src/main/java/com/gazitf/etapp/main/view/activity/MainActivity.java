@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -58,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         toolbar = binding.toolbarMain;
         drawerLayout = binding.layoutNavigationDrawer;
         sideNavigationView = binding.sideNavigationView;
-        chipNavigationBar = binding.bottomNavigationView;
+        chipNavigationBar = binding.bottomNavigationBar;
         layoutContent = binding.layoutContent;
         buttonLogout = binding.buttonLogout;
         imageViewUserProfile = binding.imageProfile;
@@ -140,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         // Activity açıldığında gösterilecek fragment
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.bottom_navigation_host_fragment, new HomeFragment())
+                .replace(R.id.navigation_host_fragment_main, new HomeFragment())
                 .commit();
 
         // Menu item seçildiğinde yapılacaklar
@@ -166,14 +165,14 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
             getSupportFragmentManager()
                     .beginTransaction()
                     .setCustomAnimations(R.anim.anim_enter_fade, R.anim.anim_exit_fade)
-                    .replace(R.id.bottom_navigation_host_fragment, fragment)
+                    .replace(R.id.navigation_host_fragment_main, fragment)
                     .commit();
         });
     }
 
-     /*
-     Kullanıcı giriş ve çıkış yaptığında yapılacak işlemler
-      */
+    /*
+         Kullanıcı giriş ve çıkış yaptığında yapılacak işlemler
+          */
     @Override
     protected void onStart() {
         super.onStart();
