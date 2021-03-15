@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
 
         auth = FirebaseAuth.getInstance();
 
+        overridePendingTransition(R.anim.anim_enter_fade, R.anim.anim_exit_fade);
         sideNavigationMenu();
         bottomNavigationMenu();
     }

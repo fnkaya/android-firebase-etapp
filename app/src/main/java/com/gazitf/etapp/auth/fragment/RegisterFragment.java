@@ -150,7 +150,6 @@ public class RegisterFragment extends Fragment {
                 .addOnSuccessListener(authResult -> {
                     FirebaseUser user = authResult.getUser();
                     sendVerificationEmail(user);
-                    setNameToAccount(user);
                 })
                 .addOnFailureListener(error ->
                         showToastMessage(error.toString()));
@@ -160,8 +159,10 @@ public class RegisterFragment extends Fragment {
     private void sendVerificationEmail(FirebaseUser user) {
         user.sendEmailVerification()
                 .addOnCompleteListener(authResult -> {
-                    showToastMessage("Lütfen e-mail adresine gönderilen bağlantıya tıklayarak e-mail adresinizi doğrulayınız.");
-                });
+                    showToastMessage(getString(R.string.verification_link_sent_to_email_address));
+                    setNameToAccount(user);
+                })
+                .addOnFailureListener(error -> showToastMessage(error.getLocalizedMessage()));
     }
 
     // Kullanıcı ismini güncelle
@@ -181,8 +182,8 @@ public class RegisterFragment extends Fragment {
         navController.popBackStack();
     }
 
-    private void showToastMessage(String errorText) {
-        Toast.makeText(getActivity(), errorText, Toast.LENGTH_LONG).show();
+    private void showToastMessage(String message) {
+        Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show();
     }
 
     @Override

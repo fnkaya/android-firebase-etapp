@@ -14,6 +14,8 @@ public class AuthActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+
+        overridePendingTransition(R.anim.anim_enter_fade, R.anim.anim_exit_fade);
     }
 
     @Override

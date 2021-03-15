@@ -5,7 +5,7 @@
     <string name="logout" translatable="false">Çıkış</string>
     <string name="register" translatable="false">Kayıt Ol</string>
     <string name="name" translatable="false">İsim</string>
-    <string name="phone_number" translatable="false">Doğrula</string>
+    <string name="phone_number" translatable="false">Telefon</string>
     <string name="password" translatable="false">Şifre</string>
     <string name="verification_code" translatable="false">Doğrulama Kodu</string>
     <string name="verify_code" translatable="false">Doğrula</string>
@@ -27,4 +27,5 @@
     <string name="create_activity">Etkinlik Oluştur</string>
     <string name="forgot_password">Şifremi Unuttum</string>
     <string name="send_link">Gönder</string>
+    <string name="verification_link_sent_to_email_address">Lütfen e-mail adresinize gönderilen bağlantıya tıklayarak e-mail adresinizi doğrulayınız.</string>
 </resources>

@@ -1,6 +1,5 @@
 package com.gazitf.etapp.auth.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,7 +18,6 @@ import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.gazitf.etapp.auth.activity.AuthActivity;
-import com.gazitf.etapp.main.view.activity.MainActivity;
 import com.gazitf.etapp.R;
 import com.gazitf.etapp.databinding.FragmentLoginBinding;
 import com.gazitf.etapp.utils.AuthInputValidator;
@@ -116,7 +114,7 @@ public class LoginFragment extends Fragment {
 
 
     private void showSendEmailVerificationDialog() {
-        setAnimation(R.raw.failed);
+        setAnimation(R.raw.email_not_verified);
         new MaterialAlertDialogBuilder(requireContext())
                 .setTitle("E-mail adresi doğrulama")
                 .setMessage("E-mail adresiniz henüz doğrulanmamış.\nDoğrulama iletisini tekrar almak ister misiniz?")
@@ -126,6 +124,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void sendEmailVerification(FirebaseUser user) {
+        setAnimation(R.raw.email_sent);
         user.sendEmailVerification()
                 .addOnCompleteListener(response ->
                         Toast.makeText(getActivity(), "E-mail doğrulama bağlantısı gönderildi.", Toast.LENGTH_LONG).show());
@@ -134,13 +133,13 @@ public class LoginFragment extends Fragment {
     private void navigateToMainActivity() {
         NavDirections direction = LoginFragmentDirections.actionLoginFragmentToMainActivity();
         Navigation.findNavController(requireView()).navigate(direction);
+        requireActivity().finishAffinity();
     }
 
     private void navigateToRegister(View view) {
         NavDirections direction = LoginFragmentDirections.actionLoginFragmentToRegisterFragment();
         Navigation.findNavController(view).navigate(direction);
     }
-
 
     private void navigateToForgotPassword(View view) {
         NavDirections direction = LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment();
