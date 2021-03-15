@@ -1,11 +1,17 @@
 package com.gazitf.etapp.main.view.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,11 +29,15 @@ import com.gazitf.etapp.main.view.fragment.MessageFragment;
 import com.gazitf.etapp.main.view.fragment.PostFragment;
 import com.gazitf.etapp.main.view.fragment.WatchListFragment;
 import com.gazitf.etapp.profile.ProfileActivity;
+import com.gazitf.etapp.utils.LocaleHelper;
+import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.squareup.picasso.Picasso;
+
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -36,12 +46,14 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final float END_SCALE = 0.7f;
 
+    private View rootView;
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView sideNavigationView;
     private ChipNavigationBar chipNavigationBar;
     private ConstraintLayout layoutContent;
-    private Button buttonLogout;
+    private Button buttonLogout, buttonLangTr, buttonLangEn;
+    private MaterialButtonToggleGroup buttonGroupLanguage;
     private CircleImageView imageViewUserProfile;
     private TextView textViewUserEmail;
 
@@ -52,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         super.onCreate(savedInstanceState);
 
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
-        View rootView = binding.getRoot();
+        rootView = binding.getRoot();
         setContentView(rootView);
         toolbar = binding.toolbarMain;
         drawerLayout = binding.layoutNavigationDrawer;
@@ -60,18 +72,22 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         chipNavigationBar = binding.bottomNavigationBar;
         layoutContent = binding.layoutContent;
         buttonLogout = binding.buttonLogout;
+        buttonLangTr = binding.buttonLanguageTr;
+        buttonLangEn = binding.buttonLanguageEn;
+        buttonGroupLanguage = binding.buttonLanguageSelectorGroup;
         imageViewUserProfile = binding.imageProfile;
         textViewUserEmail = binding.textViewUserEmail;
 
         auth = FirebaseAuth.getInstance();
 
         overridePendingTransition(R.anim.anim_enter_fade, R.anim.anim_exit_fade);
-        sideNavigationMenu();
-        bottomNavigationMenu();
+        setupSideNavigationMenu();
+        setupBottomNavigationMenu();
+        setupLanguageSelector();
     }
 
     // Yandan açılan menünün ayarlanması
-    private void sideNavigationMenu() {
+    private void setupSideNavigationMenu() {
         sideNavigationView.bringToFront();
         sideNavigationView.setNavigationItemSelectedListener(this);
         animateNavigationDrawer();
@@ -134,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
     }
 
     // Alt menü seçenekleri
-    private void bottomNavigationMenu() {
+    private void setupBottomNavigationMenu() {
         // Activity başladığında seçilecek menu item
         chipNavigationBar.setItemSelected(R.id.menu_item_home, true);
         // Activity açıldığında gösterilecek fragment
@@ -168,6 +184,32 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
                     .setCustomAnimations(R.anim.anim_enter_fade, R.anim.anim_exit_fade)
                     .replace(R.id.navigation_host_fragment_main, fragment)
                     .commit();
+        });
+    }
+
+    /*
+        Language selector
+     */
+    private void setupLanguageSelector() {
+        buttonGroupLanguage.check(R.id.button_language_tr);
+        buttonGroupLanguage.addOnButtonCheckedListener((buttonGroup, checkedId, isChecked) -> {
+            if (isChecked) {
+                Context context = null;
+                Resources resources;
+
+                switch (checkedId) {
+                    case R.id.button_language_tr:
+                        context = LocaleHelper.setLocale(MainActivity.this, "tr");
+                        resources = context.getResources();
+                        getResources().updateConfiguration(resources.getConfiguration(), resources.getDisplayMetrics());
+                        break;
+                    case R.id.button_language_en:
+                        context = LocaleHelper.setLocale(MainActivity.this, "en");
+                        resources = context.getResources();
+                        getResources().updateConfiguration(resources.getConfiguration(), resources.getDisplayMetrics());
+                        break;
+                }
+            }
         });
     }
 

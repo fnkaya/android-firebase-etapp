@@ -5,7 +5,8 @@
     android:id="@+id/layout_navigation_drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main.view.activity.MainActivity">
+    tools:context=".main.view.activity.MainActivity"
+    tools:openDrawer="start">
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/side_navigation_view"
@@ -49,6 +50,31 @@
                 android:padding="8dp"
                 android:text="@string/logout"
                 android:textColor="@color/colorBlack" />
+
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/button_language_selector_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:singleSelection="true"
+                app:selectionRequired="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_language_tr"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TR" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_language_en"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="EN" />
+
+            </com.google.android.material.button.MaterialButtonToggleGroup>
 
         </RelativeLayout>
 
