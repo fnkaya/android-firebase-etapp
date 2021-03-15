@@ -75,21 +75,9 @@ public class RegisterFragment extends Fragment {
         buttonRegister = binding.buttonRegister;
         textViewRedirectToLogin = binding.textViewRedirectLogin;
 
-        setupToolbar();
-
         auth = FirebaseAuth.getInstance();
 
         initListeners();
-    }
-
-    private void setupToolbar() {
-        AuthActivity authActivity = (AuthActivity) requireActivity();
-        authActivity.setSupportActionBar(toolbar);
-        ActionBar actionBar = authActivity.getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.icon_back);
-        }
     }
 
     private void initListeners() {

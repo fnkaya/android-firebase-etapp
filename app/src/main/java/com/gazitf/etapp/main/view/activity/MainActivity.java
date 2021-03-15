@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -36,11 +37,11 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final float END_SCALE = 0.7f;
 
+    private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView sideNavigationView;
     private ChipNavigationBar chipNavigationBar;
     private ConstraintLayout layoutContent;
-    private ImageButton buttonSideNavigation;
     private Button buttonLogout;
     private CircleImageView imageViewUserProfile;
     private TextView textViewUserEmail;
@@ -54,11 +55,11 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         View rootView = binding.getRoot();
         setContentView(rootView);
+        toolbar = binding.toolbarMain;
         drawerLayout = binding.layoutNavigationDrawer;
         sideNavigationView = binding.sideNavigationView;
         chipNavigationBar = binding.bottomNavigationView;
         layoutContent = binding.layoutContent;
-        buttonSideNavigation = binding.buttonNavigationDrawer;
         buttonLogout = binding.buttonLogout;
         imageViewUserProfile = binding.imageProfile;
         textViewUserEmail = binding.textViewUserEmail;
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         sideNavigationView.setNavigationItemSelectedListener(this);
         animateNavigationDrawer();
 
-        buttonSideNavigation.setOnClickListener(view -> {
+        toolbar.setNavigationOnClickListener(view -> {
 
             if (drawerLayout.isDrawerVisible(GravityCompat.START))
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
 
     // Menü açılırken gerçekleşecek animasyon
     private void animateNavigationDrawer() {
-        drawerLayout.setScrimColor(getColor(R.color.colorMaterialLightGreen));
+        /*drawerLayout.setScrimColor(getColor(R.color.colorMaterialLightGreen));*/
         drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {

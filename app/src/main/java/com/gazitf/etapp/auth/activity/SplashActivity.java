@@ -12,6 +12,7 @@ import com.gazitf.etapp.main.view.activity.MainActivity;
 import com.gazitf.etapp.R;
 import com.gazitf.etapp.onboard.view.OnBoardActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class SplashActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener {
 
@@ -42,29 +43,34 @@ public class SplashActivity extends AppCompatActivity implements FirebaseAuth.Au
     public void onAuthStateChanged(@NonNull FirebaseAuth auth) {
         new Handler().postDelayed(() -> {
             // Giriş yapmış bir kullanıcı yoksa
-            if (auth.getCurrentUser() == null) {
+            FirebaseUser user = auth.getCurrentUser();
+
+            if (user == null) {
                 // Kullanıcının uygulamayı ilk defa kullandığı bilgisini al
                 onBoardingPreferences = getSharedPreferences("on_boarding_screen", MODE_PRIVATE);
                 boolean isFirstTime = onBoardingPreferences.getBoolean("is_first_time", true);
 
                 // ilk defa kullanıyorsa bilgiyi false olarak güncelle
-                if (isFirstTime) {
-                    SharedPreferences.Editor editor = onBoardingPreferences.edit();
-                    editor.putBoolean("is_first_time", false);
-                    editor.apply();
-
-                    startActivity(new Intent(SplashActivity.this, OnBoardActivity.class));
-                } else
+                if (isFirstTime)
+                    startOnBoardingActivity();
+                else
                     startActivity(new Intent(SplashActivity.this, AuthActivity.class));
 
             } else {
                 // Kullanıcının email adresi doğrulanmış mı kontrolü
-                if (auth.getCurrentUser().isEmailVerified())
+                if (user.isEmailVerified())
                     startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 else
                     startActivity(new Intent(SplashActivity.this, AuthActivity.class));
             }
             this.finish();
         }, 2000);
+    }
+
+    private void startOnBoardingActivity() {
+        SharedPreferences.Editor editor = onBoardingPreferences.edit();
+        editor.putBoolean("is_first_time", false);
+        editor.apply();
+        startActivity(new Intent(SplashActivity.this, OnBoardActivity.class));
     }
 }

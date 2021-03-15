@@ -1,4 +1,4 @@
-package com.gazitf.etapp;
+package com.gazitf.etapp.utils;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat;
 import android.os.Bundle;
 import android.view.View;
 
+import com.gazitf.etapp.R;
 import com.google.android.material.snackbar.Snackbar;
 
 public class BaseActivity extends AppCompatActivity {

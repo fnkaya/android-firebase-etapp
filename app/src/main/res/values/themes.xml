@@ -4,19 +4,19 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorMaterialGreen</item>
         <item name="colorPrimaryVariant">@color/colorMaterialLightGreen</item>
-        <item name="colorOnPrimary">@color/colorWhite</item>
+        <item name="colorOnPrimary">@color/colorPrimaryLight</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/colorMaterialLightPink</item>
-        <item name="colorSecondaryVariant">@color/colorMaterialOrange</item>
+        <item name="colorSecondaryVariant">@color/colorMaterialPink</item>
         <item name="colorOnSecondary">@color/colorBlack</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorOnPrimary</item>
         <!-- Customize your theme here. -->
     </style>
 
     <!-- Side navigation theme. -->
     <style name="sideNavigationTheme">
-        <item name="colorPrimary">@color/colorPrimaryDark</item>
-        <item name="colorControlHighlight">@color/colorPrimaryLight</item>
+        <item name="colorPrimary">@color/colorMaterialGreen</item>
+        <item name="colorControlHighlight">@color/colorMaterialLightGreen</item>
     </style>
 </resources>

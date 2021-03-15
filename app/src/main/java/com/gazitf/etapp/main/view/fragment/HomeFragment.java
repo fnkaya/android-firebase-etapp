@@ -25,8 +25,6 @@ import java.util.Locale;
 
 public class HomeFragment extends Fragment {
 
-    private String languageCode = "fr";
-
     private FragmentHomeBinding binding;
 
     private FirebaseAuth auth;
@@ -34,9 +32,8 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         binding = FragmentHomeBinding.inflate(inflater, container, false);
-
+        auth = FirebaseAuth.getInstance();
         return binding.getRoot();
     }
 
@@ -44,16 +41,6 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        auth = FirebaseAuth.getInstance();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Window window = getActivity().getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(getActivity().getColor(R.color.colorMaterialLightGreen));
     }
 
     @Override

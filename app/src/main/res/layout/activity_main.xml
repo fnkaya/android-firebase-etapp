@@ -55,23 +55,22 @@
 
     </com.google.android.material.navigation.NavigationView>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/bottom_navigation_host_fragment"
-            android:name="androidx.navigation.fragment.NavHostFragment"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_main"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/icon_menu"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/bottom_navigation_host_fragment"/>
 
-        <ImageButton
+        <!--<ImageButton
             android:id="@+id/button_navigation_drawer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -82,7 +81,17 @@
             android:padding="16dp"
             android:src="@drawable/icon_menu"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />-->
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/bottom_navigation_host_fragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_main" />
 
         <com.ismaeldivita.chipnavigation.ChipNavigationBar
             android:id="@+id/bottom_navigation_view"
