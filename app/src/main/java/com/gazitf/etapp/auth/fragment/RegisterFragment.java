@@ -8,13 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -22,11 +20,9 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.gazitf.etapp.R;
-import com.gazitf.etapp.auth.activity.AuthActivity;
 import com.gazitf.etapp.auth.activity.PhoneVerificationActivity;
 import com.gazitf.etapp.databinding.FragmentRegisterBinding;
 import com.gazitf.etapp.utils.AuthInputValidator;
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -54,9 +50,8 @@ public class RegisterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        auth = FirebaseAuth.getInstance();
         binding = FragmentRegisterBinding.inflate(inflater, container, false);
-
         return binding.getRoot();
     }
 
@@ -64,6 +59,11 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        initViews();
+        initListeners();
+    }
+
+    private void initViews() {
         toolbar = binding.toolbarRegister;
         inputLayoutName = binding.textInputLayoutName;
         inputLayoutEmail = binding.textInputLayoutRegisterEmail;
@@ -75,10 +75,6 @@ public class RegisterFragment extends Fragment {
         editTextPassword = binding.textInputRegisterPassword;
         buttonRegister = binding.buttonRegister;
         textViewRedirectToLogin = binding.textViewRedirectLogin;
-
-        auth = FirebaseAuth.getInstance();
-
-        initListeners();
     }
 
     private void initListeners() {
@@ -178,8 +174,8 @@ public class RegisterFragment extends Fragment {
     }
 
     private void navigateToLogin(View view) {
-        NavController navController = Navigation.findNavController(requireActivity().findViewById(R.id.navigation_host_fragment_auth));
-        navController.popBackStack();
+        NavDirections direction = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment();
+        Navigation.findNavController(view).navigate(direction);
     }
 
     private void showToastMessage(String message) {

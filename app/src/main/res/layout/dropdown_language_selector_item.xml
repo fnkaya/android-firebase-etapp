@@ -1,0 +1,11 @@
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/textView"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:padding="16dp"
+    android:textStyle="bold"
+    android:maxLines="1"
+    android:textSize="16sp"
+    android:textAlignment="center"
+     />

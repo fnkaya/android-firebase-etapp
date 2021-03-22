@@ -1,7 +1,6 @@
 package com.gazitf.etapp.auth.activity;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,10 +10,11 @@ import android.os.Handler;
 import com.gazitf.etapp.main.view.activity.MainActivity;
 import com.gazitf.etapp.R;
 import com.gazitf.etapp.onboard.view.OnBoardActivity;
+import com.gazitf.etapp.utils.BaseActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class SplashActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener {
+public class SplashActivity extends BaseActivity implements FirebaseAuth.AuthStateListener {
 
     private FirebaseAuth auth;
     private SharedPreferences onBoardingPreferences;

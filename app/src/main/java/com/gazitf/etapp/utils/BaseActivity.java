@@ -1,25 +1,20 @@
 package com.gazitf.etapp.utils;
 
+import android.content.Context;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-
-import android.content.Context;
-import android.os.Bundle;
-import android.view.View;
 
 import com.gazitf.etapp.R;
 import com.google.android.material.snackbar.Snackbar;
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    private static final String TAG = BaseActivity.class.getSimpleName();
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+        super.attachBaseContext(LocaleHelper.onAttach(newBase));
     }
 
     public void showSnackBar(String message, Boolean isError) {

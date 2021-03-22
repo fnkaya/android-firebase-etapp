@@ -2,20 +2,19 @@ package com.gazitf.etapp.main.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -23,37 +22,40 @@ import androidx.fragment.app.Fragment;
 
 import com.gazitf.etapp.R;
 import com.gazitf.etapp.auth.activity.AuthActivity;
+import com.gazitf.etapp.auth.activity.SplashActivity;
 import com.gazitf.etapp.databinding.ActivityMainBinding;
 import com.gazitf.etapp.main.view.fragment.HomeFragment;
 import com.gazitf.etapp.main.view.fragment.MessageFragment;
 import com.gazitf.etapp.main.view.fragment.PostFragment;
 import com.gazitf.etapp.main.view.fragment.WatchListFragment;
 import com.gazitf.etapp.profile.ProfileActivity;
+import com.gazitf.etapp.utils.BaseActivity;
 import com.gazitf.etapp.utils.LocaleHelper;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.squareup.picasso.Picasso;
 
-import java.util.Locale;
+import java.util.Arrays;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements FirebaseAuth.AuthStateListener, NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final float END_SCALE = 0.7f;
 
-    private View rootView;
-    private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView sideNavigationView;
+    private ImageButton toggleButtonSideNav;
     private ChipNavigationBar chipNavigationBar;
     private ConstraintLayout layoutContent;
-    private Button buttonLogout, buttonLangTr, buttonLangEn;
-    private MaterialButtonToggleGroup buttonGroupLanguage;
+    private Button buttonLogout;
+    private MaterialAutoCompleteTextView autoCompleteTextView;
     private CircleImageView imageViewUserProfile;
     private TextView textViewUserEmail;
 
@@ -63,37 +65,42 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
-        rootView = binding.getRoot();
-        setContentView(rootView);
-        toolbar = binding.toolbarMain;
-        drawerLayout = binding.layoutNavigationDrawer;
-        sideNavigationView = binding.sideNavigationView;
-        chipNavigationBar = binding.bottomNavigationBar;
-        layoutContent = binding.layoutContent;
-        buttonLogout = binding.buttonLogout;
-        buttonLangTr = binding.buttonLanguageTr;
-        buttonLangEn = binding.buttonLanguageEn;
-        buttonGroupLanguage = binding.buttonLanguageSelectorGroup;
-        imageViewUserProfile = binding.imageProfile;
-        textViewUserEmail = binding.textViewUserEmail;
-
         auth = FirebaseAuth.getInstance();
-
-        overridePendingTransition(R.anim.anim_enter_fade, R.anim.anim_exit_fade);
+        initViews();
         setupSideNavigationMenu();
         setupBottomNavigationMenu();
+        overridePendingTransition(R.anim.anim_enter_fade, R.anim.anim_exit_fade);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         setupLanguageSelector();
     }
 
-    // Yandan açılan menünün ayarlanması
+    private void initViews() {
+        final ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        drawerLayout = binding.layoutNavigationDrawer;
+        sideNavigationView = binding.sideNavigationView;
+        toggleButtonSideNav = binding.sideNavigationToogleButton;
+        chipNavigationBar = binding.bottomNavigationBar;
+        layoutContent = binding.layoutContent;
+        buttonLogout = binding.buttonLogout;
+        autoCompleteTextView = binding.autoCompleteTextViewLanguageSelector;
+        imageViewUserProfile = binding.imageProfile;
+        textViewUserEmail = binding.textViewUserEmail;
+    }
+
+    /*
+        Yandan açılan menünün ayarlanması
+    */
     private void setupSideNavigationMenu() {
         sideNavigationView.bringToFront();
         sideNavigationView.setNavigationItemSelectedListener(this);
         animateNavigationDrawer();
 
-        toolbar.setNavigationOnClickListener(view -> {
-
+        toggleButtonSideNav.setOnClickListener(view -> {
             if (drawerLayout.isDrawerVisible(GravityCompat.START))
                 drawerLayout.closeDrawer(GravityCompat.START);
             else
@@ -103,9 +110,11 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         buttonLogout.setOnClickListener(view -> auth.signOut());
     }
 
-    // Menü açılırken gerçekleşecek animasyon
+    /*
+        Menü açılırken gerçekleşecek animasyon
+     */
     private void animateNavigationDrawer() {
-        /*drawerLayout.setScrimColor(getColor(R.color.colorMaterialLightGreen));*/
+//        drawerLayout.setScrimColor(getColor(R.color.colorMaterialLightGreen));
         drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
@@ -125,7 +134,9 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         });
     }
 
-    // Geri tuşuna basıldığında menu nun kapatılması
+    /*
+        Geri tuşuna basıldığında menu nun kapatılması
+     */
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerVisible(GravityCompat.START))
@@ -134,7 +145,9 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
             super.onBackPressed();
     }
 
-    // Açılır menü seçenekleri
+    /*
+        Açılır menü seçenekleri
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -149,7 +162,9 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         return true;
     }
 
-    // Alt menü seçenekleri
+    /*
+        Alt menü seçenekleri
+     */
     private void setupBottomNavigationMenu() {
         // Activity başladığında seçilecek menu item
         chipNavigationBar.setItemSelected(R.id.menu_item_home, true);
@@ -159,7 +174,9 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
                 .replace(R.id.navigation_host_fragment_main, new HomeFragment())
                 .commit();
 
-        // Menu item seçildiğinde yapılacaklar
+        /*
+            Menu item seçildiğinde yapılacaklar
+         */
         chipNavigationBar.setOnItemSelectedListener(id -> {
             Fragment fragment = null;
 
@@ -191,22 +208,47 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         Language selector
      */
     private void setupLanguageSelector() {
-        buttonGroupLanguage.check(R.id.button_language_tr);
-        buttonGroupLanguage.addOnButtonCheckedListener((buttonGroup, checkedId, isChecked) -> {
-            if (isChecked) {
-                Context context = null;
-                Resources resources;
+        String[] languages = getResources().getStringArray(R.array.languages);
+        String currentLanguage = LocaleHelper.getLanguage(this);
 
-                switch (checkedId) {
-                    case R.id.button_language_tr:
-                        context = LocaleHelper.setLocale(MainActivity.this, "tr");
-                        resources = context.getResources();
-                        getResources().updateConfiguration(resources.getConfiguration(), resources.getDisplayMetrics());
+        // Geçerli dili dropdown menu nün default seçimi yap
+        switch (currentLanguage) {
+            case "tr":
+                autoCompleteTextView.setText(languages[0], false);
+                break;
+            case "en":
+                autoCompleteTextView.setText(languages[1], false);
+                break;
+            default:
+                break;
+        }
+
+        // Geçerli dili arraydan sil
+        switch (currentLanguage) {
+            case "tr":
+                languages = new String[] {languages[1]};
+                break;
+            case "en":
+                languages = new String[] {languages[0]};
+                break;
+            default:
+                break;
+        }
+
+        ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.dropdown_language_selector_item, languages);
+        autoCompleteTextView.setAdapter(arrayAdapter);
+
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (currentLanguage) {
+                    case "tr":
+                        changeLocale("en");
                         break;
-                    case R.id.button_language_en:
-                        context = LocaleHelper.setLocale(MainActivity.this, "en");
-                        resources = context.getResources();
-                        getResources().updateConfiguration(resources.getConfiguration(), resources.getDisplayMetrics());
+                    case "en":
+                        changeLocale("tr");
+                        break;
+                    default:
                         break;
                 }
             }
@@ -214,8 +256,19 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
     }
 
     /*
+        Uygulama dilinin değiştirilmesi
+     */
+    private void changeLocale(String language) {
+        Context context = LocaleHelper.setLocale(this, language);
+        Resources resources = context.getResources();
+        getResources().updateConfiguration(resources.getConfiguration(), resources.getDisplayMetrics());
+        startActivity(new Intent(this, SplashActivity.class));
+        this.finish();
+    }
+
+    /*
          Kullanıcı giriş ve çıkış yaptığında yapılacak işlemler
-          */
+    */
     @Override
     protected void onStart() {
         super.onStart();
@@ -234,8 +287,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         if (currentUser == null) {
             startActivity(new Intent(MainActivity.this, AuthActivity.class));
             this.finish();
-        }
-        else
+        } else
             loadUserInformation(currentUser);
     }
 

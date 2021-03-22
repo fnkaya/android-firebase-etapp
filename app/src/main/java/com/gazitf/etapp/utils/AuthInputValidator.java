@@ -3,6 +3,8 @@ package com.gazitf.etapp.utils;
 public abstract class AuthInputValidator {
 
     public static boolean validateName(String name) {
+        if (name == null)
+            return false;
 
         String[] words = name.split(" ");
         if (words.length < 2)
@@ -17,16 +19,23 @@ public abstract class AuthInputValidator {
     }
 
     public static boolean validateEmail(String email) {
+        if (email == null)
+            return false;
 
         return email.contains("@") && email.contains(".com");
     }
 
     public static boolean validatePhoneNumber(String phoneNumber) {
+        if (phoneNumber == null)
+            return false;
 
         return phoneNumber.length() == 13;
     }
 
     public static boolean validatePassword(String password) {
+        if (password == null)
+            return false;
+
         /*
             (?=.*[0-9]) a digit must occur at least once
             (?=.*[a-z]) a lower case letter must occur at least once
@@ -35,11 +44,9 @@ public abstract class AuthInputValidator {
             (?=\\S+$) no whitespace allowed in the entire string
             .{8,} at least 8 characters
          */
-        /*String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}";
+        String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}";
 
-        return password.matches(pattern);*/
-
-        return true;
+        return password.matches(pattern);
     }
 
     public static boolean validateVerificationCode(String verificationCode) {

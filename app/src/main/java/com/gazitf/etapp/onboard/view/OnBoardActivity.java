@@ -19,7 +19,6 @@ import com.gazitf.etapp.R;
 import com.gazitf.etapp.auth.activity.AuthActivity;
 import com.gazitf.etapp.databinding.ActivityOnboardBinding;
 import com.gazitf.etapp.onboard.adapter.SliderAdapter;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class OnBoardActivity extends AppCompatActivity {
 
@@ -28,7 +27,6 @@ public class OnBoardActivity extends AppCompatActivity {
     private Button buttonSkip, buttonGetStarted;
     private ImageButton buttonNext;
     private TextView[] dots;
-    private Animation bottomAnimation;
     private int currentPosition;
 
     @Override
@@ -53,13 +51,9 @@ public class OnBoardActivity extends AppCompatActivity {
     }
 
     private void initListeners() {
-        buttonSkip.setOnClickListener(view -> {
-            startAuthActivity();
-        });
+        buttonSkip.setOnClickListener(view -> startAuthActivity());
 
-        buttonGetStarted.setOnClickListener(view -> {
-            startAuthActivity();
-        });
+        buttonGetStarted.setOnClickListener(view -> startAuthActivity());
 
         buttonNext.setOnClickListener(view -> viewPager.setCurrentItem(++currentPosition));
     }
@@ -77,7 +71,7 @@ public class OnBoardActivity extends AppCompatActivity {
         }
 
         if (dots.length > 0) {
-            dots[position].setTextColor(getResources().getColor(R.color.colorMaterialOrange));
+            dots[position].setTextColor(getColor(R.color.colorMaterialOrange));
         }
     }
 
@@ -94,7 +88,7 @@ public class OnBoardActivity extends AppCompatActivity {
 
             // Son sayfada yapılacaklar
             if (position == dots.length - 1) {
-                bottomAnimation = AnimationUtils.loadAnimation(OnBoardActivity.this, R.anim.anim_bottom);
+                Animation bottomAnimation = AnimationUtils.loadAnimation(OnBoardActivity.this, R.anim.anim_bottom);
                 buttonGetStarted.setAnimation(bottomAnimation);
                 buttonGetStarted.setVisibility(View.VISIBLE);
                 buttonSkip.setVisibility(View.INVISIBLE);

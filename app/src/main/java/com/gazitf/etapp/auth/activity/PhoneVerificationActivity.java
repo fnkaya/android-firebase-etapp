@@ -1,6 +1,5 @@
 package com.gazitf.etapp.auth.activity;
 
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -47,6 +46,25 @@ public class PhoneVerificationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        initVariables();
+        initViews();
+        initListeners();
+        getVerificationCode(phoneNumber);
+    }
+
+    /*
+        Değişkenlerin tanımlanması
+     */
+    private void initVariables() {
+        auth = FirebaseAuth.getInstance();
+        phoneNumber = getIntent().getStringExtra("phone_number");
+        initPhoneAuthCallbacks();
+    }
+
+    /*
+        Arayüz elemanlarının tanımlanması
+     */
+    private void initViews() {
         final ActivityPhoneVerificationBinding binding = ActivityPhoneVerificationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         animationView = binding.animationViewVerificationLogo;
@@ -54,16 +72,30 @@ public class PhoneVerificationActivity extends AppCompatActivity {
         textViewCountDown = binding.textViewCountDownTimer;
         buttonVerify = binding.buttonVerify;
         buttonResend = binding.buttonResend;
-
-        auth = FirebaseAuth.getInstance();
-        phoneNumber = getIntent().getStringExtra("phone_number");
-        initPhoneAuthCallbacks();
-
-        getVerificationCode(phoneNumber);
-        initListeners();
     }
 
-    // Doğrulama kodu işlemlerini tanımla
+    /*
+        Arayüz elemanları için olay dinlenme fonksiyonlarının tanımlanması
+     */
+    private void initListeners() {
+        // Onayla butonu tıklandığında
+        buttonVerify.setOnClickListener(view -> {
+            String verificationCode = editTextVerificationCode.getText().toString();
+
+            if (validate(verificationCode)) {
+                PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(verificationId, verificationCode);
+                verifyPhoneAuthentication(phoneAuthCredential);
+            }
+        });
+
+        // Tekrar gönder butonu tıklandığında
+        buttonResend.setOnClickListener(view -> getResendVerificationCode(phoneNumber));
+    }
+
+    /*
+        Geri sayım için countDownTimer ve
+        Sms ile doğrulama işleminde kullanılacak callback fonksiyonların tanımlanması
+     */
     private void initPhoneAuthCallbacks() {
         countDownTimer = new CountDownTimer(CODE_EXPIRATION_TIME * 1000, 1000) {
             public void onTick(long millisUntilFinished) {
@@ -115,7 +147,9 @@ public class PhoneVerificationActivity extends AppCompatActivity {
         };
     }
 
-    // Doğrulama kodunu alma isteği gönder
+    /*
+        Doğrulama kodunu alma isteği gönder
+     */
     private void getVerificationCode(String phoneNumber) {
         PhoneAuthOptions phoneAuthOptions = PhoneAuthOptions.newBuilder(auth)
                 .setPhoneNumber(phoneNumber)
@@ -127,22 +161,9 @@ public class PhoneVerificationActivity extends AppCompatActivity {
         PhoneAuthProvider.verifyPhoneNumber(phoneAuthOptions);
     }
 
-    private void initListeners() {
-        buttonVerify.setOnClickListener(view -> {
-            String verificationCode = editTextVerificationCode.getText().toString();
-
-            if (validate(verificationCode)) {
-                PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(verificationId, verificationCode);
-                verifyPhoneAuthentication(phoneAuthCredential);
-            }
-        });
-
-        buttonResend.setOnClickListener(view -> {
-            getResendVerificationCode(phoneNumber);
-        });
-    }
-
-    // Girilen kodun uygunluğunu kontrol et
+    /*
+        Girilen kodun uygunluğunu kontrol et
+     */
     private boolean validate(String verificationCode) {
         if (!AuthInputValidator.validateVerificationCode(verificationCode)) {
             editTextVerificationCode.setError("invalid code");
@@ -154,7 +175,9 @@ public class PhoneVerificationActivity extends AppCompatActivity {
         }
     }
 
-    // Doğrulama kodunu tekrar alma isteği gönder
+    /*
+        Doğrulama kodunu tekrar alma isteği gönder
+     */
     private void getResendVerificationCode(String phoneNumber) {
         PhoneAuthOptions phoneAuthOptions = PhoneAuthOptions.newBuilder(auth)
                 .setPhoneNumber(phoneNumber)
@@ -171,18 +194,18 @@ public class PhoneVerificationActivity extends AppCompatActivity {
         setAnimation(R.raw.receiving);
     }
 
-    // Kullanıcı girişini yap
+    /*
+        Kullanıcı girişini gerçekleştir
+     */
     private void verifyPhoneAuthentication(PhoneAuthCredential phoneAuthCredential) {
         auth.signInWithCredential(phoneAuthCredential)
-                .addOnSuccessListener(authResult -> {
-                    returnSuccessResult();
-                })
-                .addOnFailureListener(error -> {
-                    showErrorMessage(error.getLocalizedMessage());
-                });
+                .addOnSuccessListener(authResult -> returnSuccessResult())
+                .addOnFailureListener(error -> showErrorMessage(error.getLocalizedMessage()));
     }
 
-    // Kayıt olma ekranına sms ile doğrulamanın başarılı sonuçlandığı bilgisini gönder
+    /*
+        Kayıt olma ekranına sms ile doğrulamanın başarılı sonuçlandığı bilgisini gönder
+     */
     private void returnSuccessResult() {
         setResult(RESULT_OK);
         finish();

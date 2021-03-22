@@ -1,25 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:title="@string/home"
         android:id="@+id/menu_item_home"
-        android:icon="@drawable/icon_home"
-        app:cnb_iconColor="@color/colorMaterialGreen"    />
+        android:icon="@drawable/icon_home"/>
 
     <item android:title="@string/watch_list"
         android:id="@+id/menu_item_watchList"
-        android:icon="@drawable/icon_favorite"
-        app:cnb_iconColor="@color/colorMaterialPink" />
+        android:icon="@drawable/icon_favorite"/>
 
     <item android:title="@string/message"
         android:id="@+id/menu_item_message"
-        android:icon="@drawable/icon_message"
-        app:cnb_iconColor="@color/colorMaterialBlue" />
+        android:icon="@drawable/icon_message"/>
 
     <item android:title="@string/post"
         android:id="@+id/menu_item_post"
-        android:icon="@drawable/icon_post"
-        app:cnb_iconColor="@color/colorMaterialOrange" />
+        android:icon="@drawable/icon_post"/>
 </menu>

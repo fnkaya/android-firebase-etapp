@@ -4,9 +4,11 @@ import android.os.Bundle;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 
-import com.gazitf.etapp.utils.BaseActivity;
 import com.gazitf.etapp.R;
+import com.gazitf.etapp.utils.BaseActivity;
 
 public class AuthActivity extends BaseActivity {
 
@@ -21,6 +23,9 @@ public class AuthActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         NavController navController = Navigation.findNavController(findViewById(R.id.navigation_host_fragment_auth));
+        /*
+            Eğer backstack boş ise onBackPressed methodu çalışsın
+         */
         if (!navController.popBackStack())
             super.onBackPressed();
     }

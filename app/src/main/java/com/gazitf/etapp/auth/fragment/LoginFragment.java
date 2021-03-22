@@ -40,9 +40,8 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        auth = FirebaseAuth.getInstance();
         binding = FragmentLoginBinding.inflate(inflater, container, false);
-
         return binding.getRoot();
     }
 
@@ -50,6 +49,11 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        initViews();
+        initListeners();
+    }
+
+    private void initViews() {
         lottieAnimationView = binding.animationViewAuthLogo;
         inputLayoutEmail = binding.textInputLayoutLoginEmail;
         inputLayoutPassword = binding.textInputLayoutLoginPassword;
@@ -58,10 +62,6 @@ public class LoginFragment extends Fragment {
         buttonLogin = binding.buttonLogin;
         textViewRedirectToRegister = binding.textViewRedirectRegister;
         textViewForgotPassword = binding.textViewForgotPassword;
-
-        auth = FirebaseAuth.getInstance();
-
-        initListeners();
     }
 
     private void initListeners() {

@@ -21,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar_register"
+        android:scrollbars="none"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true">
@@ -96,6 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="8dp"
                     android:hint="@string/phone_number"
+                    app:prefixText="@string/tr_90"
                     app:endIconMode="clear_text"
                     app:startIconDrawable="@drawable/icon_phone">
 
@@ -104,8 +106,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="phone"
-                        android:maxLength="13"
-                        android:text="@string/tr_90" />
+                        android:maxLength="13" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout

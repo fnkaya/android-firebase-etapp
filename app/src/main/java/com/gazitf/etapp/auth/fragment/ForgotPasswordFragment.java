@@ -35,6 +35,7 @@ public class ForgotPasswordFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        auth = FirebaseAuth.getInstance();
         binding = FragmentForgotPasswordBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -43,14 +44,15 @@ public class ForgotPasswordFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        initViews();
+        initListeners();
+    }
+
+    private void initViews() {
         toolbar = binding.toolbarForgotPassword;
         inputLayoutEmailToResetPassword = binding.textInputLayoutEmailToResetPassword;
         textViewEmailToResetPassword = binding.textInputEmailToResetPassword;
         buttonSendResetLink = binding.buttonSendLinkToResetPassword;
-
-        auth = FirebaseAuth.getInstance();
-
-        initListeners();
     }
 
     private void initListeners() {
@@ -84,8 +86,8 @@ public class ForgotPasswordFragment extends Fragment {
     }
 
     private void navigateToLogin(View view) {
-        NavController navController = Navigation.findNavController(requireActivity().findViewById(R.id.navigation_host_fragment_auth));
-        navController.popBackStack();
+        NavDirections direction = ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToLoginFragment();
+        Navigation.findNavController(requireActivity(), R.id.navigation_host_fragment_auth).navigate(direction);
     }
 
     @Override

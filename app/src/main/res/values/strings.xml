@@ -29,4 +29,13 @@
     <string name="forgot_password">Forgot Password</string>
     <string name="send_link">Send Link</string>
     <string name="verification_link_sent_to_email_address">Lütfen e-mail adresinize gönderilen bağlantıya tıklayarak e-mail adresinizi doğrulayınız.</string>
+    <string name="camp">Camp</string>
+    <string name="running">Running</string>
+    <string name="cinema">Cinema</string>
+    <string name="education">Education</string>
+
+    <string-array name="languages">
+        <item>TR</item>
+        <item>EN</item>
+    </string-array>
 </resources>
