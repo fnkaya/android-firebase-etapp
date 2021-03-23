@@ -17,6 +17,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
@@ -79,8 +81,7 @@ public class MainActivity extends BaseActivity implements FirebaseAuth.AuthState
     }
 
     private void initViews() {
-        final ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         drawerLayout = binding.layoutNavigationDrawer;
         sideNavigationView = binding.sideNavigationView;
         toggleButtonSideNav = binding.sideNavigationToogleButton;

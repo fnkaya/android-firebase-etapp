@@ -1,81 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".auth.activity.PhoneVerificationActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/animation_view_verification_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        app:layout_constraintBottom_toTopOf="@id/linear_layout_verification"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/receiving" />
-
-    <LinearLayout
-        android:id="@+id/linear_layout_verification"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/animation_view_verification_logo">
+        android:layout_height="match_parent"
+        tools:context=".auth.activity.PhoneVerificationActivity">
 
-        <TextView
-            android:id="@+id/text_view_count_down_timer"
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_view_verification_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            app:layout_constraintBottom_toTopOf="@id/linear_layout_verification"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/receiving" />
+
+        <LinearLayout
+            android:id="@+id/linear_layout_verification"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:padding="16dp"
-            android:textStyle="bold"
-            android:visibility="gone"/>
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/animation_view_verification_logo">
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="32dp"
-            android:layout_marginVertical="8dp"
-            android:hint="@string/verification_code">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/text_input_verification_code"
+            <TextView
+                android:id="@+id/text_view_count_down_timer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:maxLength="6"
                 android:textAlignment="center"
-                android:letterSpacing=".5"/>
-        </com.google.android.material.textfield.TextInputLayout>
+                android:padding="16dp"
+                android:textStyle="bold"
+                android:visibility="gone"/>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_verify"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="32dp"
-            android:layout_marginVertical="8dp"
-            android:paddingVertical="16dp"
-            android:text="@string/verify_code"
-            android:textStyle="bold"/>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginVertical="8dp"
+                android:hint="@string/verification_code">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_resend"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="32dp"
-            android:layout_marginVertical="8dp"
-            android:paddingVertical="16dp"
-            android:text="@string/resend"
-            android:textStyle="bold"
-            android:visibility="invisible"/>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_input_verification_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:maxLength="6"
+                    android:textAlignment="center"
+                    android:letterSpacing=".5"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-    </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_verify"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginVertical="8dp"
+                android:paddingVertical="16dp"
+                android:text="@string/verify_code"
+                android:textStyle="bold"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_resend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginVertical="8dp"
+                android:paddingVertical="16dp"
+                android:text="@string/resend"
+                android:textStyle="bold"
+                android:visibility="invisible"/>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

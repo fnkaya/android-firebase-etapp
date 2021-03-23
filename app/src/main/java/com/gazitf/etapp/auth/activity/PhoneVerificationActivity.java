@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.gazitf.etapp.R;
@@ -65,8 +66,7 @@ public class PhoneVerificationActivity extends AppCompatActivity {
         Arayüz elemanlarının tanımlanması
      */
     private void initViews() {
-        final ActivityPhoneVerificationBinding binding = ActivityPhoneVerificationBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        final ActivityPhoneVerificationBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_phone_verification);
         animationView = binding.animationViewVerificationLogo;
         editTextVerificationCode = binding.textInputVerificationCode;
         textViewCountDown = binding.textViewCountDownTimer;
