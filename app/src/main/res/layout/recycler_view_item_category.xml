@@ -6,8 +6,8 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="2dp"
-        app:cardElevation="8dp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp"
         android:layout_margin="8dp">
 
         <LinearLayout
@@ -20,13 +20,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:scaleType="centerCrop"
+                android:src="@drawable/icon_image"
                 android:contentDescription="Category image" />
 
             <TextView
                 android:id="@+id/text_view_category_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/colorLightGrey"
+                android:padding="4dp"
                 android:textAlignment="center"
+                android:textSize="24sp"
                 android:textStyle="bold"/>
 
         </LinearLayout>

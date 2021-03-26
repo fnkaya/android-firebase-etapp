@@ -29,7 +29,7 @@ public abstract class AuthInputValidator {
         if (phoneNumber == null)
             return false;
 
-        return phoneNumber.length() == 13;
+        return phoneNumber.length() == 10;
     }
 
     public static boolean validatePassword(String password) {

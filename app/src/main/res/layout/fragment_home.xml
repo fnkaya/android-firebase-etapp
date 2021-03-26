@@ -15,162 +15,29 @@
             android:paddingHorizontal="16dp"
             tools:context=".main.view.fragment.HomeFragment">
 
-            <HorizontalScrollView
-                android:id="@+id/scroll_view_top_categories"
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_view_categories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbars="none"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:text="Categories"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/montserrat_bold"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <LinearLayout
-                    android:id="@+id/layout_top_categories"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_gravity="center"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="8dp">
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:cardCornerRadius="8dp">
-
-                            <ImageView
-                                android:layout_width="75dp"
-                                android:layout_height="75dp"
-                                android:background="@color/colorMaterialLightOrange"
-                                android:contentDescription="Social Categories"
-                                android:padding="16dp"
-                                android:src="@drawable/icon_camp" />
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="@string/camp"
-                            android:textAlignment="center" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="8dp">
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:cardCornerRadius="8dp">
-
-                        <ImageView
-                            android:layout_width="75dp"
-                            android:layout_height="75dp"
-                            android:background="@color/colorMaterialLightGreen"
-                            android:contentDescription="Social Categories"
-                            android:padding="16dp"
-                            android:src="@drawable/icon_running" />
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="@string/running"
-                            android:textAlignment="center" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="8dp">
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:cardCornerRadius="8dp">
-
-                        <ImageView
-                            android:layout_width="75dp"
-                            android:layout_height="75dp"
-                            android:background="@color/colorMaterialLightPink"
-                            android:contentDescription="Social Categories"
-                            android:padding="16dp"
-                            android:src="@drawable/icon_cinema" />
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="@string/cinema"
-                            android:textAlignment="center" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="8dp">
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:cardCornerRadius="8dp">
-
-                        <ImageView
-                            android:layout_width="75dp"
-                            android:layout_height="75dp"
-                            android:background="@color/colorMaterialLightBlue"
-                            android:contentDescription="Social Categories"
-                            android:padding="16dp"
-                            android:src="@drawable/icon_education" />
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="@string/education"
-                            android:textAlignment="center" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </HorizontalScrollView>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/recycler_view_categories"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_categories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="32dp"
-                app:layout_constraintBottom_toTopOf="@id/recycler_view_activities"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="32dp"
+                app:layout_constraintTop_toBottomOf="@id/text_view_categories"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/scroll_view_top_categories" />
+                app:layout_constraintBottom_toTopOf="@id/recycler_view_activities" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_activities"

@@ -58,7 +58,7 @@ public class PhoneVerificationActivity extends AppCompatActivity {
      */
     private void initVariables() {
         auth = FirebaseAuth.getInstance();
-        phoneNumber = getIntent().getStringExtra("phone_number");
+        phoneNumber = "+90" + getIntent().getStringExtra("phone_number");
         initPhoneAuthCallbacks();
     }
 

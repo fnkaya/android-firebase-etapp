@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,11 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.gazitf.etapp.databinding.FragmentHomeBinding;
-import com.google.firebase.auth.FirebaseAuth;
+import com.gazitf.etapp.main.adapter.CategoryListRecyclerViewAdapter;
+import com.gazitf.etapp.main.modelview.HomeViewModel;
 
 public class HomeFragment extends Fragment {
 
-    private FirebaseAuth auth;
+    private HomeViewModel viewModel;
 
     private FragmentHomeBinding binding;
     private RecyclerView recyclerViewCategories, recyclerViewActivities;
@@ -26,7 +28,6 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
-        auth = FirebaseAuth.getInstance();
         return binding.getRoot();
     }
 
@@ -37,15 +38,31 @@ public class HomeFragment extends Fragment {
         initViews();
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        viewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
+        viewModel.getCategoryList().observe(getViewLifecycleOwner(), categoryList -> {
+            CategoryListRecyclerViewAdapter adapter = new CategoryListRecyclerViewAdapter(categoryList);
+            recyclerViewCategories.setAdapter(adapter);
+        });
+    }
+
     private void initViews() {
         recyclerViewCategories = binding.recyclerViewCategories;
         setupRecyclerViewCategories();
         recyclerViewActivities = binding.recyclerViewActivities;
+        setupRecyclerViewActivities();
     }
 
     private void setupRecyclerViewCategories() {
         recyclerViewCategories.setHasFixedSize(true);
         recyclerViewCategories.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false));
+    }
+
+    private void setupRecyclerViewActivities() {
+        recyclerViewActivities.setHasFixedSize(true);
+        recyclerViewActivities.setLayoutManager(new LinearLayoutManager(requireActivity()));
     }
 
     @Override

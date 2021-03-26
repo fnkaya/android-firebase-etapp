@@ -104,7 +104,7 @@ public class LoginFragment extends Fragment {
                     if (authResult.getUser().isEmailVerified())
                         navigateToMainActivity();
                     else
-                        showSendEmailVerificationDialog();
+                        showSendEmailVerificationDialog(authResult.getUser());
                 })
                 .addOnFailureListener(error -> {
                     Toast.makeText(getActivity(), error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
@@ -113,12 +113,13 @@ public class LoginFragment extends Fragment {
     }
 
 
-    private void showSendEmailVerificationDialog() {
+    private void showSendEmailVerificationDialog(FirebaseUser user) {
         setAnimation(R.raw.email_not_verified);
         new MaterialAlertDialogBuilder(requireContext())
+                .setCancelable(false)
                 .setTitle("E-mail adresi doğrulama")
                 .setMessage("E-mail adresiniz henüz doğrulanmamış.\nDoğrulama iletisini tekrar almak ister misiniz?")
-                .setPositiveButton("Tekrar Gönder", (dialog, which) -> sendEmailVerification(auth.getCurrentUser()))
+                .setPositiveButton("Tekrar Gönder", (dialog, which) -> sendEmailVerification(user))
                 .setNegativeButton("İptal", (dialog, which) -> dialog.dismiss())
                 .show();
     }

@@ -236,7 +236,7 @@ public class MainActivity extends BaseActivity implements FirebaseAuth.AuthState
                 break;
         }
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.dropdown_language_selector_item, languages);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.dropdown_language_selector_item, languages);
         autoCompleteTextView.setAdapter(arrayAdapter);
 
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
