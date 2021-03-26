@@ -2,78 +2,88 @@ package com.gazitf.etapp.utils;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
-import android.os.LocaleList;
 import android.preference.PreferenceManager;
 
 import java.util.Locale;
 
-public class LocaleHelper extends ContextWrapper {
+public class LocaleHelper {
 
+    private static final String TAG = LocaleHelper.class.getSimpleName();
     private static final String SELECTED_LANGUAGE = "Locale.Helper.Selected.Language";
 
-    public LocaleHelper(Context base) {
-        super(base);
+    /*
+        Uygulama başlarken çağırılacak
+        Son yapılan dil seçeneği istenecek
+     */
+    public static Context onAttach(Context context) {
+        return setLocale(context, getLanguage(context));
     }
 
-   public static Context onAttach(Context context) {
-        String lang = getPersistedData(context, Locale.getDefault().getLanguage());
-        return setLocale(context, lang);
-   }
-
-    public static Context onAttach(Context context, String defaultLang) {
-        String lang = getPersistedData(context, defaultLang);
-        return setLocale(context, lang);
+    public static String getLanguage(Context context) {
+        return getPersistedData(context);
     }
 
-    public static Context setLocale(Context context, String lang) {
-        persist(context, lang);
+    /*
+        Belirtilen dili kayıt fonksiyonuna gönder
+        Sürüme göre resource güncelleme işlemini gerçekleştir
+     */
+    public static Context setLocale(Context context, String language) {
+        persist(context, language);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            return updateResources(context, lang);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return updateResources(context, language);
+        }
 
-        return updateResourcesLegacy(context, lang);
+        return updateResourcesLegacy(context, language);
+    }
+
+    /*
+        Belirtilen dili kaydet
+     */
+    private static void persist(Context context, String language) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        editor.putString(SELECTED_LANGUAGE, language);
+        editor.apply();
+    }
+
+    /*
+        Daha önce kaydedilmiş bir dil var ise dön
+        yoksa telefonun dilini dön
+     */
+    private static String getPersistedData(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(SELECTED_LANGUAGE, Locale.getDefault().getLanguage());
     }
 
     @TargetApi(Build.VERSION_CODES.N)
-    private static Context updateResources(Context context, String lang) {
-        Locale locale = new Locale(lang);
+    private static Context updateResources(Context context, String language) {
+        Locale locale = new Locale(language);
         Locale.setDefault(locale);
 
         Configuration configuration = context.getResources().getConfiguration();
         configuration.setLocale(locale);
-        configuration.setLayoutDirection(locale);
 
         return context.createConfigurationContext(configuration);
     }
 
-    private static Context updateResourcesLegacy(Context context, String lang) {
-        Locale locale = new Locale(lang);
+    @SuppressWarnings("deprecation")
+    private static Context updateResourcesLegacy(Context context, String language) {
+        Locale locale = new Locale(language);
         Locale.setDefault(locale);
 
         Resources resources = context.getResources();
+
         Configuration configuration = resources.getConfiguration();
         configuration.locale = locale;
-        configuration.setLayoutDirection(locale);
+
         resources.updateConfiguration(configuration, resources.getDisplayMetrics());
 
         return context;
-    }
-
-    private static void persist(Context context, String lang) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = preferences.edit();
-
-        editor.putString(SELECTED_LANGUAGE, lang);
-        editor.apply();
-    }
-
-    private static String getPersistedData(Context context, String lang) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getString(SELECTED_LANGUAGE, lang);
     }
 }

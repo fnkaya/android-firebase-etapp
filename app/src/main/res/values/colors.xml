@@ -16,7 +16,9 @@
     <color name="colorBlack">#000</color>
     <color name="colorWhite">#fff</color>
     <color name="colorGrey">#E5E5E5</color>
+    <color name="colorGreyText">#787878</color>
     <color name="colorRed">#ff0000</color>
+    <color name="colorGreen">#8BC34A</color>
     // Profile screen colors
     <color name="colorAddress">#2F7092</color>
     <color name="colorFollowers">#0D5D98</color>

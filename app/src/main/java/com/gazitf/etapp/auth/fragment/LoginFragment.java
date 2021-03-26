@@ -1,6 +1,5 @@
 package com.gazitf.etapp.auth.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.gazitf.etapp.main.view.activity.MainActivity;
+import com.gazitf.etapp.auth.activity.AuthActivity;
 import com.gazitf.etapp.R;
 import com.gazitf.etapp.databinding.FragmentLoginBinding;
 import com.gazitf.etapp.utils.AuthInputValidator;
@@ -41,9 +40,8 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        auth = FirebaseAuth.getInstance();
         binding = FragmentLoginBinding.inflate(inflater, container, false);
-
         return binding.getRoot();
     }
 
@@ -51,6 +49,11 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        initViews();
+        initListeners();
+    }
+
+    private void initViews() {
         lottieAnimationView = binding.animationViewAuthLogo;
         inputLayoutEmail = binding.textInputLayoutLoginEmail;
         inputLayoutPassword = binding.textInputLayoutLoginPassword;
@@ -59,10 +62,6 @@ public class LoginFragment extends Fragment {
         buttonLogin = binding.buttonLogin;
         textViewRedirectToRegister = binding.textViewRedirectRegister;
         textViewForgotPassword = binding.textViewForgotPassword;
-
-        auth = FirebaseAuth.getInstance();
-
-        initListeners();
     }
 
     private void initListeners() {
@@ -92,18 +91,20 @@ public class LoginFragment extends Fragment {
 
         if (isValid)
             signIn(email, password);
+        else
+            ((AuthActivity) requireActivity()).showSnackBar("Required Field", true);
     }
 
     // Kullanıcı girişi yap
     private void signIn(String email, String password) {
-        setAnimation(R.raw.sign_in);
+        setAnimation(R.raw.loading);
 
         auth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener(authResult -> {
                     if (authResult.getUser().isEmailVerified())
-                        startMainActivity();
+                        navigateToMainActivity();
                     else
-                        showSendEmailVerificationDialog();
+                        showSendEmailVerificationDialog(authResult.getUser());
                 })
                 .addOnFailureListener(error -> {
                     Toast.makeText(getActivity(), error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
@@ -112,29 +113,28 @@ public class LoginFragment extends Fragment {
     }
 
 
-    private void showSendEmailVerificationDialog() {
-        new MaterialAlertDialogBuilder(getContext())
+    private void showSendEmailVerificationDialog(FirebaseUser user) {
+        setAnimation(R.raw.email_not_verified);
+        new MaterialAlertDialogBuilder(requireContext())
+                .setCancelable(false)
                 .setTitle("E-mail adresi doğrulama")
                 .setMessage("E-mail adresiniz henüz doğrulanmamış.\nDoğrulama iletisini tekrar almak ister misiniz?")
-                .setPositiveButton("Tekrar Gönder", (dialog, which) -> sendEmailVerification(auth.getCurrentUser()))
+                .setPositiveButton("Tekrar Gönder", (dialog, which) -> sendEmailVerification(user))
                 .setNegativeButton("İptal", (dialog, which) -> dialog.dismiss())
                 .show();
     }
 
     private void sendEmailVerification(FirebaseUser user) {
+        setAnimation(R.raw.email_sent);
         user.sendEmailVerification()
                 .addOnCompleteListener(response ->
                         Toast.makeText(getActivity(), "E-mail doğrulama bağlantısı gönderildi.", Toast.LENGTH_LONG).show());
     }
 
-    private void startMainActivity() {
-        startActivity(new Intent(getActivity(), MainActivity.class));
-        getActivity().finishAffinity();
-    }
-
-    private void setAnimation(int resource) {
-        lottieAnimationView.setAnimation(resource);
-        lottieAnimationView.playAnimation();
+    private void navigateToMainActivity() {
+        NavDirections direction = LoginFragmentDirections.actionLoginFragmentToMainActivity();
+        Navigation.findNavController(requireView()).navigate(direction);
+        requireActivity().finishAffinity();
     }
 
     private void navigateToRegister(View view) {
@@ -142,10 +142,14 @@ public class LoginFragment extends Fragment {
         Navigation.findNavController(view).navigate(direction);
     }
 
-
     private void navigateToForgotPassword(View view) {
         NavDirections direction = LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment();
         Navigation.findNavController(view).navigate(direction);
+    }
+
+    private void setAnimation(int resource) {
+        lottieAnimationView.setAnimation(resource);
+        lottieAnimationView.playAnimation();
     }
 
     @Override

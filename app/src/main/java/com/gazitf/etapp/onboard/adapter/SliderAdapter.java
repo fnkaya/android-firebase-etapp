@@ -16,7 +16,7 @@ public class SliderAdapter extends PagerAdapter {
 
     private final Context context;
 
-    int[] images = {
+    final int[] images = {
             R.drawable.image_skateboard,
             R.drawable.image_basketball,
             R.drawable.image_camp,

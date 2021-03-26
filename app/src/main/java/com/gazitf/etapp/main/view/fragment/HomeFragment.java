@@ -1,42 +1,33 @@
 package com.gazitf.etapp.main.view.fragment;
 
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Toast;
 
-import com.gazitf.etapp.R;
 import com.gazitf.etapp.databinding.FragmentHomeBinding;
-import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.Locale;
+import com.gazitf.etapp.main.adapter.CategoryListRecyclerViewAdapter;
+import com.gazitf.etapp.main.modelview.HomeViewModel;
 
 public class HomeFragment extends Fragment {
 
-    private String languageCode = "fr";
+    private HomeViewModel viewModel;
 
     private FragmentHomeBinding binding;
-
-    private FirebaseAuth auth;
+    private RecyclerView recyclerViewCategories, recyclerViewActivities;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         binding = FragmentHomeBinding.inflate(inflater, container, false);
-
         return binding.getRoot();
     }
 
@@ -44,16 +35,34 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        auth = FirebaseAuth.getInstance();
+        initViews();
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        Window window = getActivity().getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(getActivity().getColor(R.color.colorMaterialLightGreen));
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        viewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
+        viewModel.getCategoryList().observe(getViewLifecycleOwner(), categoryList -> {
+            CategoryListRecyclerViewAdapter adapter = new CategoryListRecyclerViewAdapter(categoryList);
+            recyclerViewCategories.setAdapter(adapter);
+        });
+    }
+
+    private void initViews() {
+        recyclerViewCategories = binding.recyclerViewCategories;
+        setupRecyclerViewCategories();
+        recyclerViewActivities = binding.recyclerViewActivities;
+        setupRecyclerViewActivities();
+    }
+
+    private void setupRecyclerViewCategories() {
+        recyclerViewCategories.setHasFixedSize(true);
+        recyclerViewCategories.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false));
+    }
+
+    private void setupRecyclerViewActivities() {
+        recyclerViewActivities.setHasFixedSize(true);
+        recyclerViewActivities.setLayoutManager(new LinearLayoutManager(requireActivity()));
     }
 
     @Override

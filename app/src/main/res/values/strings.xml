@@ -12,7 +12,7 @@
     <string name="verify_code">Verify code</string>
     <string name="resend">Resend</string>
     <string name="already_have_account">I already have an account.</string>
-    <string name="dont_have_account">I don\'t have any account yet?</string>
+    <string name="dont_have_account">I don\'t have any account yet.</string>
     <string name="skip">Skip</string>
     <string name="lets_get_started">Lets get started</string>
     <string name="invalid_email">invalid email</string>
@@ -27,12 +27,15 @@
     <string name="code_expired">Verification code expired!</string>
     <string name="create_activity">Create Activity</string>
     <string name="forgot_password">Forgot Password</string>
+    <string name="send_link">Send Link</string>
+    <string name="verification_link_sent_to_email_address">Lütfen e-mail adresinize gönderilen bağlantıya tıklayarak e-mail adresinizi doğrulayınız.</string>
+    <string name="camp">Camp</string>
+    <string name="running">Running</string>
+    <string name="cinema">Cinema</string>
+    <string name="education">Education</string>
 
     <string-array name="languages">
-        <item>English</item>
-        <item>Turkish</item>
+        <item>TR</item>
+        <item>EN</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="send_link">Send Link</string>
 </resources>

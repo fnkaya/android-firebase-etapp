@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="77270220-a758-4c6b-8bd6-fa344284bca1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/main/adapter/CategoriesRecyclerViewAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/main/model/Category.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/main/repository/FirestoreRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/drawable/ic_launcher_foreground.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/layout/recycler_view_item_category.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/values/ic_launcher_background.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/gazitf/etapp/utils/AuthInputValidatorTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/auth/activity/AuthActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/auth/activity/AuthActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/auth/activity/PhoneVerificationActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/auth/activity/PhoneVerificationActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/auth/activity/SplashActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/auth/activity/SplashActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/auth/fragment/ForgotPasswordFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/auth/fragment/ForgotPasswordFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/auth/fragment/LoginFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/auth/fragment/LoginFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/auth/fragment/RegisterFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/auth/fragment/RegisterFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/main/view/activity/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/main/view/activity/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/main/view/fragment/HomeFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/main/view/fragment/HomeFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/main/view/fragment/MessageFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/main/view/fragment/MessageFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/main/view/fragment/PostFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/main/view/fragment/PostFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/main/view/fragment/WatchListFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/main/view/fragment/WatchListFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/onboard/adapter/SliderAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/onboard/adapter/SliderAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/onboard/view/OnBoardActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/onboard/view/OnBoardActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/utils/App.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/utils/AuthInputValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/utils/AuthInputValidator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/utils/BaseActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/utils/BaseActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/utils/LocaleHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gazitf/etapp/utils/LocaleHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable-v24/ic_launcher_foreground.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/ic_launcher_background.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/ic_launcher_background.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/drawable/rounded_corners.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/drawable/rounded_corners.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_auth.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_auth.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_phone_verification.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_phone_verification.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_home.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_register.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_register.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/slides_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/slides_layout.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/menu/bottom_navigation_menu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/menu/bottom_navigation_menu.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/mipmap-hdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/mipmap-hdpi/ic_launcher.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/mipmap-hdpi/ic_launcher_round.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/mipmap-hdpi/ic_launcher_round.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/mipmap-mdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/mipmap-mdpi/ic_launcher.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/mipmap-mdpi/ic_launcher_round.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/mipmap-mdpi/ic_launcher_round.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/mipmap-xhdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/mipmap-xhdpi/ic_launcher.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/mipmap-xhdpi/ic_launcher_round.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/mipmap-xhdpi/ic_launcher_round.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/mipmap-xxhdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/mipmap-xxhdpi/ic_launcher.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/mipmap-xxhdpi/ic_launcher_round.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/mipmap-xxhdpi/ic_launcher_round.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/mipmap-xxxhdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/mipmap-xxxhdpi/ic_launcher.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/raw/loading.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/raw/loading.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/values-night/strings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/values-tr-rTR/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values-tr-rTR/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/values/themes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/values/themes.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../build.gradle" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1q7SS33lIhsrFX3YbNxLPLH9luB" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="77270220-a758-4c6b-8bd6-fa344284bca1" name="Default Changelist" comment="" />
+      <created>1616429131141</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1616429131141</updated>
+    </task>
+    <servers />
+  </component>
+</project>
