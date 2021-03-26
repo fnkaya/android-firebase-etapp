@@ -3,6 +3,9 @@
     package="com.gazitf.etapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:icon="@mipmap/ic_launcher"
@@ -28,7 +31,8 @@
             android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".auth.activity.PhoneVerificationActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".main.view.activity.MainActivity"
             android:screenOrientation="portrait" />
@@ -37,6 +41,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".profile.ProfileActivity"
+            android:screenOrientation="portrait" />
+      <activity 
+            android:name=".profile.UpdateNameActivity"
             android:screenOrientation="portrait" />
     </application>
 
