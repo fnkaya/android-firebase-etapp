@@ -1,182 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/rellayl"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/grad"
-        android:paddingBottom="8dp">
-
+        android:layout_height="wrap_content">
         <RelativeLayout
-            android:id="@+id/imgUser"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true">
 
             <ImageView
-                android:layout_width="120dp"
+                android:id="@+id/coverIv"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:background="@color/colorPrimary">
+
+            </ImageView>
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="120dp"
-                android:layout_margin="8dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="100dp">
 
-                android:adjustViewBounds="true"
-                android:background="@drawable/circle"
-                android:padding="8dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/image_profile" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="130dp"
-                android:text="WALTER WHITE"
-                android:textSize="15dp" />
+                <ImageView
+                    android:id="@+id/avatarIv"
+                    android:layout_marginStart="20dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_default_img_white"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/colorPrimaryDark"/>
+            </LinearLayout>
 
+            <Button
+                android:id="@+id/buton"
+                android:layout_width="34dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="150dp"
+                android:layout_marginTop="180dp"
+                android:background="@drawable/changeimage"></Button>
 
         </RelativeLayout>
 
-
-        <Button
-            android:id="@+id/changePhotoBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="150dp"
-            android:backgroundTint="@color/colorPrimaryDark"
-            android:text="Profil Fotoğrafını Değiştir"
-            android:textSize="10dp" />
+    </ScrollView>
 
 
-    </RelativeLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/button_name"
+        android:layout_width="51dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
 
-    <LinearLayout
-        android:id="@+id/lin1"
+        android:layout_marginEnd="31dp"
+        android:layout_marginRight="31dp"
+        android:layout_marginBottom="30dp"
+        android:src="@drawable/ic_edit_white" />
+
+    <ImageView
+        android:layout_width="259dp"
+        android:layout_height="79dp"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/profile">
+
+    </ImageView>
+
+    <TextView
+
+        android:id="@+id/fullName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/rellayl">
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="250dp"
+        android:text="Full Name"
+        android:textColor="@color/colorPrimaryDark"
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Email:"
-            android:textColor="@color/colorPrimary" />
+        android:textSize="20dp" />
 
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/lin2"
-        android:layout_width="374dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/lin1">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="suygood19@gmail.com"
-            android:textColor="@color/colorFollowers"
-            android:textSize="20sp" />
-
-        <Button
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="48dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="değiştir"
-            android:textSize="10dp" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/lin3"
+    <TextView
+        android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lin2">
+        android:layout_marginTop="290dp"
+        android:layout_marginStart="20dp"
+        android:drawableLeft="@drawable/person"
+        android:textSize="20dp"
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="İsim:"
-            android:textColor="@color/colorPrimary" />
+        android:text="Your Name" />
 
 
-    </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/lin4"
+    <TextView
+        android:id="@+id/email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lin3">
+        android:layout_marginStart="20dp"
+        android:drawableLeft="@drawable/email"
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Walter White"
-            android:textColor="@color/colorFollowers"
-            android:textSize="20sp" />
+        android:layout_marginTop="360dp"
+        android:text="Your Email"
 
-        <Button
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="147dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="değiştir"
-            android:textSize="10dp" />
+        android:textSize="20dp" />
 
+    <TextView
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/lin5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lin4">
+        android:layout_marginTop="330dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_marginStart="20dp"
+        android:textSize="20dp"
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Telefon:"
-            android:textColor="@color/colorPrimary" />
+        android:text="Email" />
+     <TextView
 
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/lin6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lin5">
+        android:layout_marginTop="410dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_marginStart="20dp"
+        android:textSize="20dp"
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0555 555 55 55"
-            android:textColor="@color/colorFollowers"
-            android:textSize="20sp" />
+        android:text="Phone" />
 
-        <Button
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="120dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="değiştir"
-            android:textSize="10dp" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
+    <TextView
+        android:id="@+id/phone"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
 
+        android:layout_marginStart="20dp"
 
-    </LinearLayout>
+        android:layout_marginTop="450dp"
+        android:drawableLeft="@drawable/person"
+        android:text="Phone Number"
+
+        android:textSize="20dp" />
 
 </RelativeLayout>
 
