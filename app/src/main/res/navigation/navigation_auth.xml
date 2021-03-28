@@ -42,6 +42,11 @@
             app:exitAnim="@anim/anim_exit_to_right"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_registerFragment_to_mainActivity"
+            app:destination="@id/mainActivity"
+            app:enterAnim="@anim/anim_enter_fade"
+            app:exitAnim="@anim/anim_exit_fade" />
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"

@@ -1,156 +1,284 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ScrollView
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewmodel"
+            type="com.gazitf.etapp.profile.ProfileViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
+        <RelativeLayout
+            android:id="@+id/layout_cover"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/coverIv"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:background="@color/colorPrimary">
+                android:layout_height="150dp"
+                android:background="@color/colorPrimary" />
 
-            </ImageView>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:orientation="horizontal"
-                android:layout_marginTop="100dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginHorizontal="64dp"
+                android:src="@drawable/editprofileimage" />
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/avatarIv"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="16dp"
+                android:src="@drawable/image_profile"
+                app:civ_border_color="@color/colorGrey"
+                app:civ_border_width="2dp"
+                profileImage="@{viewmodel.user.photoUrl}" />
 
-                <ImageView
-                    android:id="@+id/avatarIv"
-                    android:layout_marginStart="20dp"
-                    android:background="@color/colorPrimaryDark"
-                    android:padding="5dp"
-                    android:src="@drawable/ic_default_img_white"
-                    android:layout_width="130dp"
-                    android:layout_height="130dp"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="@color/colorPrimaryDark"/>
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/buton"
-                android:layout_width="34dp"
-                android:layout_height="32dp"
-                android:layout_marginStart="150dp"
-                android:layout_marginTop="180dp"
-                android:background="@drawable/changeimage"></Button>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/button_edit_profile_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/avatarIv"
+                android:layout_toEndOf="@id/avatarIv"
+                android:drawablePadding="8dp"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="Profil resmini düzenle"
+                android:textStyle="bold" />
 
         </RelativeLayout>
 
-    </ScrollView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:padding="32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_cover">
 
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="@string/name"
+                app:startIconDrawable="@drawable/icon_person">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/button_name"
-        android:layout_width="51dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="10dp"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="@{viewmodel.editMode}"
+                    android:inputType="textPersonName"
+                    android:text="@{viewmodel.user.displayName}" />
 
-        android:layout_marginEnd="31dp"
-        android:layout_marginRight="31dp"
-        android:layout_marginBottom="30dp"
-        android:src="@drawable/ic_edit_white" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <ImageView
-        android:layout_width="259dp"
-        android:layout_height="79dp"
-        android:layout_marginStart="150dp"
-        android:layout_marginTop="100dp"
-        android:background="@drawable/profile">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="@string/e_mail"
+                app:startIconDrawable="@drawable/icon_email">
 
-    </ImageView>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="@{viewmodel.editMode}"
+                    android:inputType="textEmailAddress"
+                    android:text="@{viewmodel.user.email}" />
 
-    <TextView
+            </com.google.android.material.textfield.TextInputLayout>
 
-        android:id="@+id/fullName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="250dp"
-        android:text="Full Name"
-        android:textColor="@color/colorPrimaryDark"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
 
-        android:textSize="20dp" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_layout_profile_phone_number"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:hint="@string/phone_number"
+                    app:prefixText="@string/tr_90"
+                    app:startIconDrawable="@drawable/icon_phone">
 
-    <TextView
-        android:id="@+id/username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="290dp"
-        android:layout_marginStart="20dp"
-        android:drawableLeft="@drawable/person"
-        android:textSize="20dp"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_text_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="@{viewmodel.phoneEditMode}"
+                        android:inputType="phone"
+                        android:text="@{viewmodel.user.phoneNumber.replace(`+90`, ``)}" />
 
-        android:text="Your Name" />
+                </com.google.android.material.textfield.TextInputLayout>
 
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
 
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_edit_phone_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:visibility="@{viewmodel.phoneEditMode ? View.GONE : View.VISIBLE}"
+                        android:onClick="@{() -> viewmodel.togglePhoneEditMode()}"
+                        android:paddingVertical="16dp"
+                        android:text="Değiştir"
+                        android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:drawableLeft="@drawable/email"
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_edit_phone_number_confirm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:backgroundTint="@color/colorRed"
+                        android:visibility="@{viewmodel.phoneEditMode ? View.VISIBLE : View.GONE}"
+                        android:paddingVertical="16dp"
+                        android:text="Onayla"
+                        android:textStyle="bold" />
 
-        android:layout_marginTop="360dp"
-        android:text="Your Email"
+                </RelativeLayout>
 
-        android:textSize="20dp" />
+            </LinearLayout>
 
-    <TextView
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingVertical="16dp"
+                android:visibility="@{viewmodel.emailVerified ? View.GONE : View.VISIBLE}">
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="330dp"
-        android:textColor="@color/colorPrimaryDark"
-        android:layout_marginStart="20dp"
-        android:textSize="20dp"
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="E-mail adresiniz henüz onaylanmamış."
+                    android:textColor="@color/colorRed" />
 
-        android:text="Email" />
-     <TextView
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_send_verification_link"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:onClick="@{() -> viewmodel.sendEmailVerification()}"
+                    android:text="ONAYLA"
+                    android:textColor="@color/colorRed" />
 
+            </LinearLayout>
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="410dp"
-        android:textColor="@color/colorPrimaryDark"
-        android:layout_marginStart="20dp"
-        android:textSize="20dp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        android:text="Phone" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_change_password"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="1"
+                    android:drawableEnd="@drawable/icon_lock"
+                    android:drawableTint="@color/colorMaterialGreen"
+                    android:padding="8dp"
+                    android:text="Şifre Değiştir"
+                    android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/phone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_delete_account"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity=""
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:drawableEnd="@drawable/icon_delete_forever"
+                    android:drawableTint="@color/colorRed"
+                    android:padding="8dp"
+                    android:text="Hesabı sil"
+                    android:textColor="@color/colorRed"
+                    android:textStyle="bold" />
 
-        android:layout_marginStart="20dp"
+            </LinearLayout>
 
-        android:layout_marginTop="450dp"
-        android:drawableLeft="@drawable/person"
-        android:text="Phone Number"
+        </LinearLayout>
 
-        android:textSize="20dp" />
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/button_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:backgroundTint="@color/colorMaterialGreen"
+            android:onClick="@{() -> viewmodel.toggleEditMode()}"
+            android:text="Düzenle"
+            android:textColor="@color/colorWhite"
+            android:visibility="@{viewmodel.editMode ? View.GONE : View.VISIBLE}"
+            app:icon="@drawable/icon_edit"
+            app:iconTint="@color/colorWhite"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-</RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:visibility="@{viewmodel.editMode ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_cancel"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:onClick="@{() -> viewmodel.toggleEditMode()}"
+                android:padding="8dp"
+                android:text="Cancel"
+                android:textStyle="bold" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_save"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:text="Save"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
 
 
 

@@ -24,6 +24,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class SplashActivity extends BaseActivity implements FirebaseAuth.AuthStateListener {
 
+    private final String PREFERENCE_FILE_NAME = "on_boarding_screen";
+    private final String FIRST_TIME_PREFERENCE = "is_first_time";
+
     private FirebaseAuth auth;
     private SharedPreferences onBoardingPreferences;
 
@@ -77,8 +80,8 @@ public class SplashActivity extends BaseActivity implements FirebaseAuth.AuthSta
 
             if (user == null) {
                 // Kullanıcının uygulamayı ilk defa kullandığı bilgisini al
-                onBoardingPreferences = getSharedPreferences("on_boarding_screen", MODE_PRIVATE);
-                boolean isFirstTime = onBoardingPreferences.getBoolean("is_first_time", true);
+                onBoardingPreferences = getSharedPreferences(PREFERENCE_FILE_NAME, MODE_PRIVATE);
+                boolean isFirstTime = onBoardingPreferences.getBoolean(FIRST_TIME_PREFERENCE, true);
 
                 // ilk defa kullanıyorsa bilgiyi false olarak güncelle
                 if (isFirstTime)
@@ -87,11 +90,7 @@ public class SplashActivity extends BaseActivity implements FirebaseAuth.AuthSta
                     startActivity(new Intent(SplashActivity.this, AuthActivity.class));
 
             } else {
-                // Kullanıcının email adresi doğrulanmış mı kontrolü
-                if (user.isEmailVerified())
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                else
-                    startActivity(new Intent(SplashActivity.this, AuthActivity.class));
+                startActivity(new Intent(this, MainActivity.class));
             }
             this.finish();
         }, 2000);
@@ -99,7 +98,7 @@ public class SplashActivity extends BaseActivity implements FirebaseAuth.AuthSta
 
     private void startOnBoardingActivity() {
         SharedPreferences.Editor editor = onBoardingPreferences.edit();
-        editor.putBoolean("is_first_time", false);
+        editor.putBoolean(FIRST_TIME_PREFERENCE, false);
         editor.apply();
         startActivity(new Intent(SplashActivity.this, OnBoardActivity.class));
     }

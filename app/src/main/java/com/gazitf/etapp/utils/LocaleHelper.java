@@ -13,7 +13,7 @@ import java.util.Locale;
 public class LocaleHelper {
 
     private static final String TAG = LocaleHelper.class.getSimpleName();
-    private static final String SELECTED_LANGUAGE = "Locale.Helper.Selected.Language";
+    private static final String SELECTED_LANGUAGE_PREFERENCE = "Locale.Helper.Selected.Language";
 
     /*
         Uygulama başlarken çağırılacak
@@ -48,7 +48,7 @@ public class LocaleHelper {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();
 
-        editor.putString(SELECTED_LANGUAGE, language);
+        editor.putString(SELECTED_LANGUAGE_PREFERENCE, language);
         editor.apply();
     }
 
@@ -58,7 +58,7 @@ public class LocaleHelper {
      */
     private static String getPersistedData(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getString(SELECTED_LANGUAGE, Locale.getDefault().getLanguage());
+        return preferences.getString(SELECTED_LANGUAGE_PREFERENCE, Locale.getDefault().getLanguage());
     }
 
     @TargetApi(Build.VERSION_CODES.N)
