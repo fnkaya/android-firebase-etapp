@@ -1,42 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true">
 
     <RelativeLayout
-        android:id="@+id/img_galery"
-        android:layout_width="325dp"
-        android:layout_height="119dp"
-        android:layout_below="@+id/txt_baslik"
-        android:layout_centerHorizontal="true">
-
-
-        <ImageView
-            android:id="@+id/img_etkinlik"
-            android:layout_width="208dp"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
-
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-
-            android:scaleType="centerInside"
-            app:srcCompat="@drawable/gallery_ikon" />
-
-        <ImageView
-            android:id="@+id/img_ekle"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-
-            android:layout_marginStart="1dp"
-            android:layout_marginBottom="1dp"
-            android:layout_toEndOf="@+id/img_etkinlik"
-            app:srcCompat="@drawable/add_icon" />
-
-
-    </RelativeLayout>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
 
     <TextView
@@ -50,7 +21,16 @@
         android:text="ETKİNLİK OLUŞTUR"
         android:textColor="@color/colorBlack"
         android:textSize="18sp" />
-
+    <ImageView
+        android:id="@+id/img_etkinlik_yeri"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/txt_baslik"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/gallery_ikon" />
     <EditText
         android:id="@+id/txt_etkinlikAdi"
         android:layout_width="match_parent"
@@ -58,19 +38,19 @@
         android:paddingLeft="10dp"
         android:layout_marginRight="10dp"
         android:hint="Etkinlik Başlığını Giriniz "
-        android:layout_below="@+id/img_galery"
-        android:layout_marginTop="15dp"
+        android:layout_below="@+id/img_etkinlik_yeri"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:inputType="textPersonName"/>
     <EditText
         android:id="@+id/txt_etkinlikAciklama"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:hint="Etkinlik Açıklamasını Giriniz "
         android:layout_below="@+id/txt_etkinlikAdi"
         android:paddingLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:inputType="textMultiLine"/>
 
@@ -79,25 +59,91 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txt_kont"
-        android:layout_marginTop="15dp"
-        android:hint="Başlangıç Zamanı"
+        android:layout_marginTop="20dp"
+        android:hint="Başlangıç"
+        android:ems="6"
         android:paddingLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:ems="10"
-        android:inputType="date" />
+        android:layout_marginRight="10dp"/>
+
+    <ImageView
+        android:id="@+id/img_basla"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/txt_kont"
+        android:layout_marginTop="20dp"
+        android:layout_toEndOf="@+id/edt_baslangic"
+        android:layout_marginStart="5dp"
+        app:srcCompat="@drawable/calendar" />
+
+
+    <EditText
+        android:id="@+id/edt_basSaati"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_kont"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:hint="Saat"
+        android:layout_toEndOf="@+id/img_basla"
+        android:ems="6"
+        android:paddingLeft="10dp"
+        android:layout_marginRight="10dp"/>
+
+        <ImageView
+            android:id="@+id/img_basSaati"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/txt_kont"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="20dp"
+            android:layout_toEndOf="@+id/edt_basSaati"
+            app:srcCompat="@drawable/wclock" />
+
+
     <EditText
         android:id="@+id/edt_bitis"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/edt_baslangic"
-        android:layout_below="@+id/txt_kont"
-        android:layout_marginTop="15dp"
-        android:hint="Bitiş Zamanı"
-        android:paddingLeft="10dp"
+        android:layout_below="@+id/edt_baslangic"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="10dp"
-        android:ems="10"
-        android:inputType="date"
-        android:layout_toRightOf="@+id/edt_baslangic" />
+        android:ems="6"
+        android:hint="Bitiş"
+        android:paddingLeft="10dp" />
+
+    <ImageView
+        android:id="@+id/img_bitis"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/img_basla"
+        android:layout_marginTop="20dp"
+        android:layout_toEndOf="@+id/edt_bitis"
+        android:layout_marginStart="5dp"
+        app:srcCompat="@drawable/calendar" />
+
+    <EditText
+        android:id="@+id/edt_bitSaati"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edt_basSaati"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:hint="Saat"
+        android:layout_toEndOf="@+id/img_bitis"
+        android:ems="6"
+        android:paddingLeft="10dp"
+        android:layout_marginRight="10dp"/>
+
+        <ImageView
+            android:id="@+id/img_bitSaati"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/img_basSaati"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="20dp"
+            android:layout_toEndOf="@+id/edt_bitSaati"
+            app:srcCompat="@drawable/wclock" />
+
     <EditText
         android:id="@+id/txt_kont"
         android:layout_width="match_parent"
@@ -106,7 +152,7 @@
         android:layout_marginRight="10dp"
         android:hint="Kontenjan Giriniz "
         android:layout_below="@+id/txt_etkinlikAciklama"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:inputType="number"/>
 
@@ -115,19 +161,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/edt_bitis"
-        android:hint="Adres "
+        android:hint="Etkinlik Adresi "
+        android:layout_marginTop="15dp"
         android:paddingLeft="10dp"
         android:layout_marginRight="10dp"
         android:ems="10"
-        android:inputType="textPostalAddress" />
-
-
+        android:inputType="textMultiLine" />
 
 
     <ImageView
         android:id="@+id/img_konum"
-        android:layout_width="285dp"
-        android:layout_height="125dp"
+        android:layout_width="170dp"
+        android:layout_height="76dp"
         android:layout_below="@+id/txt_adres"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="4dp"
@@ -143,4 +188,6 @@
         android:layout_marginBottom="10dp"
         android:text="OLUŞTUR" />
 
-</RelativeLayout>
+    </RelativeLayout>
+
+</ScrollView>
