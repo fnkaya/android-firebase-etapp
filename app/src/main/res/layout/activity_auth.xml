@@ -5,13 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".auth.activity.AuthActivity"
-    android:id="@+id/frame_layout_auth">
+    android:id="@+id/frame_layout_auth"
+    >
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_auth_navigation"
+        android:id="@+id/navigation_host_fragment_auth"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:defaultNavHost="true"
         app:navGraph="@navigation/navigation_auth" />
 
 </FrameLayout>

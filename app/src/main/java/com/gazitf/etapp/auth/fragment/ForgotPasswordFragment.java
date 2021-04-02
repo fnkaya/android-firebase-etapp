@@ -1,18 +1,19 @@
 package com.gazitf.etapp.auth.fragment;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
@@ -25,8 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class ForgotPasswordFragment extends Fragment {
 
     private FragmentForgotPasswordBinding binding;
-
-    private ImageButton buttonBackToLogin;
+    private Toolbar toolbar;
     private TextInputLayout inputLayoutEmailToResetPassword;
     private TextView textViewEmailToResetPassword;
     private Button buttonSendResetLink;
@@ -36,9 +36,8 @@ public class ForgotPasswordFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        auth = FirebaseAuth.getInstance();
         binding = FragmentForgotPasswordBinding.inflate(inflater, container, false);
-
         return binding.getRoot();
     }
 
@@ -46,20 +45,21 @@ public class ForgotPasswordFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        buttonBackToLogin = binding.buttonBackToLoginFromForgotPassword;
+        initViews();
+        initListeners();
+    }
+
+    private void initViews() {
+        toolbar = binding.toolbarForgotPassword;
         inputLayoutEmailToResetPassword = binding.textInputLayoutEmailToResetPassword;
         textViewEmailToResetPassword = binding.textInputEmailToResetPassword;
         buttonSendResetLink = binding.buttonSendLinkToResetPassword;
-
-        auth = FirebaseAuth.getInstance();
-
-        initListeners();
     }
 
     private void initListeners() {
         buttonSendResetLink.setOnClickListener(view -> validate());
 
-        buttonBackToLogin.setOnClickListener(this::navigateToLogin);
+        toolbar.setNavigationOnClickListener(this::navigateToLogin);
     }
 
     private void validate() {
@@ -88,7 +88,7 @@ public class ForgotPasswordFragment extends Fragment {
 
     private void navigateToLogin(View view) {
         NavDirections direction = ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToLoginFragment();
-        Navigation.findNavController(view).navigate(direction);
+        Navigation.findNavController(requireActivity(), R.id.navigation_host_fragment_auth).navigate(direction);
     }
 
     @Override

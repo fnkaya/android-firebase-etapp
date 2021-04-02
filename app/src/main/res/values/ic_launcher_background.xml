@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="send_link">Send Link</string>
+    <color name="ic_launcher_background">#3DDC84</color>
 </resources>

@@ -8,18 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.gazitf.etapp.R;
-import com.gazitf.etapp.main.view.activity.MainActivity;
 import com.gazitf.etapp.auth.activity.PhoneVerificationActivity;
 import com.gazitf.etapp.databinding.FragmentRegisterBinding;
 import com.gazitf.etapp.utils.AuthInputValidator;
@@ -35,10 +35,10 @@ public class RegisterFragment extends Fragment {
     private static final int PHONE_VERIFICATION_REQUEST_CODE = 202;
 
     private FragmentRegisterBinding binding;
+    private Toolbar toolbar;
     private TextInputLayout inputLayoutName, inputLayoutEmail, inputLayoutPhoneNumber, inputLayoutPassword;
     private EditText editTextName, editTextEmail, editTextPhoneNumber, editTextPassword;
     private Button buttonRegister;
-    private ImageButton buttonBackToLogin;
     private TextView textViewRedirectToLogin;
 
     private FirebaseAuth auth;
@@ -50,9 +50,8 @@ public class RegisterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        auth = FirebaseAuth.getInstance();
         binding = FragmentRegisterBinding.inflate(inflater, container, false);
-
         return binding.getRoot();
     }
 
@@ -60,6 +59,12 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        initViews();
+        initListeners();
+    }
+
+    private void initViews() {
+        toolbar = binding.toolbarRegister;
         inputLayoutName = binding.textInputLayoutName;
         inputLayoutEmail = binding.textInputLayoutRegisterEmail;
         inputLayoutPhoneNumber = binding.textInputLayoutPhoneNumber;
@@ -69,24 +74,7 @@ public class RegisterFragment extends Fragment {
         editTextPhoneNumber = binding.textInputPhoneNumber;
         editTextPassword = binding.textInputRegisterPassword;
         buttonRegister = binding.buttonRegister;
-        buttonBackToLogin = binding.buttonBackToLoginFromRegister;
         textViewRedirectToLogin = binding.textViewRedirectLogin;
-
-        if (savedInstanceState != null) {
-            name = savedInstanceState.getString("name");
-            email = savedInstanceState.getString("email");
-            phoneNumber = savedInstanceState.getString("phone");
-            password = savedInstanceState.getString("password");
-
-            editTextName.setText(name);
-            editTextEmail.setText(email);
-            editTextPhoneNumber.setText(phoneNumber);
-            editTextPassword.setText(password);
-        }
-
-        auth = FirebaseAuth.getInstance();
-
-        initListeners();
     }
 
     private void initListeners() {
@@ -94,7 +82,7 @@ public class RegisterFragment extends Fragment {
 
         textViewRedirectToLogin.setOnClickListener(this::navigateToLogin);
 
-        buttonBackToLogin.setOnClickListener(this::navigateToLogin);
+        toolbar.setNavigationOnClickListener(this::navigateToLogin);
     }
 
     private void validate() {
@@ -158,7 +146,6 @@ public class RegisterFragment extends Fragment {
                 .addOnSuccessListener(authResult -> {
                     FirebaseUser user = authResult.getUser();
                     sendVerificationEmail(user);
-                    setNameToAccount(user);
                 })
                 .addOnFailureListener(error ->
                         showToastMessage(error.toString()));
@@ -168,8 +155,10 @@ public class RegisterFragment extends Fragment {
     private void sendVerificationEmail(FirebaseUser user) {
         user.sendEmailVerification()
                 .addOnCompleteListener(authResult -> {
-                    showToastMessage("Lütfen e-mail adresine gönderilen bağlantıya tıklayarak e-mail adresinizi doğrulayınız.");
-                });
+                    showToastMessage(getString(R.string.verification_link_sent_to_email_address));
+                    setNameToAccount(user);
+                })
+                .addOnFailureListener(error -> showToastMessage(error.getLocalizedMessage()));
     }
 
     // Kullanıcı ismini güncelle
@@ -181,21 +170,16 @@ public class RegisterFragment extends Fragment {
         user.updateProfile(profileUpdate)
                 .addOnFailureListener(error -> showToastMessage(error.getLocalizedMessage()));
 
-        startMainActivity();
-    }
-
-    private void startMainActivity() {
-        startActivity(new Intent(getActivity(), MainActivity.class));
-        getActivity().finishAffinity();
-    }
-
-    private void showToastMessage(String errorText) {
-        Toast.makeText(getActivity(), errorText, Toast.LENGTH_LONG).show();
+        navigateToLogin(getView());
     }
 
     private void navigateToLogin(View view) {
         NavDirections direction = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment();
         Navigation.findNavController(view).navigate(direction);
+    }
+
+    private void showToastMessage(String message) {
+        Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show();
     }
 
     @Override
