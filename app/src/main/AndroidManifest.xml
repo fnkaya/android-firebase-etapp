@@ -64,9 +64,6 @@
         <activity
             android:name=".profile.ProfileActivity"
             android:screenOrientation="portrait" />
-        <activity 
-            android:name=".profile.UpdateNameActivity"
-            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -145,20 +145,10 @@ public class RegisterFragment extends Fragment {
         auth.getCurrentUser().linkWithCredential(credential)
                 .addOnSuccessListener(authResult -> {
                     FirebaseUser user = authResult.getUser();
-                    sendVerificationEmail(user);
+                    setNameToAccount(user);
                 })
                 .addOnFailureListener(error ->
                         showToastMessage(error.toString()));
-    }
-
-    // Email doğrulama bağlantısı gönder
-    private void sendVerificationEmail(FirebaseUser user) {
-        user.sendEmailVerification()
-                .addOnCompleteListener(authResult -> {
-                    showToastMessage(getString(R.string.verification_link_sent_to_email_address));
-                    setNameToAccount(user);
-                })
-                .addOnFailureListener(error -> showToastMessage(error.getLocalizedMessage()));
     }
 
     // Kullanıcı ismini güncelle
@@ -170,12 +160,20 @@ public class RegisterFragment extends Fragment {
         user.updateProfile(profileUpdate)
                 .addOnFailureListener(error -> showToastMessage(error.getLocalizedMessage()));
 
-        navigateToLogin(getView());
+        user.sendEmailVerification();
+
+        navigateToMainActivity(getView());
     }
 
     private void navigateToLogin(View view) {
         NavDirections direction = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment();
         Navigation.findNavController(view).navigate(direction);
+    }
+
+    private void navigateToMainActivity(View view) {
+        NavDirections direction = RegisterFragmentDirections.actionRegisterFragmentToMainActivity();
+        Navigation.findNavController(view).navigate(direction);
+        requireActivity().finishAffinity();
     }
 
     private void showToastMessage(String message) {

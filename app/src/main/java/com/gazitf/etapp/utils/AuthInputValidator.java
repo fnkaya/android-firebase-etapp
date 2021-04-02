@@ -52,4 +52,8 @@ public abstract class AuthInputValidator {
     public static boolean validateVerificationCode(String verificationCode) {
         return verificationCode.length() == 6;
     }
+
+    public static boolean checkPasswordsAreDifferent(String currentPassword, String newPassword) {
+        return !currentPassword.equals(newPassword);
+    }
 }

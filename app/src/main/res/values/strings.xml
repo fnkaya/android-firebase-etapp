@@ -33,7 +33,6 @@
     <string name="running">Running</string>
     <string name="cinema">Cinema</string>
     <string name="education">Education</string>
-    <string name="send_link">Send Link</string>
 
     <string-array name="languages">
         <item>TR</item>

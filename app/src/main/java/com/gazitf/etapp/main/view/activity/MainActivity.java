@@ -1,5 +1,6 @@
 package com.gazitf.etapp.main.view.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -166,6 +167,7 @@ public class MainActivity extends BaseActivity implements FirebaseAuth.AuthState
     /*
         Alt menü seçenekleri
      */
+    @SuppressLint("NonConstantResourceId")
     private void setupBottomNavigationMenu() {
         // Activity başladığında seçilecek menu item
         chipNavigationBar.setItemSelected(R.id.menu_item_home, true);
@@ -239,19 +241,16 @@ public class MainActivity extends BaseActivity implements FirebaseAuth.AuthState
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.dropdown_language_selector_item, languages);
         autoCompleteTextView.setAdapter(arrayAdapter);
 
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (currentLanguage) {
-                    case "tr":
-                        changeLocale("en");
-                        break;
-                    case "en":
-                        changeLocale("tr");
-                        break;
-                    default:
-                        break;
-                }
+        autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
+            switch (currentLanguage) {
+                case "tr":
+                    changeLocale("en");
+                    break;
+                case "en":
+                    changeLocale("tr");
+                    break;
+                default:
+                    break;
             }
         });
     }
