@@ -10,7 +10,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:paddingTop="8dp"
             android:paddingHorizontal="16dp"
             tools:context=".main.view.fragment.HomeFragment">
@@ -20,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Categories"
-                android:textSize="32sp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 android:fontFamily="@font/montserrat_bold"
                 app:layout_constraintTop_toTopOf="parent"
@@ -32,12 +32,25 @@
                 android:id="@+id/recycler_view_categories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="32dp"
+                android:layout_marginTop="16dp"
                 app:layout_constraintTop_toBottomOf="@id/text_view_categories"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/recycler_view_activities" />
+                app:layout_constraintBottom_toTopOf="@id/text_view_activities" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_view_activities"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="16dp"
+                android:text="Activities"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/montserrat_bold"
+                app:layout_constraintTop_toBottomOf="@id/recycler_view_categories"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/recycler_view_activities"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_activities"
@@ -46,7 +59,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recycler_view_categories" />
+                app:layout_constraintTop_toBottomOf="@id/text_view_activities" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

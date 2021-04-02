@@ -287,7 +287,8 @@ public class ProfileActivity extends AppCompatActivity implements FirebaseAuth.A
             return;
         }
 
-        viewModel.updatePhoneNumber(getString(R.string.tr_90) + phoneNumber);
+        /*viewModel.updatePhoneNumber(getString(R.string.tr_90) + phoneNumber);*/
+        viewModel.togglePhoneEditMode();
     }
 
     private void showDeleteAccountDialog() {
