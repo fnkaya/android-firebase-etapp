@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.gazitf.etapp.databinding.FragmentHomeBinding;
+import com.gazitf.etapp.main.adapter.ActivityListRecyclerViewAdapter;
 import com.gazitf.etapp.main.adapter.CategoryListRecyclerViewAdapter;
 import com.gazitf.etapp.main.modelview.HomeViewModel;
 
@@ -45,6 +46,10 @@ public class HomeFragment extends Fragment {
         viewModel.getCategoryList().observe(getViewLifecycleOwner(), categoryList -> {
             CategoryListRecyclerViewAdapter adapter = new CategoryListRecyclerViewAdapter(categoryList);
             recyclerViewCategories.setAdapter(adapter);
+        });
+        viewModel.getActivityList().observe(getViewLifecycleOwner(), activityList -> {
+            ActivityListRecyclerViewAdapter adapter = new ActivityListRecyclerViewAdapter(activityList);
+            recyclerViewActivities.setAdapter(adapter);
         });
     }
 

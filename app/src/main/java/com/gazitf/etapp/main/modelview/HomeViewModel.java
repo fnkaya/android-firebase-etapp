@@ -1,15 +1,16 @@
 package com.gazitf.etapp.main.modelview;
 
-import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.gazitf.etapp.main.model.Category;
-import com.gazitf.etapp.main.repository.FirestoreRepository;
+import com.gazitf.etapp.main.model.ActivityModel;
+import com.gazitf.etapp.main.model.CategoryModel;
+import com.gazitf.etapp.main.repository.FirestoreActivityRepository;
+import com.gazitf.etapp.main.repository.FirestoreCategoryRepository;
 
 import java.util.List;
 
@@ -18,28 +19,48 @@ import java.util.List;
  * @project EtApp
  * @author fnkaya
  */
-public class HomeViewModel extends ViewModel implements FirestoreRepository.OnFirestoreTaskComplete {
+public class HomeViewModel extends ViewModel implements FirestoreCategoryRepository.OnCategoryTaskComplete, FirestoreActivityRepository.OnActivityTaskComplete {
 
-    private MutableLiveData<List<Category>> categoryList;
-    private final FirestoreRepository repository;
+    private MutableLiveData<List<CategoryModel>> categoryList;
+    private MutableLiveData<List<ActivityModel>> activityList;
+    private final FirestoreCategoryRepository categoryRepository;
+    private final FirestoreActivityRepository activityRepository;
 
     public HomeViewModel() {
         categoryList = new MutableLiveData<>();
-        repository = new FirestoreRepository(this);
-        repository.getCategories();
+        activityList = new MutableLiveData<>();
+        categoryRepository = new FirestoreCategoryRepository(this);
+        activityRepository = new FirestoreActivityRepository(this);
+        categoryRepository.getCategories();
+        activityRepository.getActivities();
     }
 
-    public LiveData<List<Category>> getCategoryList() {
+    public LiveData<List<CategoryModel>> getCategoryList() {
         return categoryList;
     }
 
-    @Override
-    public void onFirestoreTaskSuccessed(List<Category> categoryList) {
-        this.categoryList.setValue(categoryList);
+    public LiveData<List<ActivityModel>> getActivityList() {
+        return activityList;
     }
 
     @Override
-    public void onFirestoreTaskFailed(Exception e) {
+    public void onFetchCategoriesSucceed(List<CategoryModel> categoryModelList) {
+        categoryList.setValue(categoryModelList);
+    }
+
+    @Override
+    public void onFetchCategoriesFailed(Exception e) {
+
+    }
+
+    @Override
+    public void onFetchActivitiesSucceed(List<ActivityModel> activityModelList) {
+        activityList.setValue(activityModelList);
+        Log.i("TAG", "onFetchActivitiesSucceed: " + getActivityList().getValue().get(0).getId());
+    }
+
+    @Override
+    public void onFetchActivitiesFailed(Exception e) {
 
     }
 }

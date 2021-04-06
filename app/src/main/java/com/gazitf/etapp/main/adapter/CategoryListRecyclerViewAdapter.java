@@ -1,6 +1,5 @@
 package com.gazitf.etapp.main.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -10,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gazitf.etapp.databinding.RecyclerViewItemCategoryBinding;
-import com.gazitf.etapp.main.model.Category;
+import com.gazitf.etapp.main.model.CategoryModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -22,10 +21,10 @@ import java.util.List;
  */
 public class CategoryListRecyclerViewAdapter extends RecyclerView.Adapter<CategoryListRecyclerViewAdapter.CategoriesViewHolder> {
 
-    private List<Category> categoryList;
+    private List<CategoryModel> categoryModelList;
 
-    public CategoryListRecyclerViewAdapter(List<Category> categoryList) {
-        this.categoryList = categoryList;
+    public CategoryListRecyclerViewAdapter(List<CategoryModel> categoryModelList) {
+        this.categoryModelList = categoryModelList;
     }
 
     @NonNull
@@ -39,16 +38,16 @@ public class CategoryListRecyclerViewAdapter extends RecyclerView.Adapter<Catego
 
     @Override
     public void onBindViewHolder(@NonNull CategoriesViewHolder holder, int position) {
-        Category category = categoryList.get(position);
+        CategoryModel categoryModel = categoryModelList.get(position);
         Picasso.get()
-                .load(category.getImageUrl())
+                .load(categoryModel.getImageUrl())
                 .into(holder.imageViewImageUrl);
-        holder.textViewName.setText(category.getName());
+        holder.textViewName.setText(categoryModel.getName());
     }
 
     @Override
     public int getItemCount() {
-        return categoryList.size();
+        return categoryModelList.size();
     }
 
     public static class CategoriesViewHolder extends RecyclerView.ViewHolder {

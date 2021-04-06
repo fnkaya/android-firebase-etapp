@@ -16,5 +16,6 @@ public abstract class FirestoreDbConstants {
 
     public static abstract class ActivitiesConstans {
         public static final String COLLECTION = "Activities";
+        public static final String START_DATE = "startDate";
     }
 }
