@@ -7,7 +7,7 @@ import com.google.firebase.firestore.DocumentId;
  * @project EtApp
  * @author fnkaya
  */
-public class Category {
+public class CategoryModel {
 
     @DocumentId
     private String id;
@@ -15,14 +15,7 @@ public class Category {
     private String description;
     private String imageUrl;
 
-    public Category() {}
-
-    public Category(String id, String name, String description, String imageUrl) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.imageUrl = imageUrl;
-    }
+    public CategoryModel() {}
 
     public String getId() {
         return id;

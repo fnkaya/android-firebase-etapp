@@ -7,6 +7,11 @@
         android:icon="@drawable/icon_home"
         app:cnb_iconColor="@color/colorBlack"/>
 
+    <item android:title="@string/search"
+        android:id="@+id/menu_item_search"
+        android:icon="@drawable/icon_search"
+        app:cnb_iconColor="@color/colorBlack"/>
+
     <item android:title="@string/watch_list"
         android:id="@+id/menu_item_watchList"
         android:icon="@drawable/icon_favorite"
@@ -17,8 +22,4 @@
         android:icon="@drawable/icon_message"
         app:cnb_iconColor="@color/colorBlack"/>
 
-    <item android:title="@string/post"
-        android:id="@+id/menu_item_post"
-        android:icon="@drawable/icon_post"
-        app:cnb_iconColor="@color/colorBlack"/>
 </menu>

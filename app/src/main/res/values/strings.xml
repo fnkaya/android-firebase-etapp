@@ -23,7 +23,7 @@
     <string name="home">Home</string>
     <string name="watch_list">Watch List</string>
     <string name="message">Message</string>
-    <string name="post">Post</string>
+    <string name="search">Search</string>
     <string name="code_expired">Verification code expired!</string>
     <string name="create_activity">Create Activity</string>
     <string name="forgot_password">Forgot Password</string>
@@ -39,8 +39,6 @@
         <item>EN</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps">Map</string>
 
 </resources>

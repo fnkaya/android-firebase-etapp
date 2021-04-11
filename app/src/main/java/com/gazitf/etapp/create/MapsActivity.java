@@ -1,4 +1,4 @@
-package com.gazitf.etapp.main.view.activity;
+package com.gazitf.etapp.create;
 
 import android.location.LocationListener;
 import android.location.LocationManager;

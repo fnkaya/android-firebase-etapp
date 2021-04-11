@@ -1,32 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--<group android:checkableBehavior="single">
-        <item android:id="@+id/homeFragment"
-            android:title="@string/home"
-            android:icon="@drawable/icon_home"/>
-        <item android:id="@+id/watchListFragment"
-            android:title="@string/watch_list"
-            android:icon="@drawable/icon_favorite"/>
-        <item android:id="@+id/messageFragment"
-            android:title="@string/message"
-            android:icon="@drawable/icon_message"/>
-        <item android:id="@+id/postFragment"
-            android:title="@string/post"
-            android:icon="@drawable/icon_post"/>
-    </group>-->
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/menu_item_profile"
+            android:title="@string/profile"
+            android:icon="@drawable/icon_person"/>
+    </group>
 
-    <item android:title="@string/profile">
+    <!--<item android:title="@string/profile">
         <menu>
             <group android:checkableBehavior="single">
                 <item android:id="@+id/menu_item_profile"
                     android:title="@string/profile"
                     android:icon="@drawable/icon_person"/>
-                <item android:id="@+id/menu_item_create"
-                    android:title="@string/create_activity"
-                    android:icon="@drawable/icon_add"/>
             </group>
         </menu>
-    </item>
+    </item>-->
 
 </menu>

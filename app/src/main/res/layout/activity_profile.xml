@@ -56,7 +56,7 @@
                 android:layout_toEndOf="@id/avatarIv"
                 android:drawablePadding="8dp"
                 android:foreground="?attr/selectableItemBackground"
-                android:text="Profil resmini düzenle"
+                android:text="Profil resmini değiştir"
                 android:textStyle="bold" />
 
         </RelativeLayout>
@@ -70,6 +70,33 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_cover">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingVertical="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/border_red"
+                android:visibility="@{viewmodel.emailVerified ? View.GONE : View.VISIBLE}">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="E-mail adresiniz henüz onaylanmamış." />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/button_send_verification_link"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:onClick="@{() -> viewmodel.sendEmailVerification()}"
+                    android:text="ONAYLA"
+                    android:textStyle="bold|italic"
+                    android:textColor="@color/colorRed"
+                    android:foreground="?attr/selectableItemBackground"/>
+
+            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -110,6 +137,46 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_edit_mode"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:onClick="@{() -> viewmodel.toggleEditMode()}"
+                    android:padding="8dp"
+                    android:text="@{viewmodel.editMode ? `İptal` : `Düzenle`}"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_save"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:visibility="@{viewmodel.editMode ? View.VISIBLE : View.GONE}"
+                    android:padding="8dp"
+                    android:text="Kaydet"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="16dp"
+                android:background="@android:color/darker_gray"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp">
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -141,12 +208,13 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/button_edit_phone_number"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:visibility="@{viewmodel.phoneEditMode ? View.GONE : View.VISIBLE}"
                         android:onClick="@{() -> viewmodel.togglePhoneEditMode()}"
-                        android:paddingVertical="16dp"
+                        android:paddingVertical="8dp"
                         android:text="Değiştir"
                         android:textStyle="bold" />
 
@@ -155,9 +223,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:backgroundTint="@color/colorRed"
                         android:visibility="@{viewmodel.phoneEditMode ? View.VISIBLE : View.GONE}"
-                        android:paddingVertical="16dp"
+                        android:paddingVertical="8dp"
                         android:text="Onayla"
                         android:textStyle="bold" />
 
@@ -165,34 +232,16 @@
 
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="16dp"
+                android:background="@android:color/darker_gray"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingVertical="16dp"
-                android:visibility="@{viewmodel.emailVerified ? View.GONE : View.VISIBLE}">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="E-mail adresiniz henüz onaylanmamış."
-                    android:textColor="@color/colorRed" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/button_send_verification_link"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:onClick="@{() -> viewmodel.sendEmailVerification()}"
-                    android:text="ONAYLA"
-                    android:textColor="@color/colorRed" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:paddingVertical="8dp">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_change_password"
@@ -223,56 +272,6 @@
                     android:textStyle="bold" />
 
             </LinearLayout>
-
-        </LinearLayout>
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/button_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:backgroundTint="@color/colorMaterialGreen"
-            android:onClick="@{() -> viewmodel.toggleEditMode()}"
-            android:text="Düzenle"
-            android:textColor="@color/colorWhite"
-            android:visibility="@{viewmodel.editMode ? View.GONE : View.VISIBLE}"
-            app:icon="@drawable/icon_edit"
-            app:iconTint="@color/colorWhite"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:padding="8dp"
-            android:visibility="@{viewmodel.editMode ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_cancel"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:onClick="@{() -> viewmodel.toggleEditMode()}"
-                android:padding="8dp"
-                android:text="Cancel"
-                android:textStyle="bold" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_save"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:padding="8dp"
-                android:text="Save"
-                android:textStyle="bold" />
 
         </LinearLayout>
 
