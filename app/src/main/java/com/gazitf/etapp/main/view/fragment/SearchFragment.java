@@ -1,25 +1,24 @@
 package com.gazitf.etapp.main.view.fragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import com.gazitf.etapp.databinding.FragmentSearchBinding;
 
-import com.gazitf.etapp.databinding.FragmentPostBinding;
+public class SearchFragment extends Fragment {
 
-public class PostFragment extends Fragment {
-
-    private FragmentPostBinding binding;
+    private FragmentSearchBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentPostBinding.inflate(inflater, container, false);
+        binding = FragmentSearchBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 

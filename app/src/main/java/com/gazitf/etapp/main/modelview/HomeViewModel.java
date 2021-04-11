@@ -43,6 +43,10 @@ public class HomeViewModel extends ViewModel implements FirestoreCategoryReposit
         return activityList;
     }
 
+    public void getActivityDetails(String documentId) {
+        activityRepository.getActivity(documentId);
+    }
+
     @Override
     public void onFetchCategoriesSucceed(List<CategoryModel> categoryModelList) {
         categoryList.setValue(categoryModelList);
@@ -56,11 +60,15 @@ public class HomeViewModel extends ViewModel implements FirestoreCategoryReposit
     @Override
     public void onFetchActivitiesSucceed(List<ActivityModel> activityModelList) {
         activityList.setValue(activityModelList);
-        Log.i("TAG", "onFetchActivitiesSucceed: " + getActivityList().getValue().get(0).getId());
     }
 
     @Override
-    public void onFetchActivitiesFailed(Exception e) {
+    public void onFetchActivityDetailsSuccedd(ActivityModel activityModel) {
+
+    }
+
+    @Override
+    public void onFetchFailed(Exception e) {
 
     }
 }

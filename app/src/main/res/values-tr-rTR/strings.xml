@@ -18,11 +18,11 @@
     <string name="invalid_password">Uygun olmayan şifre</string>
     <string name="invalid_name">Uygun olmayan isim</string>
     <string name="invalid_phone_number">Uygun olmayan telefon numarası</string>
-    <string name="profile">Profil</string>
+    <string name="profile">Hesap</string>
     <string name="home">Anasayfa</string>
     <string name="watch_list">Favoriler</string>
     <string name="message">Mesajlar</string>
-    <string name="post">Gönderiler</string>
+    <string name="search">Arama</string>
     <string name="code_expired">Doğrulama kodunun süresi doldu!</string>
     <string name="create_activity">Etkinlik Oluştur</string>
     <string name="forgot_password">Şifremi Unuttum</string>
@@ -37,4 +37,6 @@
         <item>TR</item>
         <item>EN</item>
     </string-array>
+
+    <string name="title_activity_maps">Harita</string>
 </resources>

@@ -1,9 +1,6 @@
 package com.gazitf.etapp.main.repository;
 
-import android.util.Log;
-
 import com.gazitf.etapp.main.model.ActivityModel;
-import com.gazitf.etapp.main.model.CategoryModel;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -37,13 +34,28 @@ public class FirestoreActivityRepository {
                     if (task.isSuccessful())
                         onActivityTaskComplete.onFetchActivitiesSucceed(task.getResult().toObjects(ActivityModel.class));
                     else
-                        onActivityTaskComplete.onFetchActivitiesFailed(task.getException());
+                        onActivityTaskComplete.onFetchFailed(task.getException());
                 });
     }
+
+    public void getActivity(String documentId) {
+        activitiesRef
+                .document(documentId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful())
+                        onActivityTaskComplete.onFetchActivityDetailsSuccedd(task.getResult().toObject(ActivityModel.class));
+                    else
+                        onActivityTaskComplete.onFetchFailed(task.getException());
+                });
+    }
+
 
     public interface OnActivityTaskComplete {
         void onFetchActivitiesSucceed(List<ActivityModel> activityModelList);
 
-        void onFetchActivitiesFailed(Exception e);
+        void onFetchActivityDetailsSuccedd(ActivityModel activityModel);
+
+        void onFetchFailed(Exception e);
     }
 }

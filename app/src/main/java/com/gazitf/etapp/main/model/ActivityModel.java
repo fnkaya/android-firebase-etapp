@@ -23,6 +23,7 @@ public class ActivityModel {
     private Timestamp createdDate;
     private GeoPoint location;
     private DocumentReference categoryRef;
+    private String ownerId;
 
     public String getId() {
         return id;
@@ -82,5 +83,13 @@ public class ActivityModel {
 
     public void setCategory(DocumentReference categoryRef) {
         this.categoryRef = categoryRef;
+    }
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
     }
 }
