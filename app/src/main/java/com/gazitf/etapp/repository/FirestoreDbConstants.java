@@ -1,4 +1,4 @@
-package com.gazitf.etapp.main.repository;
+package com.gazitf.etapp.repository;
 
 /*
  * @created 23/03/2021 - 6:37 PM

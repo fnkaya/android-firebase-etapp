@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gazitf.etapp.databinding.RecyclerViewItemCategoryBinding;
-import com.gazitf.etapp.main.model.CategoryModel;
+import com.gazitf.etapp.model.CategoryModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

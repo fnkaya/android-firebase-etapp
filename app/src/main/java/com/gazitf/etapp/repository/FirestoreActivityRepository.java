@@ -1,12 +1,12 @@
-package com.gazitf.etapp.main.repository;
+package com.gazitf.etapp.repository;
 
-import com.gazitf.etapp.main.model.ActivityModel;
+import com.gazitf.etapp.model.ActivityModel;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
-import static com.gazitf.etapp.main.repository.FirestoreDbConstants.ActivitiesConstans;
+import static com.gazitf.etapp.repository.FirestoreDbConstants.ActivitiesConstans;
 
 /*
  * @created 22/03/2021 - 6:18 PM
@@ -54,18 +54,15 @@ public class FirestoreActivityRepository {
                 });
     }
 
-
-    public interface OnActivityTaskCompleteCallback {
-
-        void onActivityListFetchSucceed(List<ActivityModel> activityModelList);
-
+    public interface OnActivityTaskFailedCallback {
         void onActivityFetchFailed(Exception e);
     }
 
-    public interface OnActivityDetailsTaskCompleteCallback {
+    public interface OnActivityTaskCompleteCallback extends OnActivityTaskFailedCallback {
+        void onActivityListFetchSucceed(List<ActivityModel> activityModelList);
+    }
 
+    public interface OnActivityDetailsTaskCompleteCallback extends OnActivityTaskFailedCallback {
         void onActivityFetchSucceed(ActivityModel activityModel);
-
-        void onActivityFetchFailed(Exception e);
     }
 }

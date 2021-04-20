@@ -8,9 +8,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.gazitf.etapp.R;
 import com.gazitf.etapp.databinding.RecyclerViewItemActivityBinding;
-import com.gazitf.etapp.main.model.ActivityModel;
-import com.gazitf.etapp.main.model.CategoryModel;
+import com.gazitf.etapp.model.ActivityModel;
+import com.gazitf.etapp.model.CategoryModel;
 import com.squareup.picasso.Picasso;
 
 import java.time.LocalDateTime;
@@ -60,6 +61,7 @@ public class ActivityListRecyclerViewAdapter extends RecyclerView.Adapter<Activi
                         if (categoryModel != null)
                             Picasso.get()
                                     .load(categoryModel.getImageUrl())
+                                    .placeholder(R.drawable.progress_animation)
                                     .into(holder.imageViewActivityImage);
                     }
                 });

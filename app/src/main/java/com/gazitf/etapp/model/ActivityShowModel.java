@@ -1,4 +1,4 @@
-package com.gazitf.etapp.main.model;
+package com.gazitf.etapp.model;
 
 public class ActivityShowModel {
 

@@ -6,10 +6,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.gazitf.etapp.main.model.ActivityModel;
-import com.gazitf.etapp.main.model.CategoryModel;
-import com.gazitf.etapp.main.repository.FirestoreActivityRepository;
-import com.gazitf.etapp.main.repository.FirestoreCategoryRepository;
+import com.gazitf.etapp.model.ActivityModel;
+import com.gazitf.etapp.model.CategoryModel;
+import com.gazitf.etapp.repository.FirestoreActivityRepository;
+import com.gazitf.etapp.repository.FirestoreCategoryRepository;
 
 import java.util.List;
 

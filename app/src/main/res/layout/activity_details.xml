@@ -40,6 +40,36 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/icon_image" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="16dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/image_view_activity_owner_image"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/icon_person" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_view_activity_owner_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@color/colorLightGrey" />
+
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -68,7 +98,7 @@
                         android:drawableStart="@drawable/icon_date"
                         android:drawablePadding="4dp"
                         android:drawableTint="@color/colorMaterialPink"
-                        android:text="Başlangıç Tarihi"
+                        android:text="Etkinlik Tarihi"
                         android:textStyle="bold|italic" />
 
                     <com.google.android.material.textview.MaterialTextView
@@ -80,23 +110,6 @@
                         android:paddingHorizontal="8dp"
                         android:paddingVertical="4dp"
                         android:textStyle="bold" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="16dp">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/icon_date"
-                        android:drawablePadding="4dp"
-                        android:drawableTint="@color/colorMaterialPink"
-                        android:text="Bitiş Tarihi"
-                        android:textStyle="bold|italic" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/text_view_activity_end_date_details"
@@ -115,7 +128,7 @@
                     android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
-                    android:layout_margin="16dp"/>
+                    android:layout_margin="16dp" />
 
             </LinearLayout>
 

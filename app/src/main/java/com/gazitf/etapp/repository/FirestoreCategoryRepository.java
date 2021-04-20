@@ -1,7 +1,7 @@
-package com.gazitf.etapp.main.repository;
+package com.gazitf.etapp.repository;
 
-import com.gazitf.etapp.main.model.CategoryModel;
-import com.gazitf.etapp.main.repository.FirestoreDbConstants.CategoryConstants;
+import com.gazitf.etapp.model.CategoryModel;
+import com.gazitf.etapp.repository.FirestoreDbConstants.CategoryConstants;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 

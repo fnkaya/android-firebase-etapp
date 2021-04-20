@@ -1,20 +1,20 @@
 package com.gazitf.etapp.details;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+
 import com.gazitf.etapp.R;
 import com.gazitf.etapp.databinding.ActivityDetailsBinding;
-import com.gazitf.etapp.databinding.BottonSheetDialogAttendRequestBinding;
-import com.gazitf.etapp.main.model.ActivityModel;
-import com.gazitf.etapp.main.model.CategoryModel;
-import com.gazitf.etapp.main.repository.FirestoreActivityRepository;
-import com.gazitf.etapp.main.repository.FirestoreDbConstants;
+import com.gazitf.etapp.databinding.BottomSheetDialogAttendRequestBinding;
+import com.gazitf.etapp.model.ActivityModel;
+import com.gazitf.etapp.model.CategoryModel;
+import com.gazitf.etapp.repository.FirestoreActivityRepository;
+import com.gazitf.etapp.repository.FirestoreDbConstants;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -24,6 +24,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.time.LocalDateTime;
@@ -75,7 +77,7 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
     }
 
     private void initBottomSheetDialog() {
-        BottonSheetDialogAttendRequestBinding bottomSheetBinding = BottonSheetDialogAttendRequestBinding.inflate(getLayoutInflater());
+        BottomSheetDialogAttendRequestBinding bottomSheetBinding = BottomSheetDialogAttendRequestBinding.inflate(getLayoutInflater());
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.BottomSheetDialogTheme);
         bottomSheetDialog.setContentView(bottomSheetBinding.bottomSheetContainer);
         bottomSheetDialog.setCancelable(false);
@@ -109,11 +111,37 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
         Date endDate = activityModel.getEndDate().toDate();
         LocalDateTime endDateTime = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         binding.textViewActivityEndDateDetails.setText(endDateTime.format(formatter));
+        handleActivityOwnerDetails(activityModel);
         handleCategoryDetails(activityModel);
 
         latLng = new LatLng(activityModel.getLocation().getLatitude(), activityModel.getLocation().getLongitude());
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_activity_details);
         mapFragment.getMapAsync(this);
+    }
+
+    private void handleActivityOwnerDetails(ActivityModel activityModel) {
+        String ownerId = activityModel.getOwnerId();
+        FirebaseFirestore.getInstance()
+                .collection("Users")
+                .document(ownerId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        String displayName = documentSnapshot.getString("displayName");
+                        String photoUrl = documentSnapshot.getString("photoUrl");
+                        loadOwnerInformation(displayName, photoUrl);
+                    } else
+                        Log.i("TAG", "handleActivityOwnerDetails: " + task.getException().getMessage());
+                })
+                .addOnFailureListener(e -> Toast.makeText(ActivityDetailsActivity.this, e.getMessage(), Toast.LENGTH_LONG).show());
+    }
+
+    private void loadOwnerInformation(String displayName, String photoUrl) {
+        binding.textViewActivityOwnerName.setText(displayName);
+        Picasso.get()
+                .load(photoUrl)
+                .into(binding.imageViewActivityOwnerImage);
     }
 
     private void handleCategoryDetails(ActivityModel activityModel) {
