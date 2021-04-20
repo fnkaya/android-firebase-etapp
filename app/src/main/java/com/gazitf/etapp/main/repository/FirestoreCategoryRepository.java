@@ -14,13 +14,13 @@ import java.util.List;
  */
 public class FirestoreCategoryRepository {
 
-    private OnCategoryTaskComplete onCategoryTaskComplete;
+    private OnCategoryTaskCompleteCallback onCategoryTaskCompleteCallback;
 
     private FirebaseFirestore firestore;
     private CollectionReference categoriesRef;
 
-    public FirestoreCategoryRepository(OnCategoryTaskComplete onCategoryTaskComplete) {
-        this.onCategoryTaskComplete = onCategoryTaskComplete;
+    public FirestoreCategoryRepository(OnCategoryTaskCompleteCallback onCategoryTaskCompleteCallback) {
+        this.onCategoryTaskCompleteCallback = onCategoryTaskCompleteCallback;
         firestore = FirebaseFirestore.getInstance();
         categoriesRef = firestore.collection(CategoryConstants.COLLECTION);
     }
@@ -31,15 +31,16 @@ public class FirestoreCategoryRepository {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful())
-                        onCategoryTaskComplete.onFetchCategoriesSucceed(task.getResult().toObjects(CategoryModel.class));
+                        onCategoryTaskCompleteCallback.onCategoryFetchSucceed(task.getResult().toObjects(CategoryModel.class));
                     else
-                        onCategoryTaskComplete.onFetchCategoriesFailed(task.getException());
+                        onCategoryTaskCompleteCallback.onCategoryFetchFailed(task.getException());
                 });
     }
 
-    public interface OnCategoryTaskComplete {
-        void onFetchCategoriesSucceed(List<CategoryModel> categoryModelList);
+    public interface OnCategoryTaskCompleteCallback {
 
-        void onFetchCategoriesFailed(Exception e);
+        void onCategoryFetchSucceed(List<CategoryModel> categoryModelList);
+
+        void onCategoryFetchFailed(Exception e);
     }
 }

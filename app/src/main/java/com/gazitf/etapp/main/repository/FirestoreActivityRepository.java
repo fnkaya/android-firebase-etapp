@@ -6,7 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
-import static com.gazitf.etapp.main.repository.FirestoreDbConstants.*;
+import static com.gazitf.etapp.main.repository.FirestoreDbConstants.ActivitiesConstans;
 
 /*
  * @created 22/03/2021 - 6:18 PM
@@ -15,15 +15,19 @@ import static com.gazitf.etapp.main.repository.FirestoreDbConstants.*;
  */
 public class FirestoreActivityRepository {
 
-    private OnActivityTaskComplete onActivityTaskComplete;
+    private OnActivityTaskCompleteCallback onActivityTaskCompleteCallback;
+    private OnActivityDetailsTaskCompleteCallback onActivityDetailsTaskCompleteCallback;
 
-    private FirebaseFirestore firestore;
-    private CollectionReference activitiesRef;
+    private final CollectionReference activitiesRef;
 
-    public FirestoreActivityRepository(OnActivityTaskComplete onActivityTaskComplete) {
-        this.onActivityTaskComplete = onActivityTaskComplete;
-        firestore = FirebaseFirestore.getInstance();
-        activitiesRef = firestore.collection(ActivitiesConstans.COLLECTION);
+    public FirestoreActivityRepository(OnActivityTaskCompleteCallback onActivityTaskCompleteCallback) {
+        this.onActivityTaskCompleteCallback = onActivityTaskCompleteCallback;
+        activitiesRef = FirebaseFirestore.getInstance().collection(ActivitiesConstans.COLLECTION);
+    }
+
+    public FirestoreActivityRepository(OnActivityDetailsTaskCompleteCallback onActivityDetailsTaskCompleteCallback) {
+        this.onActivityDetailsTaskCompleteCallback = onActivityDetailsTaskCompleteCallback;
+        activitiesRef = FirebaseFirestore.getInstance().collection(ActivitiesConstans.COLLECTION);
     }
 
     public void getActivities() {
@@ -32,9 +36,9 @@ public class FirestoreActivityRepository {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful())
-                        onActivityTaskComplete.onFetchActivitiesSucceed(task.getResult().toObjects(ActivityModel.class));
+                        onActivityTaskCompleteCallback.onActivityListFetchSucceed(task.getResult().toObjects(ActivityModel.class));
                     else
-                        onActivityTaskComplete.onFetchFailed(task.getException());
+                        onActivityTaskCompleteCallback.onActivityFetchFailed(task.getException());
                 });
     }
 
@@ -44,18 +48,24 @@ public class FirestoreActivityRepository {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful())
-                        onActivityTaskComplete.onFetchActivityDetailsSuccedd(task.getResult().toObject(ActivityModel.class));
+                        onActivityDetailsTaskCompleteCallback.onActivityFetchSucceed(task.getResult().toObject(ActivityModel.class));
                     else
-                        onActivityTaskComplete.onFetchFailed(task.getException());
+                        onActivityDetailsTaskCompleteCallback.onActivityFetchFailed(task.getException());
                 });
     }
 
 
-    public interface OnActivityTaskComplete {
-        void onFetchActivitiesSucceed(List<ActivityModel> activityModelList);
+    public interface OnActivityTaskCompleteCallback {
 
-        void onFetchActivityDetailsSuccedd(ActivityModel activityModel);
+        void onActivityListFetchSucceed(List<ActivityModel> activityModelList);
 
-        void onFetchFailed(Exception e);
+        void onActivityFetchFailed(Exception e);
+    }
+
+    public interface OnActivityDetailsTaskCompleteCallback {
+
+        void onActivityFetchSucceed(ActivityModel activityModel);
+
+        void onActivityFetchFailed(Exception e);
     }
 }

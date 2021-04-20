@@ -1,7 +1,6 @@
 package com.gazitf.etapp.main.modelview;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -19,7 +18,7 @@ import java.util.List;
  * @project EtApp
  * @author fnkaya
  */
-public class HomeViewModel extends ViewModel implements FirestoreCategoryRepository.OnCategoryTaskComplete, FirestoreActivityRepository.OnActivityTaskComplete {
+public class HomeViewModel extends ViewModel implements FirestoreCategoryRepository.OnCategoryTaskCompleteCallback, FirestoreActivityRepository.OnActivityTaskCompleteCallback {
 
     private MutableLiveData<List<CategoryModel>> categoryList;
     private MutableLiveData<List<ActivityModel>> activityList;
@@ -43,32 +42,24 @@ public class HomeViewModel extends ViewModel implements FirestoreCategoryReposit
         return activityList;
     }
 
-    public void getActivityDetails(String documentId) {
-        activityRepository.getActivity(documentId);
-    }
 
     @Override
-    public void onFetchCategoriesSucceed(List<CategoryModel> categoryModelList) {
+    public void onCategoryFetchSucceed(List<CategoryModel> categoryModelList) {
         categoryList.setValue(categoryModelList);
     }
 
     @Override
-    public void onFetchCategoriesFailed(Exception e) {
-
+    public void onCategoryFetchFailed(Exception e) {
+        Log.i("TAG", "onCategoryFetchFailed: ", e);
     }
 
     @Override
-    public void onFetchActivitiesSucceed(List<ActivityModel> activityModelList) {
+    public void onActivityListFetchSucceed(List<ActivityModel> activityModelList) {
         activityList.setValue(activityModelList);
     }
 
     @Override
-    public void onFetchActivityDetailsSuccedd(ActivityModel activityModel) {
-
-    }
-
-    @Override
-    public void onFetchFailed(Exception e) {
-
+    public void onActivityFetchFailed(Exception e) {
+        Log.i("TAG", "onCategoryFetchFailed: ", e);
     }
 }

@@ -1,7 +1,6 @@
 package com.gazitf.etapp.main.adapter;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,11 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gazitf.etapp.databinding.RecyclerViewItemActivityBinding;
-import com.gazitf.etapp.generated.callback.OnClickListener;
 import com.gazitf.etapp.main.model.ActivityModel;
 import com.gazitf.etapp.main.model.CategoryModel;
-import com.google.android.material.card.MaterialCardView;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.time.LocalDateTime;
@@ -54,7 +50,7 @@ public class ActivityListRecyclerViewAdapter extends RecyclerView.Adapter<Activi
         holder.textViewDescription.setText(activityModel.getDescription());
         Date date = activityModel.getStartDate().toDate();
         LocalDateTime localDateTime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd - HH:mm");
         holder.textViewStartDate.setText(localDateTime.format(formatter));
         activityModel.getCategoryRef()
                 .get()
