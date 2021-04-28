@@ -29,6 +29,10 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterFragment extends Fragment {
 
@@ -156,12 +160,21 @@ public class RegisterFragment extends Fragment {
         UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
                 .setDisplayName(name)
                 .build();
-
         user.updateProfile(profileUpdate)
                 .addOnFailureListener(error -> showToastMessage(error.getLocalizedMessage()));
 
-        user.sendEmailVerification();
+        FirebaseUser currentUser = auth.getCurrentUser();
+        Map<String, String> userMap = new HashMap<>();
+        userMap.put("displayName", name);
+        userMap.put("email", currentUser.getEmail());
+        userMap.put("phoneNumber", currentUser.getPhoneNumber());
+        FirebaseFirestore.getInstance()
+                .collection("Users")
+                .document(currentUser.getUid())
+                .set(userMap)
+                .addOnFailureListener(e -> Toast.makeText(requireActivity(), e.getMessage(), Toast.LENGTH_LONG).show());
 
+        user.sendEmailVerification();
         navigateToMainActivity(getView());
     }
 

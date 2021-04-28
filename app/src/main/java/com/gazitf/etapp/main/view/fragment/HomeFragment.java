@@ -8,23 +8,19 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.GravityCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.gazitf.etapp.R;
-import com.gazitf.etapp.databinding.ActivityMainBinding;
+import com.gazitf.etapp.create.CreateActivity;
 import com.gazitf.etapp.databinding.FragmentHomeBinding;
 import com.gazitf.etapp.details.ActivityDetailsActivity;
 import com.gazitf.etapp.main.adapter.ActivityListRecyclerViewAdapter;
 import com.gazitf.etapp.main.adapter.CategoryListRecyclerViewAdapter;
 import com.gazitf.etapp.main.modelview.HomeViewModel;
-import com.gazitf.etapp.main.repository.FirestoreDbConstants;
-import com.google.android.material.appbar.MaterialToolbar;
+import com.gazitf.etapp.repository.FirestoreDbConstants;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class HomeFragment extends Fragment implements ActivityListRecyclerViewAdapter.PostClickListener {
 
@@ -32,6 +28,7 @@ public class HomeFragment extends Fragment implements ActivityListRecyclerViewAd
 
     private FragmentHomeBinding binding;
     private RecyclerView recyclerViewCategories, recyclerViewActivities;
+    private FloatingActionButton buttonCreateActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,6 +42,7 @@ public class HomeFragment extends Fragment implements ActivityListRecyclerViewAd
         super.onViewCreated(view, savedInstanceState);
 
         initViews();
+        initListeners();
     }
 
     @Override
@@ -66,6 +64,11 @@ public class HomeFragment extends Fragment implements ActivityListRecyclerViewAd
         setupRecyclerViewCategories();
         recyclerViewActivities = binding.recyclerViewActivities;
         setupRecyclerViewActivities();
+        buttonCreateActivity = binding.buttonCreateActivity;
+    }
+
+    private void initListeners() {
+        buttonCreateActivity.setOnClickListener(buttonView -> startActivity(new Intent(requireActivity(), CreateActivity.class)));
     }
 
     private void setupRecyclerViewCategories() {

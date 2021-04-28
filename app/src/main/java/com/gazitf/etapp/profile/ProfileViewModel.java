@@ -19,12 +19,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.security.AuthProvider;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /*
@@ -35,6 +38,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class ProfileViewModel extends AndroidViewModel {
 
     private final FirebaseUser user;
+    private final CollectionReference userReference;
     private final MutableLiveData<Boolean> editMode = new MutableLiveData<>(false);
     private final MutableLiveData<Boolean> phoneEditMode = new MutableLiveData<>(false);
     private final MutableLiveData<Boolean> pending = new MutableLiveData<>(false);
@@ -43,6 +47,7 @@ public class ProfileViewModel extends AndroidViewModel {
     public ProfileViewModel(Application application) {
         super(application);
         user = FirebaseAuth.getInstance().getCurrentUser();
+        userReference = FirebaseFirestore.getInstance().collection("Users");
         emailVerified.setValue(user.isEmailVerified());
     }
 
@@ -66,6 +71,12 @@ public class ProfileViewModel extends AndroidViewModel {
         return user;
     }
 
+    public void toggleEditMode() {
+        editMode.setValue(!editMode.getValue());
+    }
+
+    public void togglePhoneEditMode() { phoneEditMode.setValue(!phoneEditMode.getValue()); }
+
     @BindingAdapter("profileImage")
     public static void loadImage(ImageView view, Uri imageUrl) {
         if (imageUrl != null)
@@ -74,12 +85,6 @@ public class ProfileViewModel extends AndroidViewModel {
                     .load(imageUrl)
                     .into(view);
     }
-
-    public void toggleEditMode() {
-        editMode.setValue(!editMode.getValue());
-    }
-
-    public void togglePhoneEditMode() { phoneEditMode.setValue(!phoneEditMode.getValue()); }
 
     public void updateUserDisplayNameAndEmail(String displayName, String email) {
         pending.postValue(true);
@@ -95,8 +100,16 @@ public class ProfileViewModel extends AndroidViewModel {
         user
                 .updateProfile(profileChangeRequest)
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful())
-                        updateUserEmail(email);
+                    if (task.isSuccessful()) {
+                        userReference.document(user.getUid())
+                                .update(Map.of("displayName", profileChangeRequest.getDisplayName()));
+                        if (!user.getEmail().equals(email)){
+                            updateUserEmail(email);
+                        }else {
+                            pending.postValue(false);
+                            editMode.postValue(false);
+                        }
+                    }
                     else
                         Toast.makeText(getApplication().getApplicationContext(), "Güncelleme sırasında bir hata oluştu. Lütfen tekrar deneyiniz.", Toast.LENGTH_LONG).show();
                 });
@@ -155,8 +168,11 @@ public class ProfileViewModel extends AndroidViewModel {
                 .addOnCompleteListener(task -> {
                             pending.postValue(false);
 
-                            if (task.isSuccessful())
+                            if (task.isSuccessful()){
+                                userReference.document(user.getUid())
+                                        .update(Map.of("photoUrl", userProfilePhotoChangeRequest.getPhotoUri().toString()));
                                 Toast.makeText(getApplication().getApplicationContext(), "Profil fotoğrafı güncellendi.", Toast.LENGTH_LONG).show();
+                            }
                             else
                                 Toast.makeText(getApplication().getApplicationContext(), "Profil fotoğrafı güncellenirken bir hata oluştu. Lütfen tekrar deneyiniz.", Toast.LENGTH_LONG).show();
                         }
