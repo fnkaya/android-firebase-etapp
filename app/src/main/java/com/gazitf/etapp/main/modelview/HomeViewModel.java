@@ -42,7 +42,6 @@ public class HomeViewModel extends ViewModel implements FirestoreCategoryReposit
         return activityList;
     }
 
-
     @Override
     public void onCategoryFetchSucceed(List<CategoryModel> categoryModelList) {
         categoryList.setValue(categoryModelList);

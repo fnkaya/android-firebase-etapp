@@ -1,5 +1,6 @@
 package com.gazitf.etapp.details;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
@@ -24,6 +25,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
@@ -31,12 +33,16 @@ import com.squareup.picasso.Picasso;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ActivityDetailsActivity extends AppCompatActivity implements FirestoreActivityRepository.OnActivityDetailsTaskCompleteCallback, OnMapReadyCallback {
 
     private ActivityDetailsBinding binding;
-    private String documentRef;
+    private String documentId;
 
     private FirestoreActivityRepository repository;
     private FirebaseAuth auth;
@@ -50,7 +56,7 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_details);
 
-        documentRef = getIntent().getStringExtra(FirestoreDbConstants.ActivitiesConstans.DOCUMENT_ID);
+        documentId = getIntent().getStringExtra(FirestoreDbConstants.ActivitiesConstans.DOCUMENT_ID);
         repository = new FirestoreActivityRepository(this);
 
         fetchActivityPostDetails();
@@ -59,7 +65,7 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
     }
 
     private void fetchActivityPostDetails() {
-        repository.getActivity(documentRef);
+        repository.getActivity(documentId);
     }
 
     private void initViews() {
@@ -67,13 +73,40 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
     }
 
     private void initListeners() {
-
+        toolbar.setNavigationOnClickListener(view -> this.finish());
 
         binding.buttonShowRequestDialog.setOnClickListener(showButton -> {
             initBottomSheetDialog();
         });
 
-        toolbar.setNavigationOnClickListener(view -> this.finish());
+        binding.buttonAddFavoriteList.setOnClickListener(favoriteButton -> {
+            addFavoriteList();
+        });
+
+        addListenerToFavoriteList();
+    }
+
+    private void addListenerToFavoriteList() {
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        DocumentReference documentRef = FirebaseFirestore.getInstance()
+                .collection(FirestoreDbConstants.FavoritesConstans.COLLECTION)
+                .document(currentUserId);
+
+        documentRef.addSnapshotListener((documentSnapshot, error) -> {
+            if (documentSnapshot.exists()) {
+                Map<String, Object> data = documentSnapshot.getData();
+                List<String> favoriteList = (List<String>) data.getOrDefault(FirestoreDbConstants.FavoritesConstans.FAVORITE_LIST, new ArrayList<String>());
+                if (favoriteList.contains(documentId)) {
+                    binding.buttonAddFavoriteList.setText("KALDIR");
+                    binding.buttonAddFavoriteList.setTextColor(getResources().getColor(R.color.colorBlack));
+                }
+                else {
+                    binding.buttonAddFavoriteList.setText("EKLE");
+                    binding.buttonAddFavoriteList.setTextColor(getResources().getColor(R.color.colorRed));
+                }
+            }
+        });
     }
 
     private void initBottomSheetDialog() {
@@ -100,11 +133,37 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
         bottomSheetDialog.show();
     }
 
+    private void addFavoriteList() {
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        DocumentReference documentRef = FirebaseFirestore.getInstance()
+                .collection(FirestoreDbConstants.FavoritesConstans.COLLECTION)
+                .document(currentUserId);
+
+        documentRef
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Map<String, Object> data = documentSnapshot.getData();
+                        List<String> favoriteList = (List<String>) data.getOrDefault(FirestoreDbConstants.FavoritesConstans.FAVORITE_LIST, new ArrayList<String>());
+                        if (favoriteList.contains(documentId)) {
+                            favoriteList.remove(documentId);
+                            Toast.makeText(ActivityDetailsActivity.this, "Etkinlik favoriler listenizden silindi", Toast.LENGTH_LONG).show();
+                        }
+                        else{
+                            favoriteList.add(documentId);
+                            Toast.makeText(ActivityDetailsActivity.this, "Etkinlik favoriler listenize eklendi", Toast.LENGTH_LONG).show();
+                        }
+                        documentRef.set(data);
+                    }
+                });
+    }
+
     @Override
     public void onActivityFetchSucceed(ActivityModel activityModel) {
         toolbar.setTitle(activityModel.getName());
         binding.textViewActivityDescriptionDetails.setText(activityModel.getDescription());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd - HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd - HH:mm");
         Date startDate = activityModel.getStartDate().toDate();
         LocalDateTime startDateTime = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         binding.textViewActivityStartDateDetails.setText(startDateTime.format(formatter));
@@ -122,7 +181,7 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
     private void handleActivityOwnerDetails(ActivityModel activityModel) {
         String ownerId = activityModel.getOwnerId();
         FirebaseFirestore.getInstance()
-                .collection("Users")
+                .collection(FirestoreDbConstants.UsersConstants.COLLECTION)
                 .document(ownerId)
                 .get()
                 .addOnCompleteListener(task -> {

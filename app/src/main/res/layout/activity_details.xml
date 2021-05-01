@@ -91,15 +91,14 @@
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="16dp">
 
-                    <com.google.android.material.textview.MaterialTextView
+                    <ImageButton
                         android:id="@+id/text_veiw_label_start_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/icon_date"
-                        android:drawablePadding="4dp"
-                        android:drawableTint="@color/colorMaterialPink"
-                        android:text="Etkinlik Tarihi"
-                        android:textStyle="bold|italic" />
+                        android:src="@drawable/icon_calendar"
+                        android:background="@drawable/background_transparent"
+                        android:tint="@color/colorRed"
+                        />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/text_view_activity_start_date_details"

@@ -1,6 +1,7 @@
 package com.gazitf.etapp.repository;
 
 import com.gazitf.etapp.model.ActivityModel;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -31,8 +32,9 @@ public class FirestoreActivityRepository {
     }
 
     public void getActivities() {
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         activitiesRef
-                .orderBy(ActivitiesConstans.START_DATE)
+                .whereNotEqualTo(ActivitiesConstans.OWNER_ID, currentUserId)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful())

@@ -12,6 +12,9 @@ import com.gazitf.etapp.R;
 import com.gazitf.etapp.databinding.RecyclerViewItemActivityBinding;
 import com.gazitf.etapp.model.ActivityModel;
 import com.gazitf.etapp.model.CategoryModel;
+import com.gazitf.etapp.repository.FirestoreDbConstants;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.time.LocalDateTime;
@@ -19,6 +22,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /*
  * @created 22/03/2021 - 5:54 PM
@@ -53,6 +57,7 @@ public class ActivityListRecyclerViewAdapter extends RecyclerView.Adapter<Activi
         LocalDateTime localDateTime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd - HH:mm");
         holder.textViewStartDate.setText(localDateTime.format(formatter));
+
         activityModel.getCategoryRef()
                 .get()
                 .addOnCompleteListener(task -> {
@@ -63,6 +68,19 @@ public class ActivityListRecyclerViewAdapter extends RecyclerView.Adapter<Activi
                                     .load(categoryModel.getImageUrl())
                                     .placeholder(R.drawable.progress_animation)
                                     .into(holder.imageViewActivityImage);
+                    }
+                });
+
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseFirestore.getInstance()
+                .collection(FirestoreDbConstants.FavoritesConstans.COLLECTION)
+                .document(currentUserId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Map<String, Object> data = documentSnapshot.getData();
+                        List<String> favoriteList = (List<String>) data.get(FirestoreDbConstants.FavoritesConstans.FAVORITE_LIST);
+                        holder.textViewFavorite.setText(String.valueOf(favoriteList.size()));
                     }
                 });
 
@@ -79,7 +97,7 @@ public class ActivityListRecyclerViewAdapter extends RecyclerView.Adapter<Activi
     public class ActivitiesViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imageViewActivityImage;
-        private TextView textViewName, textViewDescription, textViewStartDate, textViewEndDate, textViewLocation, textViewCategory, textViewCreatedDate;
+        private TextView textViewName, textViewDescription, textViewStartDate, textViewFavorite;
 
         public ActivitiesViewHolder(@NonNull RecyclerViewItemActivityBinding binding) {
             super(binding.getRoot());
@@ -88,6 +106,7 @@ public class ActivityListRecyclerViewAdapter extends RecyclerView.Adapter<Activi
             textViewName = binding.textViewActivityName;
             textViewDescription = binding.textViewActivityDescription;
             textViewStartDate = binding.textViewActivityStartDate;
+            textViewFavorite = binding.textViewActivityFavorite;
         }
     }
 

@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <import type="android.view.View" />
-
         <variable
             name="viewmodel"
             type="com.gazitf.etapp.profile.ProfileViewModel" />
@@ -48,16 +46,14 @@
                 app:civ_border_width="2dp"
                 profileImage="@{viewmodel.user.photoUrl}" />
 
-            <com.google.android.material.textview.MaterialTextView
+            <ImageButton
                 android:id="@+id/button_edit_profile_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/avatarIv"
-                android:layout_toEndOf="@id/avatarIv"
-                android:drawablePadding="8dp"
-                android:foreground="?attr/selectableItemBackground"
-                android:text="Profil resmini değiştir"
-                android:textStyle="bold" />
+                android:background="@drawable/background_transparent"
+                android:layout_alignEnd="@id/avatarIv"
+                android:src="@drawable/icon_edit"/>
 
         </RelativeLayout>
 
