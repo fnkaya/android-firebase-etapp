@@ -22,7 +22,7 @@
             android:id="@+id/layout_scroll"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/layour_buttons_details"
+            app:layout_constraintBottom_toTopOf="@id/button_show_request_dialog"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar_activity_details">
@@ -55,11 +55,23 @@
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/text_view_activity_owner_name"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="16dp"
                         android:textSize="18sp"
                         android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/button_toggle_favorite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/icon_favorite"
+                        android:tint="@color/colorMaterialPink"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:backgroundTint="@color/colorWhite"
+                        android:layout_gravity="end"/>
+
 
                 </LinearLayout>
 
@@ -95,10 +107,9 @@
                         android:id="@+id/text_veiw_label_start_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/icon_calendar"
                         android:background="@drawable/background_transparent"
-                        android:tint="@color/colorRed"
-                        />
+                        android:src="@drawable/icon_calendar"
+                        android:tint="@color/colorRed" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/text_view_activity_start_date_details"
@@ -133,40 +144,35 @@
 
         </ScrollView>
 
-        <LinearLayout
-            android:id="@+id/layour_buttons_details"
-            android:layout_width="match_parent"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_show_request_dialog"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_weight="1"
+            android:paddingVertical="8dp"
+            android:text="KATILMA TALEBİ GÖNDER"
+            android:textColor="@color/colorGreen"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_scroll">
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_add_favorite_list"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_weight="1"
-                android:paddingVertical="8dp"
-                android:text="FAVORİ"
-                android:textColor="@color/colorRed"
-                android:textStyle="bold" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_show_request_dialog"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_weight="1"
-                android:paddingVertical="8dp"
-                android:text="KATIL"
-                android:textColor="@color/colorGreen"
-                android:textStyle="bold" />
-
-        </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_cancel_attend_request"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_weight="1"
+            android:paddingVertical="8dp"
+            android:text="KATILMA TALEBİNİ İPTAL ET"
+            android:textColor="@color/colorMaterialPink"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

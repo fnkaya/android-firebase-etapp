@@ -39,4 +39,5 @@
     </string-array>
 
     <string name="title_activity_maps">Harita</string>
+    <string name="requests">Talepler</string>
 </resources>

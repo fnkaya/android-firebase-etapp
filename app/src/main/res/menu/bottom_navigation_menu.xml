@@ -17,6 +17,11 @@
         android:icon="@drawable/icon_favorite"
         app:cnb_iconColor="@color/colorBlack"/>
 
+    <item android:title="@string/requests"
+        android:id="@+id/menu_item_requestList"
+        android:icon="@drawable/icon_request_notification"
+        app:cnb_iconColor="@color/colorBlack"/>
+
     <item android:title="@string/message"
         android:id="@+id/menu_item_message"
         android:icon="@drawable/icon_message"

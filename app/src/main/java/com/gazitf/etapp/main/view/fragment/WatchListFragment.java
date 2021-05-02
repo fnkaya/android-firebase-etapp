@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.gazitf.etapp.databinding.FragmentWatchListBinding;
 import com.gazitf.etapp.details.ActivityDetailsActivity;
 import com.gazitf.etapp.main.adapter.FavoriteListRecyclerViewAdapter;
-import com.gazitf.etapp.model.ActivityModel;
 import com.gazitf.etapp.repository.FirestoreDbConstants;
 import com.gazitf.etapp.repository.FirestoreFavoriteRepository;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,11 +22,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class WatchListFragment extends Fragment implements FavoriteListRecyclerViewAdapter.PostClickListener, FirestoreFavoriteRepository.OnActivityTaskCompleteCallback {
+public class WatchListFragment extends Fragment implements FavoriteListRecyclerViewAdapter.FavoritePostClickListener, FirestoreFavoriteRepository.OnActivityTaskCompleteCallback {
 
     private FragmentWatchListBinding binding;
     private FirestoreFavoriteRepository favoriteRepository;
@@ -36,7 +34,6 @@ public class WatchListFragment extends Fragment implements FavoriteListRecyclerV
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         favoriteRepository = new FirestoreFavoriteRepository(this);
         favoriteRepository.getActivities();
 
@@ -56,7 +53,7 @@ public class WatchListFragment extends Fragment implements FavoriteListRecyclerV
     @Override
     public void navigateToPostDetails(String documentId) {
         Intent intent = new Intent(requireActivity(), ActivityDetailsActivity.class);
-        intent.putExtra(FirestoreDbConstants.ActivitiesConstans.DOCUMENT_ID, documentId);
+        intent.putExtra(FirestoreDbConstants.ActivitiesConstants.DOCUMENT_ID, documentId);
         startActivity(intent);
     }
 
@@ -65,7 +62,7 @@ public class WatchListFragment extends Fragment implements FavoriteListRecyclerV
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         DocumentReference documentRef = FirebaseFirestore.getInstance()
-                .collection(FirestoreDbConstants.FavoritesConstans.COLLECTION)
+                .collection(FirestoreDbConstants.FavoritesConstants.COLLECTION)
                 .document(currentUserId);
 
         documentRef
@@ -76,7 +73,7 @@ public class WatchListFragment extends Fragment implements FavoriteListRecyclerV
 
                         if (documentSnapshot.exists()) {
                             Map<String, Object> data = documentSnapshot.getData();
-                            List<String> favoriteList = (List<String>) data.get(FirestoreDbConstants.FavoritesConstans.FAVORITE_LIST);
+                            List<String> favoriteList = (List<String>) data.get(FirestoreDbConstants.FavoritesConstants.FAVORITE_LIST);
 
                             if (favoriteList.contains(documentId)) {
                                 favoriteList.remove(documentId);

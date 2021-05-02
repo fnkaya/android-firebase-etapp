@@ -9,7 +9,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.gazitf.etapp.R;
 import com.gazitf.etapp.databinding.RecyclerViewItemFavoriteListBinding;
 import com.gazitf.etapp.model.ActivityModel;
 import com.gazitf.etapp.model.CategoryModel;
@@ -31,11 +30,11 @@ import java.util.List;
 public class FavoriteListRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteListRecyclerViewAdapter.FavoritiesViewHolder> {
 
     private List<String> activityIdList;
-    private PostClickListener postClickListener;
+    private FavoritePostClickListener favoritePostClickListener;
 
-    public FavoriteListRecyclerViewAdapter(List<String> activityIdList, PostClickListener postClickListener) {
+    public FavoriteListRecyclerViewAdapter(List<String> activityIdList, FavoritePostClickListener favoritePostClickListener) {
         this.activityIdList = activityIdList;
-        this.postClickListener = postClickListener;
+        this.favoritePostClickListener = favoritePostClickListener;
     }
 
     @NonNull
@@ -52,7 +51,7 @@ public class FavoriteListRecyclerViewAdapter extends RecyclerView.Adapter<Favori
         String activityId = activityIdList.get(position);
 
         FirebaseFirestore.getInstance()
-                .collection(FirestoreDbConstants.ActivitiesConstans.COLLECTION)
+                .collection(FirestoreDbConstants.ActivitiesConstants.COLLECTION)
                 .document(activityId)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
@@ -75,17 +74,16 @@ public class FavoriteListRecyclerViewAdapter extends RecyclerView.Adapter<Favori
                                         if (categoryModel != null)
                                             Picasso.get()
                                                     .load(categoryModel.getImageUrl())
-                                                    .placeholder(R.drawable.progress_animation)
                                                     .into(holder.imageViewFavoriteActivityImage);
                                     }
                                 });
 
                         holder.imageViewFavoriteActivityImage.setOnClickListener(view -> {
-                            postClickListener.navigateToPostDetails(activityModel.getId());
+                            favoritePostClickListener.navigateToPostDetails(activityModel.getId());
                         });
 
                         holder.buttonRemoveActivityFromFavoriteList.setOnClickListener(view -> {
-                            postClickListener.removeActivityFromFavoriteList(activityModel.getId());
+                            favoritePostClickListener.removeActivityFromFavoriteList(activityModel.getId());
                         });
                     }
                 });
@@ -113,7 +111,7 @@ public class FavoriteListRecyclerViewAdapter extends RecyclerView.Adapter<Favori
         }
     }
 
-    public interface PostClickListener{
+    public interface FavoritePostClickListener {
         void navigateToPostDetails(String documentId);
         void removeActivityFromFavoriteList(String documentId);
     }

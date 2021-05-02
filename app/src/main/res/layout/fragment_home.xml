@@ -19,6 +19,7 @@
         tools:context=".main.view.fragment.HomeFragment">
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorGrey">

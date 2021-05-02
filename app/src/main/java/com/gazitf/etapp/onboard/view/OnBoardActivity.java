@@ -71,7 +71,7 @@ public class OnBoardActivity extends AppCompatActivity {
         }
 
         if (dots.length > 0) {
-            dots[position].setTextColor(getColor(R.color.colorMaterialOrange));
+            dots[position].setTextColor(getColor(R.color.colorBlack));
         }
     }
 

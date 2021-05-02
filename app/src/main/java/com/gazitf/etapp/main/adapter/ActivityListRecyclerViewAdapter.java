@@ -8,7 +8,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.gazitf.etapp.R;
 import com.gazitf.etapp.databinding.RecyclerViewItemActivityBinding;
 import com.gazitf.etapp.model.ActivityModel;
 import com.gazitf.etapp.model.CategoryModel;
@@ -32,11 +31,11 @@ import java.util.Map;
 public class ActivityListRecyclerViewAdapter extends RecyclerView.Adapter<ActivityListRecyclerViewAdapter.ActivitiesViewHolder> {
 
     private List<ActivityModel> activityList;
-    private PostClickListener postClickListener;
+    private RequestActivityPostClickListener requestActivityPostClickListener;
 
-    public ActivityListRecyclerViewAdapter(List<ActivityModel> activityList, PostClickListener postClickListener) {
+    public ActivityListRecyclerViewAdapter(List<ActivityModel> activityList, RequestActivityPostClickListener requestActivityPostClickListener) {
         this.activityList = activityList;
-        this.postClickListener = postClickListener;
+        this.requestActivityPostClickListener = requestActivityPostClickListener;
     }
 
     @NonNull
@@ -66,26 +65,25 @@ public class ActivityListRecyclerViewAdapter extends RecyclerView.Adapter<Activi
                         if (categoryModel != null)
                             Picasso.get()
                                     .load(categoryModel.getImageUrl())
-                                    .placeholder(R.drawable.progress_animation)
                                     .into(holder.imageViewActivityImage);
                     }
                 });
 
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         FirebaseFirestore.getInstance()
-                .collection(FirestoreDbConstants.FavoritesConstans.COLLECTION)
+                .collection(FirestoreDbConstants.FavoritesConstants.COLLECTION)
                 .document(currentUserId)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         Map<String, Object> data = documentSnapshot.getData();
-                        List<String> favoriteList = (List<String>) data.get(FirestoreDbConstants.FavoritesConstans.FAVORITE_LIST);
+                        List<String> favoriteList = (List<String>) data.get(FirestoreDbConstants.FavoritesConstants.FAVORITE_LIST);
                         holder.textViewFavorite.setText(String.valueOf(favoriteList.size()));
                     }
                 });
 
         holder.imageViewActivityImage.setOnClickListener(view -> {
-            postClickListener.navigateToPostDetails(activityModel.getId());
+            requestActivityPostClickListener.navigateToPostDetails(activityModel.getId());
         });
     }
 
@@ -110,7 +108,7 @@ public class ActivityListRecyclerViewAdapter extends RecyclerView.Adapter<Activi
         }
     }
 
-    public interface PostClickListener{
+    public interface RequestActivityPostClickListener {
         void navigateToPostDetails(String documentRef);
     }
 }

@@ -26,8 +26,10 @@ import com.gazitf.etapp.auth.activity.SplashActivity;
 import com.gazitf.etapp.databinding.ActivityMainBinding;
 import com.gazitf.etapp.main.view.fragment.HomeFragment;
 import com.gazitf.etapp.main.view.fragment.MessageFragment;
+import com.gazitf.etapp.main.view.fragment.RequestListFragment;
 import com.gazitf.etapp.main.view.fragment.SearchFragment;
 import com.gazitf.etapp.main.view.fragment.WatchListFragment;
+import com.gazitf.etapp.posts.PostsActivity;
 import com.gazitf.etapp.profile.ProfileActivity;
 import com.gazitf.etapp.utils.BaseActivity;
 import com.gazitf.etapp.utils.LocaleHelper;
@@ -152,6 +154,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             case R.id.menu_item_profile:
                 startActivity(new Intent(this, ProfileActivity.class));
                 break;
+            case R.id.menu_item_posts:
+                startActivity(new Intent(this, PostsActivity.class));
+                break;
         }
 
         return true;
@@ -201,6 +206,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 case R.id.menu_item_message:
                     fragment = new MessageFragment();
                     title = "Mesajlar";
+                    break;
+                case R.id.menu_item_requestList:
+                    fragment = new RequestListFragment();
+                    title = "Katılım Talepleri";
                     break;
                 case R.id.menu_item_search:
                     fragment = new SearchFragment();

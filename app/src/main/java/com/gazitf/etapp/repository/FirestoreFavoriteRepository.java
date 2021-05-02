@@ -1,19 +1,13 @@
 package com.gazitf.etapp.repository;
 
-import android.util.Log;
-
-import com.gazitf.etapp.model.ActivityModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import static com.gazitf.etapp.repository.FirestoreDbConstants.ActivitiesConstans;
-import static com.gazitf.etapp.repository.FirestoreDbConstants.FavoritesConstans;
+import static com.gazitf.etapp.repository.FirestoreDbConstants.FavoritesConstants;
 
 /*
  * @created 22/03/2021 - 6:18 PM
@@ -28,7 +22,7 @@ public class FirestoreFavoriteRepository {
 
     public FirestoreFavoriteRepository(OnActivityTaskCompleteCallback onActivityTaskCompleteCallback) {
         this.onActivityTaskCompleteCallback = onActivityTaskCompleteCallback;
-        favoritiesRef = FirebaseFirestore.getInstance().collection(FavoritesConstans.COLLECTION);
+        favoritiesRef = FirebaseFirestore.getInstance().collection(FavoritesConstants.COLLECTION);
     }
 
     public void getActivities() {
@@ -40,7 +34,7 @@ public class FirestoreFavoriteRepository {
                     if (task.isSuccessful()) {
                         DocumentSnapshot result = task.getResult();
                         if (result.exists())
-                            onActivityTaskCompleteCallback.onActivityListFetchSucceed((List<String>) result.getData().get(FavoritesConstans.FAVORITE_LIST));
+                            onActivityTaskCompleteCallback.onActivityListFetchSucceed((List<String>) result.getData().get(FavoritesConstants.FAVORITE_LIST));
                     } else
                         onActivityTaskCompleteCallback.onActivityFetchFailed(task.getException());
                 });
