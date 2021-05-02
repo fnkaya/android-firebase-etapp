@@ -1,12 +1,13 @@
 package com.gazitf.etapp.repository;
 
 import com.gazitf.etapp.model.ActivityModel;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
-import static com.gazitf.etapp.repository.FirestoreDbConstants.ActivitiesConstans;
+import static com.gazitf.etapp.repository.FirestoreDbConstants.ActivitiesConstants;
 
 /*
  * @created 22/03/2021 - 6:18 PM
@@ -22,17 +23,31 @@ public class FirestoreActivityRepository {
 
     public FirestoreActivityRepository(OnActivityTaskCompleteCallback onActivityTaskCompleteCallback) {
         this.onActivityTaskCompleteCallback = onActivityTaskCompleteCallback;
-        activitiesRef = FirebaseFirestore.getInstance().collection(ActivitiesConstans.COLLECTION);
+        activitiesRef = FirebaseFirestore.getInstance().collection(ActivitiesConstants.COLLECTION);
     }
 
     public FirestoreActivityRepository(OnActivityDetailsTaskCompleteCallback onActivityDetailsTaskCompleteCallback) {
         this.onActivityDetailsTaskCompleteCallback = onActivityDetailsTaskCompleteCallback;
-        activitiesRef = FirebaseFirestore.getInstance().collection(ActivitiesConstans.COLLECTION);
+        activitiesRef = FirebaseFirestore.getInstance().collection(ActivitiesConstants.COLLECTION);
     }
 
     public void getActivities() {
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         activitiesRef
-                .orderBy(ActivitiesConstans.START_DATE)
+                .whereNotEqualTo(ActivitiesConstants.OWNER_ID, currentUserId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful())
+                        onActivityTaskCompleteCallback.onActivityListFetchSucceed(task.getResult().toObjects(ActivityModel.class));
+                    else
+                        onActivityTaskCompleteCallback.onActivityFetchFailed(task.getException());
+                });
+    }
+
+    public void getUsersActivities() {
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        activitiesRef
+                .whereEqualTo(ActivitiesConstants.OWNER_ID, currentUserId)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful())

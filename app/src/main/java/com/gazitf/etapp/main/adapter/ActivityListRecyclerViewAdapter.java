@@ -8,10 +8,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.gazitf.etapp.R;
 import com.gazitf.etapp.databinding.RecyclerViewItemActivityBinding;
 import com.gazitf.etapp.model.ActivityModel;
 import com.gazitf.etapp.model.CategoryModel;
+import com.gazitf.etapp.repository.FirestoreDbConstants;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.time.LocalDateTime;
@@ -19,6 +21,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /*
  * @created 22/03/2021 - 5:54 PM
@@ -28,11 +31,11 @@ import java.util.List;
 public class ActivityListRecyclerViewAdapter extends RecyclerView.Adapter<ActivityListRecyclerViewAdapter.ActivitiesViewHolder> {
 
     private List<ActivityModel> activityList;
-    private PostClickListener postClickListener;
+    private RequestActivityPostClickListener requestActivityPostClickListener;
 
-    public ActivityListRecyclerViewAdapter(List<ActivityModel> activityList, PostClickListener postClickListener) {
+    public ActivityListRecyclerViewAdapter(List<ActivityModel> activityList, RequestActivityPostClickListener requestActivityPostClickListener) {
         this.activityList = activityList;
-        this.postClickListener = postClickListener;
+        this.requestActivityPostClickListener = requestActivityPostClickListener;
     }
 
     @NonNull
@@ -53,6 +56,7 @@ public class ActivityListRecyclerViewAdapter extends RecyclerView.Adapter<Activi
         LocalDateTime localDateTime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd - HH:mm");
         holder.textViewStartDate.setText(localDateTime.format(formatter));
+
         activityModel.getCategoryRef()
                 .get()
                 .addOnCompleteListener(task -> {
@@ -61,13 +65,25 @@ public class ActivityListRecyclerViewAdapter extends RecyclerView.Adapter<Activi
                         if (categoryModel != null)
                             Picasso.get()
                                     .load(categoryModel.getImageUrl())
-                                    .placeholder(R.drawable.progress_animation)
                                     .into(holder.imageViewActivityImage);
                     }
                 });
 
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseFirestore.getInstance()
+                .collection(FirestoreDbConstants.FavoritesConstants.COLLECTION)
+                .document(currentUserId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Map<String, Object> data = documentSnapshot.getData();
+                        List<String> favoriteList = (List<String>) data.get(FirestoreDbConstants.FavoritesConstants.FAVORITE_LIST);
+                        holder.textViewFavorite.setText(String.valueOf(favoriteList.size()));
+                    }
+                });
+
         holder.imageViewActivityImage.setOnClickListener(view -> {
-            postClickListener.navigateToPostDetails(activityModel.getId());
+            requestActivityPostClickListener.navigateToPostDetails(activityModel.getId());
         });
     }
 
@@ -79,7 +95,7 @@ public class ActivityListRecyclerViewAdapter extends RecyclerView.Adapter<Activi
     public class ActivitiesViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imageViewActivityImage;
-        private TextView textViewName, textViewDescription, textViewStartDate, textViewEndDate, textViewLocation, textViewCategory, textViewCreatedDate;
+        private TextView textViewName, textViewDescription, textViewStartDate, textViewFavorite;
 
         public ActivitiesViewHolder(@NonNull RecyclerViewItemActivityBinding binding) {
             super(binding.getRoot());
@@ -88,10 +104,11 @@ public class ActivityListRecyclerViewAdapter extends RecyclerView.Adapter<Activi
             textViewName = binding.textViewActivityName;
             textViewDescription = binding.textViewActivityDescription;
             textViewStartDate = binding.textViewActivityStartDate;
+            textViewFavorite = binding.textViewActivityFavorite;
         }
     }
 
-    public interface PostClickListener{
+    public interface RequestActivityPostClickListener {
         void navigateToPostDetails(String documentRef);
     }
 }

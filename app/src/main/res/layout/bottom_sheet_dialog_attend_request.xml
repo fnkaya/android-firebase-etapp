@@ -42,7 +42,7 @@
 
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_cancel_attend_request"
+                android:id="@+id/button_dismiss_bottom_sheet_dialog"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

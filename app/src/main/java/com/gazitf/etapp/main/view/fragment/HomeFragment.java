@@ -22,7 +22,7 @@ import com.gazitf.etapp.main.modelview.HomeViewModel;
 import com.gazitf.etapp.repository.FirestoreDbConstants;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class HomeFragment extends Fragment implements ActivityListRecyclerViewAdapter.PostClickListener {
+public class HomeFragment extends Fragment implements ActivityListRecyclerViewAdapter.RequestActivityPostClickListener {
 
     private HomeViewModel viewModel;
 
@@ -82,15 +82,15 @@ public class HomeFragment extends Fragment implements ActivityListRecyclerViewAd
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    public void navigateToPostDetails(String documentId) {
+        Intent intent = new Intent(requireActivity(), ActivityDetailsActivity.class);
+        intent.putExtra(FirestoreDbConstants.ActivitiesConstants.DOCUMENT_ID, documentId);
+        startActivity(intent);
     }
 
     @Override
-    public void navigateToPostDetails(String documentRef) {
-        Intent intent = new Intent(requireActivity(), ActivityDetailsActivity.class);
-        intent.putExtra(FirestoreDbConstants.ActivitiesConstans.DOCUMENT_ID, documentRef);
-        startActivity(intent);
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

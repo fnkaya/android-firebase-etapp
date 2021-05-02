@@ -17,10 +17,10 @@ public class SliderAdapter extends PagerAdapter {
     private final Context context;
 
     final int[] images = {
-            R.drawable.image_skateboard,
-            R.drawable.image_basketball,
-            R.drawable.image_camp,
-            R.drawable.image_football
+            R.drawable.ic_camp,
+            R.drawable.ic_hiking,
+            R.drawable.ic_basketball,
+            R.drawable.ic_football
     };
 
     public SliderAdapter(Context context) {
