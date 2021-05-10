@@ -73,14 +73,13 @@
                android:background="@color/colorLightGrey"/>
 
           <com.google.android.material.button.MaterialButton
-              style="@style/Widget.MaterialComponents.Button.OutlinedButton"
               android:id="@+id/button_remove_from_favorite_list"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_margin="8dp"
+              app:backgroundTint="@color/colorRed"
               android:text="KALDIR"
-              android:textStyle="bold"
-              android:textColor="@color/colorRed"/>
+              android:textStyle="bold"/>
 
        </LinearLayout>
 

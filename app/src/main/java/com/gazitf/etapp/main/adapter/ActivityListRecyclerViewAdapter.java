@@ -73,8 +73,7 @@ public class ActivityListRecyclerViewAdapter extends RecyclerView.Adapter<Activi
         FirebaseFirestore.getInstance()
                 .collection(FirestoreDbConstants.FavoritesConstants.COLLECTION)
                 .document(currentUserId)
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
+                .addSnapshotListener((documentSnapshot, error) -> {
                     if (documentSnapshot.exists()) {
                         Map<String, Object> data = documentSnapshot.getData();
                         List<String> favoriteList = (List<String>) data.get(FirestoreDbConstants.FavoritesConstants.FAVORITE_LIST);
@@ -84,6 +83,10 @@ public class ActivityListRecyclerViewAdapter extends RecyclerView.Adapter<Activi
 
         holder.imageViewActivityImage.setOnClickListener(view -> {
             requestActivityPostClickListener.navigateToPostDetails(activityModel.getId());
+        });
+
+        holder.textViewSharePost.setOnClickListener(view -> {
+            requestActivityPostClickListener.sharePost(activityModel.getId());
         });
     }
 
@@ -95,7 +98,7 @@ public class ActivityListRecyclerViewAdapter extends RecyclerView.Adapter<Activi
     public class ActivitiesViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imageViewActivityImage;
-        private TextView textViewName, textViewDescription, textViewStartDate, textViewFavorite;
+        private TextView textViewName, textViewDescription, textViewStartDate, textViewFavorite, textViewSharePost;
 
         public ActivitiesViewHolder(@NonNull RecyclerViewItemActivityBinding binding) {
             super(binding.getRoot());
@@ -105,10 +108,12 @@ public class ActivityListRecyclerViewAdapter extends RecyclerView.Adapter<Activi
             textViewDescription = binding.textViewActivityDescription;
             textViewStartDate = binding.textViewActivityStartDate;
             textViewFavorite = binding.textViewActivityFavorite;
+            textViewSharePost = binding.textViewActivityShare;
         }
     }
 
     public interface RequestActivityPostClickListener {
-        void navigateToPostDetails(String documentRef);
+        void navigateToPostDetails(String documentId);
+        void sharePost(String documentId);
     }
 }

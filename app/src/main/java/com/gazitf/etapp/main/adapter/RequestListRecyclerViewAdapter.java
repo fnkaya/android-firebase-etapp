@@ -1,5 +1,6 @@
 package com.gazitf.etapp.main.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.gazitf.etapp.R;
 import com.gazitf.etapp.databinding.RecyclerViewItemRequestBinding;
 import com.gazitf.etapp.repository.FirestoreDbConstants;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -25,10 +27,12 @@ import java.util.Map;
  */
 public class RequestListRecyclerViewAdapter extends RecyclerView.Adapter<RequestListRecyclerViewAdapter.RequestViewHolder> {
 
+    private Context context;
     private List<DocumentSnapshot> documentSnapshotList;
     private RequestPostClickListener requestPostClickListener;
 
-    public RequestListRecyclerViewAdapter(List<DocumentSnapshot> documentSnapshotList, RequestPostClickListener requestPostClickListener) {
+    public RequestListRecyclerViewAdapter(Context context,List<DocumentSnapshot> documentSnapshotList, RequestPostClickListener requestPostClickListener) {
+        this.context = context;
         this.documentSnapshotList = documentSnapshotList;
         this.requestPostClickListener = requestPostClickListener;
     }
@@ -49,7 +53,7 @@ public class RequestListRecyclerViewAdapter extends RecyclerView.Adapter<Request
         Map<String, Object> requestData = requestSnapshot.getData();
         String requestMessage = (String) requestData.get(FirestoreDbConstants.RequestConstants.REQUEST_MESSAGE);
         String activityId = (String) requestData.get(FirestoreDbConstants.RequestConstants.ACTIVITY_ID);
-        holder.textViewOwnerMessage.setText(requestMessage);
+        holder.textViewOwnerMessage.setText(context.getResources().getString(R.string.request_message, requestMessage));
 
         String requestOwnerId = (String) requestSnapshot.get(FirestoreDbConstants.RequestConstants.OWNER_ID);
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -81,6 +85,11 @@ public class RequestListRecyclerViewAdapter extends RecyclerView.Adapter<Request
                         holder.textViewActivityName.setText(activityName);
                     }
                 });
+
+        holder.buttonAccept.setOnClickListener(v -> requestPostClickListener.acceptRequest(activityId, requestOwnerId));
+        holder.buttonReject.setOnClickListener(v -> {
+            requestPostClickListener.rejectRequest(activityId, requestOwnerId);
+        });
     }
 
     @Override
@@ -107,7 +116,7 @@ public class RequestListRecyclerViewAdapter extends RecyclerView.Adapter<Request
     }
 
     public interface RequestPostClickListener {
-        void acceptRequest(String requestOwnerId);
-        void rejectRequest(String requestOwnerId);
+        void acceptRequest(String activityId, String requestOwnerId);
+        void rejectRequest(String activityId, String requestOwnerId);
     }
 }

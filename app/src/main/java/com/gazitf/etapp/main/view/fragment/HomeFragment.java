@@ -18,9 +18,12 @@ import com.gazitf.etapp.databinding.FragmentHomeBinding;
 import com.gazitf.etapp.details.ActivityDetailsActivity;
 import com.gazitf.etapp.main.adapter.ActivityListRecyclerViewAdapter;
 import com.gazitf.etapp.main.adapter.CategoryListRecyclerViewAdapter;
-import com.gazitf.etapp.main.modelview.HomeViewModel;
+import com.gazitf.etapp.main.viewmodel.HomeViewModel;
+import com.gazitf.etapp.model.ActivityModel;
+import com.gazitf.etapp.repository.FirestoreActivityRepository;
 import com.gazitf.etapp.repository.FirestoreDbConstants;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class HomeFragment extends Fragment implements ActivityListRecyclerViewAdapter.RequestActivityPostClickListener {
 
@@ -86,6 +89,28 @@ public class HomeFragment extends Fragment implements ActivityListRecyclerViewAd
         Intent intent = new Intent(requireActivity(), ActivityDetailsActivity.class);
         intent.putExtra(FirestoreDbConstants.ActivitiesConstants.DOCUMENT_ID, documentId);
         startActivity(intent);
+    }
+
+    @Override
+    public void sharePost(String documentId) {
+        FirebaseFirestore.getInstance()
+                .collection(FirestoreDbConstants.ActivitiesConstants.COLLECTION)
+                .document(documentId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        ActivityModel activityModel = documentSnapshot.toObject(ActivityModel.class);
+                        createSharingIntent(activityModel);
+                    }
+                });
+    }
+
+    private void createSharingIntent(ActivityModel activityModel) {
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, activityModel.getName());
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, activityModel.getDescription());
+        startActivity(Intent.createChooser(sharingIntent, "Share via"));
     }
 
     @Override

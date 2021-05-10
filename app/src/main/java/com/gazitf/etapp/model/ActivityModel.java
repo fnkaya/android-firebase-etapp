@@ -17,6 +17,7 @@ public class ActivityModel {
     private String id;
     private String name;
     private String description;
+    private Integer quota;
     private Timestamp startDate;
     private Timestamp endDate;
     @ServerTimestamp
@@ -47,6 +48,14 @@ public class ActivityModel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getQuota() {
+        return quota;
+    }
+
+    public void setQuota(Integer quota) {
+        this.quota = quota;
     }
 
     public Timestamp getStartDate() {
