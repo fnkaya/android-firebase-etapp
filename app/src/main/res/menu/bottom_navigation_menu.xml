@@ -23,7 +23,7 @@
         app:cnb_iconColor="@color/colorBlack"/>
 
     <item android:title="@string/message"
-        android:id="@+id/menu_item_message"
+        android:id="@+id/menu_item_chat_list"
         android:icon="@drawable/icon_message"
         app:cnb_iconColor="@color/colorBlack"/>
 

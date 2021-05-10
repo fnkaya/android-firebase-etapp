@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -13,24 +14,23 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
 import com.gazitf.etapp.R;
 import com.gazitf.etapp.auth.activity.AuthActivity;
 import com.gazitf.etapp.auth.activity.SplashActivity;
 import com.gazitf.etapp.databinding.ActivityMainBinding;
 import com.gazitf.etapp.main.view.fragment.HomeFragment;
-import com.gazitf.etapp.main.view.fragment.MessageFragment;
+import com.gazitf.etapp.main.view.fragment.ChatListFragment;
 import com.gazitf.etapp.main.view.fragment.RequestListFragment;
 import com.gazitf.etapp.main.view.fragment.SearchFragment;
 import com.gazitf.etapp.main.view.fragment.WatchListFragment;
 import com.gazitf.etapp.posts.PostsActivity;
 import com.gazitf.etapp.profile.ProfileActivity;
+import com.gazitf.etapp.repository.FirestoreDbConstants;
 import com.gazitf.etapp.utils.BaseActivity;
 import com.gazitf.etapp.utils.LocaleHelper;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -38,10 +38,20 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.squareup.picasso.Picasso;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.getstream.chat.android.client.ChatClient;
+import io.getstream.chat.android.client.channel.ChannelClient;
+import io.getstream.chat.android.client.models.Channel;
+import io.getstream.chat.android.client.models.User;
+import io.getstream.chat.android.livedata.ChatDomain;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, FirebaseAuth.AuthStateListener {
 
@@ -69,6 +79,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         initViews();
         setupBottomNavigationMenu();
         overridePendingTransition(R.anim.anim_enter_fade, R.anim.anim_exit_fade);
+
+        String apiKey = getString(R.string.stream_chat_api_key);
+        ChatClient chatClient = new ChatClient.Builder(apiKey, this).build();
+        new ChatDomain.Builder(chatClient, this).build();
     }
 
     @Override
@@ -203,8 +217,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     fragment = new WatchListFragment();
                     title = "Favori Etkinlikler";
                     break;
-                case R.id.menu_item_message:
-                    fragment = new MessageFragment();
+                case R.id.menu_item_chat_list:
+                    fragment = new ChatListFragment();
                     title = "Mesajlar";
                     break;
                 case R.id.menu_item_requestList:
@@ -249,10 +263,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         // Geçerli dili arraydan sil
         switch (currentLanguage) {
             case "tr":
-                languages = new String[] {languages[1]};
+                languages = new String[]{languages[1]};
                 break;
             case "en":
-                languages = new String[] {languages[0]};
+                languages = new String[]{languages[0]};
                 break;
             default:
                 break;
