@@ -31,7 +31,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.time.LocalDateTime;
@@ -39,6 +38,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -55,6 +55,7 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
 
     private String activityId;
     private String activityOwnerId;
+    private int attendeeNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,15 +95,18 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
             showRemoveAttendRequestDialog();
         });
 
+        binding.buttonLeaveAttendeeList.setOnClickListener(leaveButton -> {
+            showLeaveFromAttendListDialog();
+        });
+
         addListenerToFavoriteList();
     }
 
     private void addListenerToFavoriteList() {
-        DocumentReference favoriteActivitiesRef = firestore
+        firestore
                 .collection(FirestoreDbConstants.FavoritesConstants.COLLECTION)
-                .document(activityId + currentUser.getUid());
-
-        favoriteActivitiesRef.addSnapshotListener((documentSnapshot, error) -> {
+                .document(currentUser.getUid())
+                .addSnapshotListener((documentSnapshot, error) -> {
             if (documentSnapshot.exists()) {
                 Map<String, Object> data = documentSnapshot.getData();
                 List<String> favoriteList = (List<String>) data.getOrDefault(FirestoreDbConstants.FavoritesConstants.FAVORITE_LIST, new ArrayList<String>());
@@ -112,21 +116,9 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
                     binding.buttonToggleFavorite.setColorFilter(getResources().getColor(R.color.colorBlack));
                 }
             }
-        });
-
-        DocumentReference attendRequestRef = firestore
-                .collection(FirestoreDbConstants.RequestConstants.COLLECTION)
-                .document(activityId + currentUser.getUid());
-
-        attendRequestRef.addSnapshotListener((documentSnapshot, error) -> {
-            if (documentSnapshot.exists()) {
-                binding.buttonShowRequestDialog.setVisibility(View.GONE);
-                binding.buttonCancelAttendRequest.setVisibility(View.VISIBLE);
-            }else {
-                binding.buttonShowRequestDialog.setVisibility(View.VISIBLE);
-                binding.buttonCancelAttendRequest.setVisibility(View.GONE);
+            else {
+                binding.buttonToggleFavorite.setColorFilter(getResources().getColor(R.color.colorBlack));
             }
-
         });
     }
 
@@ -160,7 +152,8 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
                 FirestoreDbConstants.RequestConstants.ACTIVITY_ID, activityId,
                 FirestoreDbConstants.RequestConstants.ACTIVITY_OWNER_ID, activityOwnerId,
                 FirestoreDbConstants.RequestConstants.OWNER_NAME, currentUser.getDisplayName(),
-                FirestoreDbConstants.RequestConstants.REQUEST_DATE, Timestamp.now());
+                FirestoreDbConstants.RequestConstants.REQUEST_DATE, Timestamp.now(),
+                FirestoreDbConstants.RequestConstants.STATUS, FirestoreDbConstants.RequestConstants.PENDING);
 
         firestore
                 .collection(FirestoreDbConstants.RequestConstants.COLLECTION)
@@ -174,10 +167,21 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
         new MaterialAlertDialogBuilder(this)
                 .setIcon(R.drawable.icon_cancel)
                 .setTitle("Emin misiniz?")
-                .setMessage("Katılım talebini iptal etmek istiyoru musunuz?")
+                .setMessage("Katılım talebini iptal etmek istiyor musunuz?")
                 .setCancelable(false)
                 .setNegativeButton("VAZGEÇ", (dialog, which) -> dialog.dismiss())
                 .setPositiveButton("İPTAL ET", (dialog, which) -> removeAttendRequest())
+                .show();
+    }
+
+    private void showLeaveFromAttendListDialog() {
+        new MaterialAlertDialogBuilder(this)
+                .setIcon(R.drawable.icon_cancel)
+                .setTitle("Emin misiniz?")
+                .setMessage("Katılımcı listesinden istiyor musunuz?")
+                .setCancelable(false)
+                .setNegativeButton("VAZGEÇ", (dialog, which) -> dialog.dismiss())
+                .setPositiveButton("AYRIL", (dialog, which) -> leaveFromAttendList())
                 .show();
     }
 
@@ -188,6 +192,24 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
                 .delete()
                 .addOnSuccessListener(aVoid -> Toast.makeText(ActivityDetailsActivity.this, "Etkinliğe katılım talebiniz iptal edildi", Toast.LENGTH_LONG).show())
                 .addOnFailureListener(e -> Toast.makeText(ActivityDetailsActivity.this, "Etkinliğe katılım talebiniz iptal edilemedi.\nLütfen daha sonra tekrar deneyiniz", Toast.LENGTH_LONG).show());
+    }
+
+    private void leaveFromAttendList() {
+        firestore
+                .collection(FirestoreDbConstants.AttendeeConstants.COLLECTION)
+                .document(activityId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Map<String, Object> data = documentSnapshot.getData();
+                        List<String> attendeeList = (List<String>) data.getOrDefault(FirestoreDbConstants.AttendeeConstants.ATTENDEE_LIST, new ArrayList<>());
+                        if (attendeeList.contains(currentUser.getUid())) {
+                            attendeeList.remove(currentUser.getUid());
+                            documentSnapshot.getReference().set(data)
+                                    .addOnSuccessListener(aVoid -> Toast.makeText(ActivityDetailsActivity.this, "Katılımcı listesinden ayrıldınız", Toast.LENGTH_LONG).show());
+                        }
+                    }
+                });
     }
 
     private void toggleFavoriteList() {
@@ -210,6 +232,14 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
                         }
                         documentRef.set(data);
                     }
+                    else {
+                        Map<String, Object> data = new HashMap<>();
+                        List<String> favoriteList = new ArrayList<>();
+                        favoriteList.add(activityId);
+                        data.put(FirestoreDbConstants.FavoritesConstants.FAVORITE_LIST, favoriteList);
+
+                        documentRef.set(data).addOnSuccessListener(aVoid -> Toast.makeText(ActivityDetailsActivity.this, "Etkinlik favoriler listenize eklendi", Toast.LENGTH_LONG).show());
+                    }
                 });
     }
 
@@ -219,6 +249,8 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
 
         toolbar.setTitle(activityModel.getName());
         binding.textViewActivityDescriptionDetails.setText(activityModel.getDescription());
+        Integer quota = activityModel.getQuota();
+        binding.textViewActivityQuota.setText(getResources().getString(R.string.activity_quota, quota));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd - HH:mm");
         Date startDate = activityModel.getStartDate().toDate();
         LocalDateTime startDateTime = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
@@ -228,6 +260,7 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
         binding.textViewActivityEndDateDetails.setText(endDateTime.format(formatter));
         handleActivityOwnerDetails(activityModel);
         handleCategoryDetails(activityModel);
+        handleQuota(quota);
 
         latLng = new LatLng(activityModel.getLocation().getLatitude(), activityModel.getLocation().getLongitude());
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_activity_details);
@@ -271,6 +304,67 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
                                     .into(binding.imageViewActivityImageDetails);
                     }
                 });
+    }
+
+    private void handleQuota(Integer quota) {
+        firestore
+                .collection(FirestoreDbConstants.AttendeeConstants.COLLECTION)
+                .document(activityId)
+                .addSnapshotListener((attendeeSnapshot, error) -> {
+                    if (attendeeSnapshot.exists()) {
+                        //Katılımcı listesi mevcut
+                        List<String> attendeeList = (List<String>) attendeeSnapshot.get(FirestoreDbConstants.AttendeeConstants.ATTENDEE_LIST);
+                        attendeeNumber = attendeeList.size();
+                        binding.textViewActivityAttendeeNumber.setText(getResources().getString(R.string.activity_attendee_number, attendeeNumber));
+
+                        if (attendeeList.contains(currentUser.getUid())) {
+                            //Kullanıcı katılımcı listesinde var
+                            toggleButtonsVisibility(View.GONE, View.GONE, View.VISIBLE, View.GONE);
+                        } else {
+                            //Kullanıcı katılımcı listesinde yok
+                            toggleButtonsVisibility(View.VISIBLE, View.GONE, View.GONE, View.GONE);
+                        }
+                    }else {
+                        //Katılımcı listesi mevcut değil
+                        binding.textViewActivityAttendeeNumber.setText(getResources().getString(R.string.activity_attendee_number, 0));
+                        toggleButtonsVisibility(View.VISIBLE, View.GONE, View.GONE, View.GONE);
+                    }
+                });
+
+        firestore
+                .collection(FirestoreDbConstants.RequestConstants.COLLECTION)
+                .document(activityId + currentUser.getUid())
+                .addSnapshotListener((requestSnapshot, error) -> {
+                    if (requestSnapshot.exists()) {
+                        //Request mevcut
+                        String requestStatus = (String) requestSnapshot.get(FirestoreDbConstants.RequestConstants.STATUS);
+                        if (FirestoreDbConstants.RequestConstants.PENDING.equals(requestStatus))
+                            toggleButtonsVisibility(View.GONE, View.VISIBLE, View.GONE, View.GONE);
+                        else if (FirestoreDbConstants.RequestConstants.ACCEPTED.equals(requestStatus))
+                            toggleButtonsVisibility(View.GONE, View.GONE, View.VISIBLE, View.GONE);
+                        else if (FirestoreDbConstants.RequestConstants.REJECTED.equals(requestStatus)) {
+                            binding.textViewActivityRequestStatus.setText("Etkinlik katılım talebiniz etkinlik sahibi tarafından reddedildi");
+                            toggleButtonsVisibility(View.GONE, View.GONE, View.GONE, View.VISIBLE);
+                        }
+
+
+                    }else{
+                        //Request mevcut değil
+                        if (attendeeNumber < quota)
+                            toggleButtonsVisibility(View.VISIBLE, View.GONE, View.GONE, View.GONE);
+                        else {
+                            toggleButtonsVisibility(View.GONE, View.GONE, View.GONE, View.VISIBLE);
+                            binding.textViewActivityRequestStatus.setText("KATILIMCI SINIRINA ULAŞILDI");
+                        }
+                    }
+                });
+    }
+
+    private void toggleButtonsVisibility(int showButton, int cancelRequestButton, int leaveAttendButton, int quotaFilledText) {
+        binding.buttonShowRequestDialog.setVisibility(showButton);
+        binding.buttonCancelAttendRequest.setVisibility(cancelRequestButton);
+        binding.buttonLeaveAttendeeList.setVisibility(leaveAttendButton);
+        binding.textViewActivityRequestStatus.setVisibility(quotaFilledText);
     }
 
     @Override

@@ -79,13 +79,13 @@
                android:background="@color/colorLightGrey"/>
 
           <com.google.android.material.button.MaterialButton
-              style="@style/Widget.MaterialComponents.Button.OutlinedButton"
               android:id="@+id/button_edit_post"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_margin="8dp"
+              app:backgroundTint="@color/colorMaterialLightGreen"
               android:text="DÜZENLE"
-              android:textColor="@color/colorBlack"/>
+              android:textColor="@color/colorMaterialGreen"/>
 
        </LinearLayout>
 

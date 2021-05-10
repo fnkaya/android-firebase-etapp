@@ -98,7 +98,7 @@
                 android:layout_marginHorizontal="32dp"
                 android:padding="8dp"
                 android:text="@string/dont_have_account"
-                android:textColor="@color/colorMaterialPink"
+                android:textColor="@color/colorRed"
                 android:textStyle="bold"
                 android:foreground="?attr/selectableItemBackground"/>
 

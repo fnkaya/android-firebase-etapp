@@ -33,6 +33,9 @@
     <string name="running">Running</string>
     <string name="cinema">Cinema</string>
     <string name="education">Education</string>
+    <string name="request_message" translatable="false">\"%s\"</string>
+    <string name="activity_attendee_number" translatable="false">[%d/</string>
+    <string name="activity_quota" translatable="false">%d]</string>
 
     <string-array name="languages">
         <item>TR</item>

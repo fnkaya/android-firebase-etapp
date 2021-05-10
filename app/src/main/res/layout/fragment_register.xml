@@ -147,7 +147,7 @@
                         android:foreground="?attr/selectableItemBackground"
                         android:padding="8dp"
                         android:text="@string/already_have_account"
-                        android:textColor="@color/colorMaterialPink"
+                        android:textColor="@color/colorRed"
                         android:textStyle="bold" />
 
                 </LinearLayout>

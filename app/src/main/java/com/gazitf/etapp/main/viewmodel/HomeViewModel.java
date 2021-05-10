@@ -1,4 +1,4 @@
-package com.gazitf.etapp.main.modelview;
+package com.gazitf.etapp.main.viewmodel;
 
 import android.util.Log;
 

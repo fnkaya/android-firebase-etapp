@@ -20,6 +20,8 @@ public abstract class FirestoreDbConstants {
         public static final String OWNER_ID = "ownerId";
         public static final String START_DATE = "startDate";
         public static final String ACTIVITY_NAME = "name";
+        public static final String QUOTA = "quota";
+        public static final String ATTENDEE_NUMBER = "attendeeNumber";
     }
 
     public static abstract class FavoritesConstants {
@@ -35,6 +37,7 @@ public abstract class FirestoreDbConstants {
 
     public static abstract class AttendeeConstants {
         public static final String COLLECTION = "Attendees";
+        public static final String ATTENDEE_LIST = "attendeeList";
 
     }
 
@@ -46,5 +49,9 @@ public abstract class FirestoreDbConstants {
         public static final String OWNER_NAME = "requestOwnerName";
         public static final String REQUEST_DATE = "requestDate";
         public static final String REQUEST_MESSAGE = "requestMessage";
+        public static final String STATUS = "status";
+        public static final String PENDING = "pending";
+        public static final String ACCEPTED = "accepted";
+        public static final String REJECTED = "rejected";
     }
 }
