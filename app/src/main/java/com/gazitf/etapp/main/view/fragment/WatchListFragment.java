@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.gazitf.etapp.databinding.FragmentWatchListBinding;
 import com.gazitf.etapp.details.ActivityDetailsActivity;
 import com.gazitf.etapp.main.adapter.FavoriteListRecyclerViewAdapter;
-import com.gazitf.etapp.repository.FirestoreDbConstants;
+import com.gazitf.etapp.repository.DbConstants;
 import com.gazitf.etapp.repository.FirestoreFavoriteRepository;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -53,7 +53,7 @@ public class WatchListFragment extends Fragment implements FavoriteListRecyclerV
     @Override
     public void navigateToPostDetails(String documentId) {
         Intent intent = new Intent(requireActivity(), ActivityDetailsActivity.class);
-        intent.putExtra(FirestoreDbConstants.ActivitiesConstants.DOCUMENT_ID, documentId);
+        intent.putExtra(DbConstants.Activities.DOCUMENT_ID, documentId);
         startActivity(intent);
     }
 
@@ -62,7 +62,7 @@ public class WatchListFragment extends Fragment implements FavoriteListRecyclerV
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         DocumentReference documentRef = FirebaseFirestore.getInstance()
-                .collection(FirestoreDbConstants.FavoritesConstants.COLLECTION)
+                .collection(DbConstants.Favorites.COLLECTION)
                 .document(currentUserId);
 
         documentRef
@@ -73,7 +73,7 @@ public class WatchListFragment extends Fragment implements FavoriteListRecyclerV
 
                         if (documentSnapshot.exists()) {
                             Map<String, Object> data = documentSnapshot.getData();
-                            List<String> favoriteList = (List<String>) data.get(FirestoreDbConstants.FavoritesConstants.FAVORITE_LIST);
+                            List<String> favoriteList = (List<String>) data.get(DbConstants.Favorites.FAVORITE_LIST);
 
                             if (favoriteList.contains(documentId)) {
                                 favoriteList.remove(documentId);

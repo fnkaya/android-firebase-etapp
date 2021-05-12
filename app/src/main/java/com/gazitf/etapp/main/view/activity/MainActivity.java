@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -23,14 +24,13 @@ import com.gazitf.etapp.R;
 import com.gazitf.etapp.auth.activity.AuthActivity;
 import com.gazitf.etapp.auth.activity.SplashActivity;
 import com.gazitf.etapp.databinding.ActivityMainBinding;
-import com.gazitf.etapp.main.view.fragment.HomeFragment;
 import com.gazitf.etapp.main.view.fragment.ChatListFragment;
+import com.gazitf.etapp.main.view.fragment.HomeFragment;
 import com.gazitf.etapp.main.view.fragment.RequestListFragment;
 import com.gazitf.etapp.main.view.fragment.SearchFragment;
 import com.gazitf.etapp.main.view.fragment.WatchListFragment;
 import com.gazitf.etapp.posts.PostsActivity;
 import com.gazitf.etapp.profile.ProfileActivity;
-import com.gazitf.etapp.repository.FirestoreDbConstants;
 import com.gazitf.etapp.utils.BaseActivity;
 import com.gazitf.etapp.utils.LocaleHelper;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -38,19 +38,26 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.squareup.picasso.Picasso;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.getstream.chat.android.client.ChatClient;
+import io.getstream.chat.android.client.api.models.FilterObject;
+import io.getstream.chat.android.client.api.models.QueryChannelsRequest;
+import io.getstream.chat.android.client.api.models.QuerySort;
 import io.getstream.chat.android.client.channel.ChannelClient;
 import io.getstream.chat.android.client.models.Channel;
+import io.getstream.chat.android.client.models.Filters;
+import io.getstream.chat.android.client.models.Member;
 import io.getstream.chat.android.client.models.User;
+import io.getstream.chat.android.client.notifications.handler.ChatNotificationHandler;
+import io.getstream.chat.android.client.notifications.handler.NotificationConfig;
 import io.getstream.chat.android.livedata.ChatDomain;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, FirebaseAuth.AuthStateListener {
@@ -79,10 +86,44 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         initViews();
         setupBottomNavigationMenu();
         overridePendingTransition(R.anim.anim_enter_fade, R.anim.anim_exit_fade);
+        initChatClient();
+    }
 
-        String apiKey = getString(R.string.stream_chat_api_key);
-        ChatClient chatClient = new ChatClient.Builder(apiKey, this).build();
+    private void initChatClient() {
+        NotificationConfig notificationsConfig = new NotificationConfig(
+                R.string.stream_chat_notification_channel_id,
+                R.string.stream_chat_notification_channel_name,
+                R.drawable.stream_ic_notification,
+                "message_id",
+                "message_text",
+                "channel_id",
+                "channel_type",
+                "channel_name",
+                R.string.stream_chat_notification_title,
+                R.string.stream_chat_notification_content,
+                true
+        );
+
+        ChatClient chatClient = new ChatClient.Builder(getString(R.string.stream_chat_key), this)
+                /*.notifications(new ChatNotificationHandler(this, notificationsConfig))*/
+                .build();
         new ChatDomain.Builder(chatClient, this).build();
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        User user = new User();
+        user.setId(currentUser.getUid());
+        user.getExtraData().put("name", currentUser.getDisplayName());
+        Uri photoUrl = currentUser.getPhotoUrl();
+        if (photoUrl != null)
+            user.getExtraData().put("image", photoUrl.toString());
+
+        chatClient.connectUser(user, chatClient.devToken(user.getId()))
+                .enqueue();
+
+        /*chatClient.createChannel("messaging", Arrays.asList("WApOFDcvN8ZbnRGLJT0wCr14kNv2", "dbfLcZb1xHPxoLz87YgLna7XbAg2"), Map.of("name", "Etkinlik Deneme")).enqueue(result -> {
+            if (result.isError())
+                Log.i(TAG, "initChatClient: " + result.error().getMessage());
+        });*/
     }
 
     @Override

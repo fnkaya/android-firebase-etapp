@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.gazitf.etapp.R;
 import com.gazitf.etapp.databinding.RecyclerViewItemRequestBinding;
-import com.gazitf.etapp.repository.FirestoreDbConstants;
+import com.gazitf.etapp.repository.DbConstants;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
@@ -51,21 +51,21 @@ public class RequestListRecyclerViewAdapter extends RecyclerView.Adapter<Request
         DocumentSnapshot requestSnapshot = documentSnapshotList.get(position);
 
         Map<String, Object> requestData = requestSnapshot.getData();
-        String requestMessage = (String) requestData.get(FirestoreDbConstants.RequestConstants.REQUEST_MESSAGE);
-        String activityId = (String) requestData.get(FirestoreDbConstants.RequestConstants.ACTIVITY_ID);
+        String requestMessage = (String) requestData.get(DbConstants.Requests.REQUEST_MESSAGE);
+        String activityId = (String) requestData.get(DbConstants.Requests.ACTIVITY_ID);
         holder.textViewOwnerMessage.setText(context.getResources().getString(R.string.request_message, requestMessage));
 
-        String requestOwnerId = (String) requestSnapshot.get(FirestoreDbConstants.RequestConstants.OWNER_ID);
+        String requestOwnerId = (String) requestSnapshot.get(DbConstants.Requests.OWNER_ID);
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         firestore
-                .collection(FirestoreDbConstants.UsersConstants.COLLECTION)
+                .collection(DbConstants.Users.COLLECTION)
                 .document(requestOwnerId)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         Map<String, Object> userData = documentSnapshot.getData();
-                        String displayName = (String) userData.get(FirestoreDbConstants.UsersConstants.DISPLAY_NAME);
-                        String photoUrl = (String) userData.get(FirestoreDbConstants.UsersConstants.PHOTO_URL);
+                        String displayName = (String) userData.get(DbConstants.Users.DISPLAY_NAME);
+                        String photoUrl = (String) userData.get(DbConstants.Users.PHOTO_URL);
 
                         holder.textViewOwnerName.setText(displayName);
                         Picasso.get()
@@ -75,13 +75,13 @@ public class RequestListRecyclerViewAdapter extends RecyclerView.Adapter<Request
                 });
 
         firestore
-                .collection(FirestoreDbConstants.ActivitiesConstants.COLLECTION)
+                .collection(DbConstants.Activities.COLLECTION)
                 .document(activityId)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         String activityName = (String) documentSnapshot
-                                .get(FirestoreDbConstants.ActivitiesConstants.ACTIVITY_NAME);
+                                .get(DbConstants.Activities.ACTIVITY_NAME);
                         holder.textViewActivityName.setText(activityName);
                     }
                 });

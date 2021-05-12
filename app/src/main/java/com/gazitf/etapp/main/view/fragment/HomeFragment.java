@@ -20,8 +20,7 @@ import com.gazitf.etapp.main.adapter.ActivityListRecyclerViewAdapter;
 import com.gazitf.etapp.main.adapter.CategoryListRecyclerViewAdapter;
 import com.gazitf.etapp.main.viewmodel.HomeViewModel;
 import com.gazitf.etapp.model.ActivityModel;
-import com.gazitf.etapp.repository.FirestoreActivityRepository;
-import com.gazitf.etapp.repository.FirestoreDbConstants;
+import com.gazitf.etapp.repository.DbConstants;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -87,14 +86,14 @@ public class HomeFragment extends Fragment implements ActivityListRecyclerViewAd
     @Override
     public void navigateToPostDetails(String documentId) {
         Intent intent = new Intent(requireActivity(), ActivityDetailsActivity.class);
-        intent.putExtra(FirestoreDbConstants.ActivitiesConstants.DOCUMENT_ID, documentId);
+        intent.putExtra(DbConstants.Activities.DOCUMENT_ID, documentId);
         startActivity(intent);
     }
 
     @Override
     public void sharePost(String documentId) {
         FirebaseFirestore.getInstance()
-                .collection(FirestoreDbConstants.ActivitiesConstants.COLLECTION)
+                .collection(DbConstants.Activities.COLLECTION)
                 .document(documentId)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {

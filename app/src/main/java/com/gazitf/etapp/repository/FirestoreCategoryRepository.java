@@ -1,7 +1,7 @@
 package com.gazitf.etapp.repository;
 
 import com.gazitf.etapp.model.CategoryModel;
-import com.gazitf.etapp.repository.FirestoreDbConstants.CategoryConstants;
+import com.gazitf.etapp.repository.DbConstants.Categories;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -22,12 +22,12 @@ public class FirestoreCategoryRepository {
     public FirestoreCategoryRepository(OnCategoryTaskCompleteCallback onCategoryTaskCompleteCallback) {
         this.onCategoryTaskCompleteCallback = onCategoryTaskCompleteCallback;
         firestore = FirebaseFirestore.getInstance();
-        categoriesRef = firestore.collection(CategoryConstants.COLLECTION);
+        categoriesRef = firestore.collection(Categories.COLLECTION);
     }
 
     public void getCategories() {
         categoriesRef
-                .orderBy(CategoryConstants.NAME)
+                .orderBy(Categories.NAME)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful())
