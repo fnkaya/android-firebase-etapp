@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.gazitf.etapp.databinding.RecyclerViewItemPostListBinding;
 import com.gazitf.etapp.model.ActivityModel;
-import com.gazitf.etapp.repository.FirestoreDbConstants;
+import com.gazitf.etapp.repository.DbConstants;
 import com.squareup.picasso.Picasso;
 
 import java.time.LocalDateTime;
@@ -61,7 +61,7 @@ public class PostListRecyclerViewAdapter extends RecyclerView.Adapter<PostListRe
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
-                        String photoUrl = (String) documentSnapshot.get(FirestoreDbConstants.CategoryConstants.IMAGE_URL);
+                        String photoUrl = (String) documentSnapshot.get(DbConstants.Categories.IMAGE_URL);
                         Log.i("qweqweqwe", "onBindViewHolder: " + photoUrl);
                         Picasso.get()
                                 .load(photoUrl)

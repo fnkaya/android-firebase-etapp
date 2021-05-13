@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.gazitf.etapp.databinding.RecyclerViewItemFavoriteListBinding;
 import com.gazitf.etapp.model.ActivityModel;
 import com.gazitf.etapp.model.CategoryModel;
-import com.gazitf.etapp.repository.FirestoreDbConstants;
+import com.gazitf.etapp.repository.DbConstants;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
@@ -51,7 +51,7 @@ public class FavoriteListRecyclerViewAdapter extends RecyclerView.Adapter<Favori
         String activityId = activityIdList.get(position);
 
         FirebaseFirestore.getInstance()
-                .collection(FirestoreDbConstants.ActivitiesConstants.COLLECTION)
+                .collection(DbConstants.Activities.COLLECTION)
                 .document(activityId)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {

@@ -7,7 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
-import static com.gazitf.etapp.repository.FirestoreDbConstants.ActivitiesConstants;
+import static com.gazitf.etapp.repository.DbConstants.Activities;
 
 /*
  * @created 22/03/2021 - 6:18 PM
@@ -23,18 +23,18 @@ public class FirestoreActivityRepository {
 
     public FirestoreActivityRepository(OnActivityTaskCompleteCallback onActivityTaskCompleteCallback) {
         this.onActivityTaskCompleteCallback = onActivityTaskCompleteCallback;
-        activitiesRef = FirebaseFirestore.getInstance().collection(ActivitiesConstants.COLLECTION);
+        activitiesRef = FirebaseFirestore.getInstance().collection(Activities.COLLECTION);
     }
 
     public FirestoreActivityRepository(OnActivityDetailsTaskCompleteCallback onActivityDetailsTaskCompleteCallback) {
         this.onActivityDetailsTaskCompleteCallback = onActivityDetailsTaskCompleteCallback;
-        activitiesRef = FirebaseFirestore.getInstance().collection(ActivitiesConstants.COLLECTION);
+        activitiesRef = FirebaseFirestore.getInstance().collection(Activities.COLLECTION);
     }
 
     public void getActivities() {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         activitiesRef
-                .whereNotEqualTo(ActivitiesConstants.OWNER_ID, currentUserId)
+                .whereNotEqualTo(Activities.OWNER_ID, currentUserId)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful())
@@ -47,7 +47,7 @@ public class FirestoreActivityRepository {
     public void getUsersActivities() {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         activitiesRef
-                .whereEqualTo(ActivitiesConstants.OWNER_ID, currentUserId)
+                .whereEqualTo(Activities.OWNER_ID, currentUserId)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful())

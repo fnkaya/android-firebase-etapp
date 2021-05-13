@@ -15,7 +15,7 @@ import com.gazitf.etapp.databinding.BottomSheetDialogAttendRequestBinding;
 import com.gazitf.etapp.model.ActivityModel;
 import com.gazitf.etapp.model.CategoryModel;
 import com.gazitf.etapp.repository.FirestoreActivityRepository;
-import com.gazitf.etapp.repository.FirestoreDbConstants;
+import com.gazitf.etapp.repository.DbConstants;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -42,6 +42,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.getstream.chat.android.client.ChatClient;
+import io.getstream.chat.android.client.channel.ChannelClient;
+
 public class ActivityDetailsActivity extends AppCompatActivity implements FirestoreActivityRepository.OnActivityDetailsTaskCompleteCallback, OnMapReadyCallback {
 
     private ActivityDetailsBinding binding;
@@ -62,7 +65,7 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_details);
 
-        activityId = getIntent().getStringExtra(FirestoreDbConstants.ActivitiesConstants.DOCUMENT_ID);
+        activityId = getIntent().getStringExtra(DbConstants.Activities.DOCUMENT_ID);
         repository = new FirestoreActivityRepository(this);
         firestore = FirebaseFirestore.getInstance();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -104,12 +107,12 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
 
     private void addListenerToFavoriteList() {
         firestore
-                .collection(FirestoreDbConstants.FavoritesConstants.COLLECTION)
+                .collection(DbConstants.Favorites.COLLECTION)
                 .document(currentUser.getUid())
                 .addSnapshotListener((documentSnapshot, error) -> {
             if (documentSnapshot.exists()) {
                 Map<String, Object> data = documentSnapshot.getData();
-                List<String> favoriteList = (List<String>) data.getOrDefault(FirestoreDbConstants.FavoritesConstants.FAVORITE_LIST, new ArrayList<String>());
+                List<String> favoriteList = (List<String>) data.getOrDefault(DbConstants.Favorites.FAVORITE_LIST, new ArrayList<String>());
                 if (favoriteList.contains(activityId)) {
                     binding.buttonToggleFavorite.setColorFilter(getResources().getColor(R.color.colorRed));
                 } else {
@@ -147,16 +150,16 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
     }
 
     private void saveAttendRequest(String requestMessage) {
-        Map<String, Object> requestData = Map.of(FirestoreDbConstants.RequestConstants.REQUEST_MESSAGE, requestMessage,
-                FirestoreDbConstants.RequestConstants.OWNER_ID, currentUser.getUid(),
-                FirestoreDbConstants.RequestConstants.ACTIVITY_ID, activityId,
-                FirestoreDbConstants.RequestConstants.ACTIVITY_OWNER_ID, activityOwnerId,
-                FirestoreDbConstants.RequestConstants.OWNER_NAME, currentUser.getDisplayName(),
-                FirestoreDbConstants.RequestConstants.REQUEST_DATE, Timestamp.now(),
-                FirestoreDbConstants.RequestConstants.STATUS, FirestoreDbConstants.RequestConstants.PENDING);
+        Map<String, Object> requestData = Map.of(DbConstants.Requests.REQUEST_MESSAGE, requestMessage,
+                DbConstants.Requests.OWNER_ID, currentUser.getUid(),
+                DbConstants.Requests.ACTIVITY_ID, activityId,
+                DbConstants.Requests.ACTIVITY_OWNER_ID, activityOwnerId,
+                DbConstants.Requests.OWNER_NAME, currentUser.getDisplayName(),
+                DbConstants.Requests.REQUEST_DATE, Timestamp.now(),
+                DbConstants.Requests.STATUS, DbConstants.Requests.PENDING);
 
         firestore
-                .collection(FirestoreDbConstants.RequestConstants.COLLECTION)
+                .collection(DbConstants.Requests.COLLECTION)
                 .document(activityId + currentUser.getUid())
                 .set(requestData)
                 .addOnSuccessListener(aVoid -> Toast.makeText(ActivityDetailsActivity.this, "Etkinliğe katılım talebiniz iletildi", Toast.LENGTH_LONG).show())
@@ -187,7 +190,7 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
 
     private void removeAttendRequest() {
         firestore
-                .collection(FirestoreDbConstants.RequestConstants.COLLECTION)
+                .collection(DbConstants.Requests.COLLECTION)
                 .document(activityId + currentUser.getUid())
                 .delete()
                 .addOnSuccessListener(aVoid -> Toast.makeText(ActivityDetailsActivity.this, "Etkinliğe katılım talebiniz iptal edildi", Toast.LENGTH_LONG).show())
@@ -196,17 +199,26 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
 
     private void leaveFromAttendList() {
         firestore
-                .collection(FirestoreDbConstants.AttendeeConstants.COLLECTION)
+                .collection(DbConstants.Attendees.COLLECTION)
                 .document(activityId)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         Map<String, Object> data = documentSnapshot.getData();
-                        List<String> attendeeList = (List<String>) data.getOrDefault(FirestoreDbConstants.AttendeeConstants.ATTENDEE_LIST, new ArrayList<>());
+                        List<String> attendeeList = (List<String>) data.getOrDefault(DbConstants.Attendees.ATTENDEE_LIST, new ArrayList<>());
                         if (attendeeList.contains(currentUser.getUid())) {
                             attendeeList.remove(currentUser.getUid());
                             documentSnapshot.getReference().set(data)
-                                    .addOnSuccessListener(aVoid -> Toast.makeText(ActivityDetailsActivity.this, "Katılımcı listesinden ayrıldınız", Toast.LENGTH_LONG).show());
+                                    .addOnSuccessListener(aVoid -> {
+                                        Toast.makeText(ActivityDetailsActivity.this, "Katılımcı listesinden ayrıldınız", Toast.LENGTH_LONG).show();
+                                        firestore
+                                                .collection(DbConstants.Requests.COLLECTION)
+                                                .document(activityId + currentUser.getUid())
+                                                .delete();
+
+                                        ChannelClient channel = ChatClient.instance().channel("messaging", "entkd2xtIIC7c0z8HDId");
+                                        channel.removeMembers(currentUser.getUid()).enqueue();
+                                    });
                         }
                     }
                 });
@@ -214,7 +226,7 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
 
     private void toggleFavoriteList() {
         DocumentReference documentRef = firestore
-                .collection(FirestoreDbConstants.FavoritesConstants.COLLECTION)
+                .collection(DbConstants.Favorites.COLLECTION)
                 .document(currentUser.getUid());
 
         documentRef
@@ -222,7 +234,7 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         Map<String, Object> data = documentSnapshot.getData();
-                        List<String> favoriteList = (List<String>) data.getOrDefault(FirestoreDbConstants.FavoritesConstants.FAVORITE_LIST, new ArrayList<String>());
+                        List<String> favoriteList = (List<String>) data.getOrDefault(DbConstants.Favorites.FAVORITE_LIST, new ArrayList<String>());
                         if (favoriteList.contains(activityId)) {
                             favoriteList.remove(activityId);
                             Toast.makeText(ActivityDetailsActivity.this, "Etkinlik favoriler listenizden kaldırıldı", Toast.LENGTH_LONG).show();
@@ -236,7 +248,7 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
                         Map<String, Object> data = new HashMap<>();
                         List<String> favoriteList = new ArrayList<>();
                         favoriteList.add(activityId);
-                        data.put(FirestoreDbConstants.FavoritesConstants.FAVORITE_LIST, favoriteList);
+                        data.put(DbConstants.Favorites.FAVORITE_LIST, favoriteList);
 
                         documentRef.set(data).addOnSuccessListener(aVoid -> Toast.makeText(ActivityDetailsActivity.this, "Etkinlik favoriler listenize eklendi", Toast.LENGTH_LONG).show());
                     }
@@ -270,7 +282,7 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
     private void handleActivityOwnerDetails(ActivityModel activityModel) {
         String ownerId = activityModel.getOwnerId();
         FirebaseFirestore.getInstance()
-                .collection(FirestoreDbConstants.UsersConstants.COLLECTION)
+                .collection(DbConstants.Users.COLLECTION)
                 .document(ownerId)
                 .get()
                 .addOnCompleteListener(task -> {
@@ -308,12 +320,12 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
 
     private void handleQuota(Integer quota) {
         firestore
-                .collection(FirestoreDbConstants.AttendeeConstants.COLLECTION)
+                .collection(DbConstants.Attendees.COLLECTION)
                 .document(activityId)
                 .addSnapshotListener((attendeeSnapshot, error) -> {
                     if (attendeeSnapshot.exists()) {
                         //Katılımcı listesi mevcut
-                        List<String> attendeeList = (List<String>) attendeeSnapshot.get(FirestoreDbConstants.AttendeeConstants.ATTENDEE_LIST);
+                        List<String> attendeeList = (List<String>) attendeeSnapshot.get(DbConstants.Attendees.ATTENDEE_LIST);
                         attendeeNumber = attendeeList.size();
                         binding.textViewActivityAttendeeNumber.setText(getResources().getString(R.string.activity_attendee_number, attendeeNumber));
 
@@ -332,17 +344,17 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
                 });
 
         firestore
-                .collection(FirestoreDbConstants.RequestConstants.COLLECTION)
+                .collection(DbConstants.Requests.COLLECTION)
                 .document(activityId + currentUser.getUid())
                 .addSnapshotListener((requestSnapshot, error) -> {
                     if (requestSnapshot.exists()) {
                         //Request mevcut
-                        String requestStatus = (String) requestSnapshot.get(FirestoreDbConstants.RequestConstants.STATUS);
-                        if (FirestoreDbConstants.RequestConstants.PENDING.equals(requestStatus))
+                        String requestStatus = (String) requestSnapshot.get(DbConstants.Requests.STATUS);
+                        if (DbConstants.Requests.PENDING.equals(requestStatus))
                             toggleButtonsVisibility(View.GONE, View.VISIBLE, View.GONE, View.GONE);
-                        else if (FirestoreDbConstants.RequestConstants.ACCEPTED.equals(requestStatus))
+                        else if (DbConstants.Requests.ACCEPTED.equals(requestStatus))
                             toggleButtonsVisibility(View.GONE, View.GONE, View.VISIBLE, View.GONE);
-                        else if (FirestoreDbConstants.RequestConstants.REJECTED.equals(requestStatus)) {
+                        else if (DbConstants.Requests.REJECTED.equals(requestStatus)) {
                             binding.textViewActivityRequestStatus.setText("Etkinlik katılım talebiniz etkinlik sahibi tarafından reddedildi");
                             toggleButtonsVisibility(View.GONE, View.GONE, View.GONE, View.VISIBLE);
                         }

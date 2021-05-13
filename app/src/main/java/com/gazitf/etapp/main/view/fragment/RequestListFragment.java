@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.gazitf.etapp.databinding.FragmentRequestListBinding;
 import com.gazitf.etapp.main.adapter.RequestListRecyclerViewAdapter;
-import com.gazitf.etapp.repository.FirestoreDbConstants;
+import com.gazitf.etapp.repository.DbConstants;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import io.getstream.chat.android.client.ChatClient;
+import io.getstream.chat.android.client.channel.ChannelClient;
 
 
 public class RequestListFragment extends Fragment implements RequestListRecyclerViewAdapter.RequestPostClickListener {
@@ -59,9 +62,9 @@ public class RequestListFragment extends Fragment implements RequestListRecycler
 
     private void fetchRequests() {
         firestore
-                .collection(FirestoreDbConstants.RequestConstants.COLLECTION)
-                .whereEqualTo(FirestoreDbConstants.RequestConstants.ACTIVITY_OWNER_ID, currentUser.getUid())
-                .whereEqualTo(FirestoreDbConstants.RequestConstants.STATUS, FirestoreDbConstants.RequestConstants.PENDING)
+                .collection(DbConstants.Requests.COLLECTION)
+                .whereEqualTo(DbConstants.Requests.ACTIVITY_OWNER_ID, currentUser.getUid())
+                .whereEqualTo(DbConstants.Requests.STATUS, DbConstants.Requests.PENDING)
                 .get()
                 .addOnSuccessListener(requestQuerySnapshot -> {
                     Log.i("TAG", "fetchRequests: " + requestQuerySnapshot.size());
@@ -79,14 +82,14 @@ public class RequestListFragment extends Fragment implements RequestListRecycler
     @Override
     public void acceptRequest(String activityId, String requestOwnerId) {
         DocumentReference attendeeRef = firestore
-                .collection(FirestoreDbConstants.AttendeeConstants.COLLECTION)
+                .collection(DbConstants.Attendees.COLLECTION)
                 .document(activityId);
         attendeeRef
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         Map<String, Object> data = documentSnapshot.getData();
-                        List<String> attendeeList = (List<String>) data.getOrDefault(FirestoreDbConstants.AttendeeConstants.ATTENDEE_LIST, new ArrayList<String>());
+                        List<String> attendeeList = (List<String>) data.getOrDefault(DbConstants.Attendees.ATTENDEE_LIST, new ArrayList<String>());
                         if (!attendeeList.contains(requestOwnerId)) {
                             attendeeList.add(requestOwnerId);
                         }
@@ -96,15 +99,19 @@ public class RequestListFragment extends Fragment implements RequestListRecycler
                         Map<String, Object> data = new HashMap<>();
                         List<String> attendeeList = new ArrayList<>();
                         attendeeList.add(requestOwnerId);
-                        data.put(FirestoreDbConstants.AttendeeConstants.ATTENDEE_LIST, attendeeList);
+                        data.put(DbConstants.Attendees.ATTENDEE_LIST, attendeeList);
                         documentSnapshot.getReference().set(data);
                     }
 
                     firestore
-                            .collection(FirestoreDbConstants.RequestConstants.COLLECTION)
+                            .collection(DbConstants.Requests.COLLECTION)
                             .document(activityId + requestOwnerId)
-                            .update(FirestoreDbConstants.RequestConstants.STATUS, FirestoreDbConstants.RequestConstants.ACCEPTED)
-                            .addOnSuccessListener(aVoid -> Toast.makeText(requireActivity(), "Kullanıcı katılımcı listesine eklendi", Toast.LENGTH_LONG).show());
+                            .update(DbConstants.Requests.STATUS, DbConstants.Requests.ACCEPTED)
+                            .addOnSuccessListener(aVoid -> {
+                                ChannelClient channel = ChatClient.instance().channel("messaging", "entkd2xtIIC7c0z8HDId");
+                                channel.addMembers(requestOwnerId).enqueue();
+                                Toast.makeText(requireActivity(), "Kullanıcı katılımcı listesine eklendi", Toast.LENGTH_LONG).show();
+                            });
 
                     fetchRequests();
                     adapter.notifyDataSetChanged();
@@ -114,9 +121,9 @@ public class RequestListFragment extends Fragment implements RequestListRecycler
     @Override
     public void rejectRequest(String activityId, String requestOwnerId) {
         firestore
-                .collection(FirestoreDbConstants.RequestConstants.COLLECTION)
+                .collection(DbConstants.Requests.COLLECTION)
                 .document(activityId + requestOwnerId)
-                .update(FirestoreDbConstants.RequestConstants.STATUS, FirestoreDbConstants.RequestConstants.REJECTED)
+                .update(DbConstants.Requests.STATUS, DbConstants.Requests.REJECTED)
                 .addOnSuccessListener(aVoid -> Toast.makeText(requireActivity(), "Kullanıcı katılım talebi reddedildi", Toast.LENGTH_LONG).show());
 
         fetchRequests();

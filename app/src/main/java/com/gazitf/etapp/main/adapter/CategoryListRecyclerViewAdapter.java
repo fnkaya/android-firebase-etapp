@@ -22,9 +22,11 @@ import java.util.List;
 public class CategoryListRecyclerViewAdapter extends RecyclerView.Adapter<CategoryListRecyclerViewAdapter.CategoriesViewHolder> {
 
     private List<CategoryModel> categoryModelList;
+    private CategoryClickListener categoryClickListener;
 
-    public CategoryListRecyclerViewAdapter(List<CategoryModel> categoryModelList) {
+    public CategoryListRecyclerViewAdapter(List<CategoryModel> categoryModelList, CategoryClickListener categoryClickListener) {
         this.categoryModelList = categoryModelList;
+        this.categoryClickListener = categoryClickListener;
     }
 
     @NonNull
@@ -43,6 +45,10 @@ public class CategoryListRecyclerViewAdapter extends RecyclerView.Adapter<Catego
                 .load(categoryModel.getImageUrl())
                 .into(holder.imageViewImageUrl);
         holder.textViewName.setText(categoryModel.getName());
+
+        holder.imageViewImageUrl.setOnClickListener(v -> {
+            categoryClickListener.onCategoryClicked(categoryModel.getId());
+        });
     }
 
     @Override
@@ -61,5 +67,9 @@ public class CategoryListRecyclerViewAdapter extends RecyclerView.Adapter<Catego
             imageViewImageUrl = binding.imageViewCategoryImage;
             textViewName = binding.textViewCategoryName;
         }
+    }
+
+    public interface CategoryClickListener {
+        void onCategoryClicked(String categoryId);
     }
 }

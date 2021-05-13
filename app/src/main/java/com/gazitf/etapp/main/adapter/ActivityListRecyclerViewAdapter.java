@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.gazitf.etapp.databinding.RecyclerViewItemActivityBinding;
 import com.gazitf.etapp.model.ActivityModel;
 import com.gazitf.etapp.model.CategoryModel;
-import com.gazitf.etapp.repository.FirestoreDbConstants;
+import com.gazitf.etapp.repository.DbConstants;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
@@ -71,12 +71,12 @@ public class ActivityListRecyclerViewAdapter extends RecyclerView.Adapter<Activi
 
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         FirebaseFirestore.getInstance()
-                .collection(FirestoreDbConstants.FavoritesConstants.COLLECTION)
+                .collection(DbConstants.Favorites.COLLECTION)
                 .document(currentUserId)
                 .addSnapshotListener((documentSnapshot, error) -> {
                     if (documentSnapshot.exists()) {
                         Map<String, Object> data = documentSnapshot.getData();
-                        List<String> favoriteList = (List<String>) data.get(FirestoreDbConstants.FavoritesConstants.FAVORITE_LIST);
+                        List<String> favoriteList = (List<String>) data.get(DbConstants.Favorites.FAVORITE_LIST);
                         holder.textViewFavorite.setText(String.valueOf(favoriteList.size()));
                     }
                 });

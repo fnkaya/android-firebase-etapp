@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -13,19 +15,17 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
 import com.gazitf.etapp.R;
 import com.gazitf.etapp.auth.activity.AuthActivity;
 import com.gazitf.etapp.auth.activity.SplashActivity;
 import com.gazitf.etapp.databinding.ActivityMainBinding;
+import com.gazitf.etapp.main.view.fragment.ChatListFragment;
 import com.gazitf.etapp.main.view.fragment.HomeFragment;
-import com.gazitf.etapp.main.view.fragment.MessageFragment;
 import com.gazitf.etapp.main.view.fragment.RequestListFragment;
 import com.gazitf.etapp.main.view.fragment.SearchFragment;
 import com.gazitf.etapp.main.view.fragment.WatchListFragment;
@@ -41,7 +41,21 @@ import com.google.firebase.auth.FirebaseUser;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.squareup.picasso.Picasso;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.getstream.chat.android.client.ChatClient;
+import io.getstream.chat.android.client.api.models.FilterObject;
+import io.getstream.chat.android.client.api.models.QueryChannelsRequest;
+import io.getstream.chat.android.client.api.models.QuerySort;
+import io.getstream.chat.android.client.models.Channel;
+import io.getstream.chat.android.client.models.Filters;
+import io.getstream.chat.android.client.models.User;
+import io.getstream.chat.android.client.notifications.handler.ChatNotificationHandler;
+import io.getstream.chat.android.client.notifications.handler.NotificationConfig;
+import io.getstream.chat.android.livedata.ChatDomain;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, FirebaseAuth.AuthStateListener {
 
@@ -69,6 +83,61 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         initViews();
         setupBottomNavigationMenu();
         overridePendingTransition(R.anim.anim_enter_fade, R.anim.anim_exit_fade);
+        initChatClient();
+    }
+
+    private void initChatClient() {
+        NotificationConfig notificationsConfig = new NotificationConfig(
+                R.string.stream_chat_notification_channel_id,
+                R.string.stream_chat_notification_channel_name,
+                R.drawable.stream_ic_notification,
+                "message_id",
+                "message_text",
+                "channel_id",
+                "channel_type",
+                "channel_name",
+                R.string.stream_chat_notification_title,
+                R.string.stream_chat_notification_content,
+                true
+        );
+
+        ChatClient chatClient = new ChatClient.Builder(getString(R.string.stream_chat_key), this)
+                .notifications(new ChatNotificationHandler(this, notificationsConfig))
+                .build();
+        new ChatDomain.Builder(chatClient, this).build();
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        User user = new User();
+        user.setId(currentUser.getUid());
+        user.getExtraData().put("name", currentUser.getDisplayName());
+        Uri photoUrl = currentUser.getPhotoUrl();
+        if (photoUrl != null)
+            user.getExtraData().put("image", photoUrl.toString());
+
+        chatClient.connectUser(user, chatClient.devToken(user.getId()))
+                .enqueue();
+
+        FilterObject filter = Filters.and(
+                Filters.eq("type", "messaging")
+        );
+        int offset = 0;
+        int limit = 10;
+        QuerySort<Channel> sort = new QuerySort<Channel>().desc("last_message_at");
+        int messageLimit = 0;
+        int memberLimit = 0;
+
+        QueryChannelsRequest request = new QueryChannelsRequest(filter, offset, limit, sort, messageLimit, memberLimit)
+                .withWatch()
+                .withState();
+
+        chatClient.queryChannels(request).enqueue(result -> {
+            if (result.isSuccess()) {
+                List<Channel> channels = result.data();
+                channels.forEach(channel -> Log.i(TAG, "initChatClient: " + channel.getCid()));
+            } else {
+                // Handle result.error()
+            }
+        });
     }
 
     @Override
@@ -203,8 +272,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     fragment = new WatchListFragment();
                     title = "Favori Etkinlikler";
                     break;
-                case R.id.menu_item_message:
-                    fragment = new MessageFragment();
+                case R.id.menu_item_chat_list:
+                    fragment = new ChatListFragment();
                     title = "Mesajlar";
                     break;
                 case R.id.menu_item_requestList:
@@ -249,10 +318,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         // Geçerli dili arraydan sil
         switch (currentLanguage) {
             case "tr":
-                languages = new String[] {languages[1]};
+                languages = new String[]{languages[1]};
                 break;
             case "en":
-                languages = new String[] {languages[0]};
+                languages = new String[]{languages[0]};
                 break;
             default:
                 break;

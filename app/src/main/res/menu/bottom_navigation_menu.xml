@@ -5,26 +5,26 @@
     <item android:title="@string/home"
         android:id="@+id/menu_item_home"
         android:icon="@drawable/icon_home"
-        app:cnb_iconColor="@color/colorBlack"/>
+        app:cnb_iconColor="@color/colorMaterialPink"/>
 
     <item android:title="@string/search"
         android:id="@+id/menu_item_search"
         android:icon="@drawable/icon_search"
-        app:cnb_iconColor="@color/colorBlack"/>
+        app:cnb_iconColor="@color/colorMaterialPink"/>
 
     <item android:title="@string/watch_list"
         android:id="@+id/menu_item_watchList"
         android:icon="@drawable/icon_favorite"
-        app:cnb_iconColor="@color/colorBlack"/>
+        app:cnb_iconColor="@color/colorMaterialPink"/>
 
     <item android:title="@string/requests"
         android:id="@+id/menu_item_requestList"
         android:icon="@drawable/icon_request_notification"
-        app:cnb_iconColor="@color/colorBlack"/>
+        app:cnb_iconColor="@color/colorMaterialPink"/>
 
     <item android:title="@string/message"
-        android:id="@+id/menu_item_message"
+        android:id="@+id/menu_item_chat_list"
         android:icon="@drawable/icon_message"
-        app:cnb_iconColor="@color/colorBlack"/>
+        app:cnb_iconColor="@color/colorMaterialPink"/>
 
 </menu>

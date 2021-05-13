@@ -7,7 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
-import static com.gazitf.etapp.repository.FirestoreDbConstants.FavoritesConstants;
+import static com.gazitf.etapp.repository.DbConstants.Favorites;
 
 /*
  * @created 22/03/2021 - 6:18 PM
@@ -22,7 +22,7 @@ public class FirestoreFavoriteRepository {
 
     public FirestoreFavoriteRepository(OnActivityTaskCompleteCallback onActivityTaskCompleteCallback) {
         this.onActivityTaskCompleteCallback = onActivityTaskCompleteCallback;
-        favoritiesRef = FirebaseFirestore.getInstance().collection(FavoritesConstants.COLLECTION);
+        favoritiesRef = FirebaseFirestore.getInstance().collection(Favorites.COLLECTION);
     }
 
     public void getActivities() {
@@ -34,7 +34,7 @@ public class FirestoreFavoriteRepository {
                     if (task.isSuccessful()) {
                         DocumentSnapshot result = task.getResult();
                         if (result.exists())
-                            onActivityTaskCompleteCallback.onActivityListFetchSucceed((List<String>) result.getData().get(FavoritesConstants.FAVORITE_LIST));
+                            onActivityTaskCompleteCallback.onActivityListFetchSucceed((List<String>) result.getData().get(Favorites.FAVORITE_LIST));
                     } else
                         onActivityTaskCompleteCallback.onActivityFetchFailed(task.getException());
                 });

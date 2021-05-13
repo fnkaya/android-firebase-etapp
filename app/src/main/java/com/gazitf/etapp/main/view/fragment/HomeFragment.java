@@ -2,6 +2,7 @@ package com.gazitf.etapp.main.view.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +21,13 @@ import com.gazitf.etapp.main.adapter.ActivityListRecyclerViewAdapter;
 import com.gazitf.etapp.main.adapter.CategoryListRecyclerViewAdapter;
 import com.gazitf.etapp.main.viewmodel.HomeViewModel;
 import com.gazitf.etapp.model.ActivityModel;
-import com.gazitf.etapp.repository.FirestoreActivityRepository;
-import com.gazitf.etapp.repository.FirestoreDbConstants;
+import com.gazitf.etapp.repository.DbConstants;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class HomeFragment extends Fragment implements ActivityListRecyclerViewAdapter.RequestActivityPostClickListener {
+import java.util.List;
+
+public class HomeFragment extends Fragment implements ActivityListRecyclerViewAdapter.RequestActivityPostClickListener, CategoryListRecyclerViewAdapter.CategoryClickListener {
 
     private HomeViewModel viewModel;
 
@@ -53,7 +55,7 @@ public class HomeFragment extends Fragment implements ActivityListRecyclerViewAd
         super.onActivityCreated(savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
         viewModel.getCategoryList().observe(getViewLifecycleOwner(), categoryList -> {
-            CategoryListRecyclerViewAdapter adapter = new CategoryListRecyclerViewAdapter(categoryList);
+            CategoryListRecyclerViewAdapter adapter = new CategoryListRecyclerViewAdapter(categoryList, this);
             recyclerViewCategories.setAdapter(adapter);
         });
         viewModel.getActivityList().observe(getViewLifecycleOwner(), activityList -> {
@@ -87,14 +89,14 @@ public class HomeFragment extends Fragment implements ActivityListRecyclerViewAd
     @Override
     public void navigateToPostDetails(String documentId) {
         Intent intent = new Intent(requireActivity(), ActivityDetailsActivity.class);
-        intent.putExtra(FirestoreDbConstants.ActivitiesConstants.DOCUMENT_ID, documentId);
+        intent.putExtra(DbConstants.Activities.DOCUMENT_ID, documentId);
         startActivity(intent);
     }
 
     @Override
     public void sharePost(String documentId) {
         FirebaseFirestore.getInstance()
-                .collection(FirestoreDbConstants.ActivitiesConstants.COLLECTION)
+                .collection(DbConstants.Activities.COLLECTION)
                 .document(documentId)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
@@ -117,5 +119,10 @@ public class HomeFragment extends Fragment implements ActivityListRecyclerViewAd
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onCategoryClicked(String categoryId) {
+        viewModel.getActivitiesByCategory(categoryId);
     }
 }
