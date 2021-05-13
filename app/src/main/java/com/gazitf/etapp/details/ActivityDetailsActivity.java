@@ -42,6 +42,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.getstream.chat.android.client.ChatClient;
+import io.getstream.chat.android.client.channel.ChannelClient;
+
 public class ActivityDetailsActivity extends AppCompatActivity implements FirestoreActivityRepository.OnActivityDetailsTaskCompleteCallback, OnMapReadyCallback {
 
     private ActivityDetailsBinding binding;
@@ -206,7 +209,16 @@ public class ActivityDetailsActivity extends AppCompatActivity implements Firest
                         if (attendeeList.contains(currentUser.getUid())) {
                             attendeeList.remove(currentUser.getUid());
                             documentSnapshot.getReference().set(data)
-                                    .addOnSuccessListener(aVoid -> Toast.makeText(ActivityDetailsActivity.this, "Katılımcı listesinden ayrıldınız", Toast.LENGTH_LONG).show());
+                                    .addOnSuccessListener(aVoid -> {
+                                        Toast.makeText(ActivityDetailsActivity.this, "Katılımcı listesinden ayrıldınız", Toast.LENGTH_LONG).show();
+                                        firestore
+                                                .collection(DbConstants.Requests.COLLECTION)
+                                                .document(activityId + currentUser.getUid())
+                                                .delete();
+
+                                        ChannelClient channel = ChatClient.instance().channel("messaging", "entkd2xtIIC7c0z8HDId");
+                                        channel.removeMembers(currentUser.getUid()).enqueue();
+                                    });
                         }
                     }
                 });

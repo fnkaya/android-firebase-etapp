@@ -2,6 +2,7 @@ package com.gazitf.etapp.main.view.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,9 @@ import com.gazitf.etapp.repository.DbConstants;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class HomeFragment extends Fragment implements ActivityListRecyclerViewAdapter.RequestActivityPostClickListener {
+import java.util.List;
+
+public class HomeFragment extends Fragment implements ActivityListRecyclerViewAdapter.RequestActivityPostClickListener, CategoryListRecyclerViewAdapter.CategoryClickListener {
 
     private HomeViewModel viewModel;
 
@@ -52,7 +55,7 @@ public class HomeFragment extends Fragment implements ActivityListRecyclerViewAd
         super.onActivityCreated(savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
         viewModel.getCategoryList().observe(getViewLifecycleOwner(), categoryList -> {
-            CategoryListRecyclerViewAdapter adapter = new CategoryListRecyclerViewAdapter(categoryList);
+            CategoryListRecyclerViewAdapter adapter = new CategoryListRecyclerViewAdapter(categoryList, this);
             recyclerViewCategories.setAdapter(adapter);
         });
         viewModel.getActivityList().observe(getViewLifecycleOwner(), activityList -> {
@@ -116,5 +119,10 @@ public class HomeFragment extends Fragment implements ActivityListRecyclerViewAd
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onCategoryClicked(String categoryId) {
+        viewModel.getActivitiesByCategory(categoryId);
     }
 }

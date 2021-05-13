@@ -26,6 +26,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.getstream.chat.android.client.ChatClient;
+import io.getstream.chat.android.client.channel.ChannelClient;
+
 
 public class RequestListFragment extends Fragment implements RequestListRecyclerViewAdapter.RequestPostClickListener {
 
@@ -104,7 +107,11 @@ public class RequestListFragment extends Fragment implements RequestListRecycler
                             .collection(DbConstants.Requests.COLLECTION)
                             .document(activityId + requestOwnerId)
                             .update(DbConstants.Requests.STATUS, DbConstants.Requests.ACCEPTED)
-                            .addOnSuccessListener(aVoid -> Toast.makeText(requireActivity(), "Kullanıcı katılımcı listesine eklendi", Toast.LENGTH_LONG).show());
+                            .addOnSuccessListener(aVoid -> {
+                                ChannelClient channel = ChatClient.instance().channel("messaging", "entkd2xtIIC7c0z8HDId");
+                                channel.addMembers(requestOwnerId).enqueue();
+                                Toast.makeText(requireActivity(), "Kullanıcı katılımcı listesine eklendi", Toast.LENGTH_LONG).show();
+                            });
 
                     fetchRequests();
                     adapter.notifyDataSetChanged();

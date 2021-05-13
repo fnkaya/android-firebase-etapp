@@ -42,7 +42,6 @@ import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.squareup.picasso.Picasso;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -51,10 +50,8 @@ import io.getstream.chat.android.client.ChatClient;
 import io.getstream.chat.android.client.api.models.FilterObject;
 import io.getstream.chat.android.client.api.models.QueryChannelsRequest;
 import io.getstream.chat.android.client.api.models.QuerySort;
-import io.getstream.chat.android.client.channel.ChannelClient;
 import io.getstream.chat.android.client.models.Channel;
 import io.getstream.chat.android.client.models.Filters;
-import io.getstream.chat.android.client.models.Member;
 import io.getstream.chat.android.client.models.User;
 import io.getstream.chat.android.client.notifications.handler.ChatNotificationHandler;
 import io.getstream.chat.android.client.notifications.handler.NotificationConfig;
@@ -105,7 +102,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         );
 
         ChatClient chatClient = new ChatClient.Builder(getString(R.string.stream_chat_key), this)
-                /*.notifications(new ChatNotificationHandler(this, notificationsConfig))*/
+                .notifications(new ChatNotificationHandler(this, notificationsConfig))
                 .build();
         new ChatDomain.Builder(chatClient, this).build();
 
@@ -120,10 +117,27 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         chatClient.connectUser(user, chatClient.devToken(user.getId()))
                 .enqueue();
 
-        /*chatClient.createChannel("messaging", Arrays.asList("WApOFDcvN8ZbnRGLJT0wCr14kNv2", "dbfLcZb1xHPxoLz87YgLna7XbAg2"), Map.of("name", "Etkinlik Deneme")).enqueue(result -> {
-            if (result.isError())
-                Log.i(TAG, "initChatClient: " + result.error().getMessage());
-        });*/
+        FilterObject filter = Filters.and(
+                Filters.eq("type", "messaging")
+        );
+        int offset = 0;
+        int limit = 10;
+        QuerySort<Channel> sort = new QuerySort<Channel>().desc("last_message_at");
+        int messageLimit = 0;
+        int memberLimit = 0;
+
+        QueryChannelsRequest request = new QueryChannelsRequest(filter, offset, limit, sort, messageLimit, memberLimit)
+                .withWatch()
+                .withState();
+
+        chatClient.queryChannels(request).enqueue(result -> {
+            if (result.isSuccess()) {
+                List<Channel> channels = result.data();
+                channels.forEach(channel -> Log.i(TAG, "initChatClient: " + channel.getCid()));
+            } else {
+                // Handle result.error()
+            }
+        });
     }
 
     @Override

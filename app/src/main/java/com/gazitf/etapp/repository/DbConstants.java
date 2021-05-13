@@ -16,6 +16,7 @@ public abstract class DbConstants {
 
     public static abstract class Activities {
         public static final String COLLECTION = "Activities";
+        public static final String CATEGORY = "categoryRef";
         public static final String DOCUMENT_ID = "documentId";
         public static final String OWNER_ID = "ownerId";
         public static final String START_DATE = "startDate";
