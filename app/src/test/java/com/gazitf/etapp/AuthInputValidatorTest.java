@@ -1,4 +1,6 @@
-package com.gazitf.etapp.utils;
+package com.gazitf.etapp;
+
+import com.gazitf.etapp.utils.AuthInputValidator;
 
 import org.junit.Test;
 
