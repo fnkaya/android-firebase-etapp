@@ -63,9 +63,6 @@
             android:name=".details.ActivityDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".profile.ProfileRatingBarActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".posts.PostsActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".main.view.fragment.ChannelActivity" />
